@@ -1,0 +1,32 @@
+\chapter{Conclusión y Recomendaciones}
+
+\section{Conclusión}
+
+El campo de la robótica es de suma importancia debido a la demanda para realizar tareas repetitivas, peligrosas, de alta precisión, la exploración del terreno, vigilancia, transporte de bienes y personas; todos estos campos y un sinnúmero más cuentan con un creciente soporte gracias a las investigaciones realizadas por universidades y grupos afines, al igual que empresas en el área comercial y militar, lo cual le hace merecedor de más estudio y desarrollo por parte de la Universidad de Los Andes, así como en nuestro país.
+
+Es preciso entender que el desarrollo de software para robots está orientado al de plataformas de software debido a su capacidad de abstracción, modularización y amplio soporte por parte de comunidades de desarrolladores. Esto lo hace recomendable por encima del desarrollo de aplicaciones personalizadas para cada plataforma de hardware independiente.
+
+Dentro de las plataformas de software consideradas, ROS es la mejor opción por la popularidad que cuenta en la comunidad de investigación y desarrollo robótico, el soporte al desarrollador a cualquier nivel entre novato a experto y la cantidad de módulos existentes para soportar distintos dispositivos o funcionalidades. No obstante, esto no significa que sea la única alternativa disponible, ya que otras plataformas son compatibles con ROS y pueden usarse en paralelo o sustituyéndola por completo.
+
+Por otro lado, para fomentar el desarrollo de robots autónomos utilizando visión por computadora, es factible el uso de Kinect por su bajo costo (en especial al compararlo con sensores de medición láser) y facilidad de uso, a pesar de las limitaciones que pudiera tener, tales como rango y campo de visión limitado y la necesidad de poseer alimentación de corriente adecuada para el uso por parte de un robot móvil.
+
+En lo que respecta al soporte del sistema operativo y de la plataforma de software elegida, contamos con distintos controladores, tales como freenect y openni, así como con alternativas de módulos para la generación de mapas de entorno utilizando Kinect, entre las que podemos nombrar hector\_slam, rgbdslam, RTAB-Map, etc., ya sea de forma individual o en conjunto con sensores láser y codificadores para la odometría. Si bien este proyecto se enfocó en la evaluación de un módulo particular, se tienen otras opciones ya mencionadas que podrían proveer de funcionalidades adicionales a las ya exploradas.
+
+La generación del mapa de entorno se realizó mediante la elaboración a través de RTAB-Map de nubes de puntos provistas por el Kinect, por lo cual se comprobó su funcionamiento adecuado; de igual forma, se comprobó la coincidencia de la proyección 2D y el mapa de ocupación resultante con la detección de la nube de puntos.
+
+Por último, es menester mencionar la utilidad de la aplicación de las metodologías Ágiles durante el desarrollo de este proyecto; éstas son por definición poco estrictas, en el sentido que permiten tomar o dejar de ellas lo que se requiera o no, por lo cual resultó factible y deseable tomar sencillamente algunos aspectos de cada método utilizado para, tal como el nombre indica, agilizar y facilitar el avance del proyecto sin que la aplicación del o de los métodos se convirtiese en una carga adicional para el estudiante o el profesor tutor.
+
+\section{Recomendaciones}
+
+Este proyecto tiene el potencial, si se quiere, de impulsar numerosos desarrollos en LaSDAI para la promoción, desarrollo e implementación de robots móviles autónomos. Por esto, se pueden realizar las siguientes recomendaciones:
+
+\begin{itemize}
+	\itemsep1pt \parskip1pt \parsep1pt
+	\item Actualizar el sitio web de LaSDAI, incorporando las fuentes a los proyectos realizados y crear un repositorio de código público que los contenga.
+
+	\item Agregar una \textit{wiki}, accesible públicamente, para colaboración de sus miembros.
+
+	\item Continuar con el desarrollo del proyecto en al menos las siguientes áreas: integración del hardware de un robot móvil en ROS, detección de objetos o personas específicas utilizando OpenNI y Kinect.
+
+	\item Proponer la implementación del desarrollo y control de proyectos en el laboratorio y/o en la escuela de sistemas utilizando Kanban y metodologías Ágiles, llevándolo inclusive al control de flujo de los distintos proyectos de grado dentro de la escuela.
+\end{itemize}

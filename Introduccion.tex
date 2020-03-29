@@ -1,0 +1,65 @@
+\chapter{Introducción}
+
+En este capítulo se definen los antecedentes que son la base para la presentación del problema así como también el planteamiento de este último, la justificación del proyecto de grado, los objetivos y la metodología que encaminaron el desarrollo de la solución del mismo.
+
+\section{Antecedentes}
+
+El filósofo Immanuel Kant propuso a través de su teoría de la percepción, que nuestro conocimiento del mundo exterior depende de nuestras formas de percepción. Así como el cuerpo humano posee, en general, cinco sentidos universalmente conocidos que le ayudan a percibir el entorno que lo rodea, el estudio de los mismos lo ha llevado a investigar y desarrollar maneras de emular estos sentidos de forma artificial, con múltiples propósitos; entre ellos, el de proveer a entidades hechas por el hombre de la habilidad de reconocer el mundo a su alrededor, y en consecuencia, la capacidad de actuar en él.
+
+Nuestra condición humana nos permite percibir la estructura en tres dimensiones del mundo a nuestro alrededor con aparente facilidad. Por ejemplo, con sólo ver alrededor en una habitación llena de cosas, usted podría contar e inclusive nombrar a cada uno de los objetos que le rodea; inclusive, podría adivinar la textura de los mismos sin necesidad de hacer uso del sentido del tacto. Así mismo, la percepción en tres dimensiones le permite juzgar con gran precisión la distancia desde su ubicación actual hasta cada objeto de interés, permitiéndole tocarlo, tomarlo o manipularlo si así lo desea. Esta percepción, que nosotros como seres humanos llamamos sentido de la vista, se efectúa a través de células especializadas que tienen receptores que reaccionan a estímulos específicos (en este caso, ondas de radiación electromagnética de longitudes específicas, que se registran como la sensación de la luz), ubicadas en nuestros ojos.
+
+Si bien la descripción del sentido de la vista es -o parece ser- sencilla, se trata de un sentido sumamente complejo y de hecho, podría decirse que es uno de los sentidos más importantes para el ser humano, así como el más perfecto y evolucionado.
+
+¿Por qué se habla de complejidad? Szeliski nos explica que, ``en parte, es porque la visión es un problema inverso, donde buscamos encontrar variables desconocidas dada información insuficiente para especificar totalmente la solución. Por tanto, debemos recurrir a modelos físicos y probabilísticos para discerner entre soluciones potenciales. Sin embargo, modelar el mundo visual en toda su complejidad es mucho más difícil que, por ejemplo, modelar el tracto vocal que produce sonidos hablados.'' \citep{RS:09}
+
+Esta complejidad lo hace convertirse en un campo de estudio de gran importancia, cuya denominación, a los fines de la emulación mencionada anteriormente, es de la Visión Artificial, también conocida como Visión por Computador.
+
+El inicio de la visión artificial, desde el punto de vista práctico, fue marcado por Larry Roberts, el cual, en 1961 creó un programa que podía ``ver'' una estructura de bloques, analizar su contenido y reproducirla desde otra perspectiva, demostrando así a los espectadores que esa información visual que había sido mandada al ordenador por una cámara, había sido procesada adecuadamente por él. \citep{bb68865}
+
+\section{Definición del Problema}
+
+El Laboratorio de Sistemas Discretos, Automatización e Integración, LaSDAI (ver más en el apéndice \ref{App:DescripcionLasdai}), en sus áreas de Visión por Computador y Robótica, desea estudiar alternativas de plataformas de software para poder utilizar robots autónomos, que provean soporte para sistemas de medición láser, infrarrojo o una combinación de ambos, mediante los cuales se pueda realizar medidas de distancias y así, poder generar mapas del entorno a través de dichas medidas.
+
+Si bien se cuenta ya con dos plataformas robóticas (denominados ``LR1'' y ``LR2'') se carece de una plataforma programática común, con amplio soporte de la comunidad de investigación en robótica y de conocimiento en LaSDAI\@. Esta condición limita sustancialmente la investigación, el uso y la difusión de tecnologías afines a la robótica y la visión por computadora, dejando de lado este campo de investigación.
+
+\section{Justificación}
+
+LaSDAI posee y utiliza dos plataformas robóticas, los cuales cuentan cada uno con interfaces programáticas desarrolladas por separado. Esto, si bien es adecuado para el uso específico de cada plataforma, supone problemas de intercomunicación e interoperación, sin mencionar el costo en mantenimiento de dichas interfaces a nivel de código. Por ende, establecer una plataforma de software común para ambos, reduce a lo mínimo necesario la codificación personalizada para cada plataforma robótica, provee soporte al involucrar a un mayor número de personas y facilita el desarrollo de otras plataformas robóticas derivadas de esta.
+
+\section{Objetivos}
+
+\subsection{Objetivo General}
+
+Investigar y desarrollar documentación adecuada que permita establecer una plataforma común de software para el manejo y navegación de robots móviles, que provea soporte a sensores tales como Microsoft Kinect, para obtener datos y realizar mediciones de entorno.
+
+\subsection{Objetivos Específicos}
+
+\begin{enumerate}
+	\itemsep1pt \parskip1pt \parsep1pt
+	\item Analizar las alternativas en plataformas de software disponibles para control robótico.
+	\item Analizar el software disponible para elaboración de mapas de entorno.
+	\item Analizar los requerimientos del módulo de creación de mapas.
+	\item Generar un mapa de entorno mediante el software seleccionado.
+	\item Realizar documentación de la estructura de los mapas generados mediante el software.
+	\item Realizar documentación adecuada y actualizada para la difusión y posterior uso del software.
+\end{enumerate}
+
+\section{Metodología Utilizada}
+
+Con la finalidad de llevar a cabo el desarrollo del proyecto de grado de forma eficiente y a la vez incorporar metodologías actuales enfocadas al desarrollo por parte de individuos (como es normalmente el caso en cuanto a proyectos de grado), se estudió el uso del método PSP~\citep{Humphrey200503} (Personal Software Process) mejorado con prácticas tomadas de los métodos de programación Ágiles, en particular, el método Extreme Programming, orientado a una sola persona, es decir, PXP~\citep{pxppaper} (Personal eXtreme Programming) integrado con el método Kanban.
+
+Esto se llevó a cabo mediante las siguientes actividades realizadas:
+
+\begin{itemize}
+	\itemsep1pt \parskip1pt \parsep1pt
+	\item Recolección de requerimientos.
+	\item Planificación.
+	\item Inicialización de iteración.
+	\begin{itemize}
+		\item Diseño.
+		\item Implementación.
+		\item Pruebas de sistema.
+		\item Retrospectiva, análisis de resultados.
+	\end{itemize}
+	\item Finalización de iteración.
+\end{itemize}

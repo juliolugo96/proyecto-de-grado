@@ -1,0 +1,253 @@
+\chapter{ROS}
+
+En este capítulo se desea profundizar en la definición de ROS (\textit{Robot Operating System}) como plataforma de software seleccionada para el desarrollo de este proyecto de grado. Asimismo, se describen sus características principales, la arquitectura de software que utiliza, la instalación del mismo en el entorno de desarrollo a utilizar, y los módulos en los cuales se apoya este proyecto para llevar a cabo la generación de mapas de entorno.
+
+\section{Definición}
+
+\textit{Robot Operating System} (Sistema Operativo de/para Robot) o sencillamente ROS es, tal como su nombre implica, un sistema operativo para robots, de forma similar a los sistemas operativos para computadores de escritorio o servidores. Desarrollado y mantenido por la empresa Willow Garage desde 2008 hasta 2013, siendo tomada su dirección en ese año por la Fundación de Robótica de Código Abierto, es una colección de herramientas, bibliotecas y convenciones que buscan simplificar la tarea de crear comportamientos de robot robustos y complejos a lo largo de una amplia variedad de plataformas robóticas.
+
+La justificación de porqué hacer esto es porque decididamente, crear software robótico de propósito general y verdaderamente robusto es difícil, ya que si bien para un ser humano algunos problemas son triviales, no lo son en lo absoluto al momento de tomar en cuenta las grandes variaciones entre instancias de tareas y entornos. Lidiar con estas variaciones es tan complicado que ningún individuo, laboratorio o institución pudiera esperar llevarlo a cabo por su propia cuenta.
+
+Por ello, ROS fue construido desde cero con el fin de alentar el desarrollo de software robótico de forma colaborativa. Un ejemplo de esto es que, un laboratorio podría tener expertos en cartografía o mapeado de interiores y podría contribuir un sistema de excelente calidad para la producción de mapas. Otro grupo podría tener expertos en el uso de mapas para navegar, y otro grupo podría haber descubierto un enfoque de visión por computador que funciona bien para el reconocimiento de objetos pequeños entre el desorden. ROS fue diseñado específicamente para grupos como éstos para colaborar y construir sobre el trabajo del otro. \cite{aboutros}
+
+Además, ROS es Software Libre y está distribuido bajo la licencia BSD, permitiendo el desarrollo de proyectos comerciales y no-comerciales. Una característica importante en cuanto a la arquitectura (que se detallará más adelante) es que ROS funciona a través de comunicación entre procesos, sin requerir que los módulos sean enlazados dentro del mismo ejecutable, por lo que cualquier sistema construido usando ROS como base puede tener control detallado sobre las licencias de software que utilicen sus módulos, ya sean GPL, BSD o cualquier otra hasta propietaria. \cite{quigley2009ros}
+
+\section{Características Principales}
+
+Se pueden comentar las siguientes:
+
+\begin{description}
+	\item[Comunicación entre pares:] los sistemas robóticos complejos con múltiples enlaces podrían tener varios computadores de a bordo (para realizar tareas paralelas) conectados a través de una red. La ejecución de un maestro central podría dar lugar a la congestión severa en un enlace determinado. Usando una comunicación peer-to-peer o entre pares evitaría este problema. En ROS, una arquitectura peer-to-peer acoplado a un sistema de memoria intermedia o \textit{buffer} y un sistema de búsqueda (un servicio de nombres llamado ``maestro'' en ROS), le permite a cada componente dialogar directamente con cualquier otro, de forma sincrónica o asincrónica como sea necesario.
+
+	\item[Gratuito y de código abierto:] Ser una plataforma de código abierto ofrece la reutilización de funciones ya existentes proporcionadas por muchos otros usuarios de ROS. Su código se suministra en repositorios como \textit{stacks}, o ``pilas''. Otras personas han desarrollado capacidades sorprendentes para los robots que han sido ``de código abierto'' y son relativamente fáciles de añadir de forma incremental utilizando el entorno de desarrollo de ROS.
+
+	\item[Delgado:] Para combatir el desarrollo de algoritmos que se ``enredan'' o vinculan en un grado mayor o menor con el sistema operativo del robot y, por tanto, son difíciles de reutilizar posteriormente, los desarrolladores de ROS han planificado que los controladores y otros algoritmos sean contenidos en ejecutables independientes. Esto garantiza la máxima reutilización y, sobre todo, mantiene reducido su tamaño. Este método hace que ROS sea fácil de usar y ubica la complejidad en las bibliotecas. Esta disposición también facilita las pruebas unitarias y los sistemas desarrollados puede ser completamente independientes de otro sistema.
+
+	\item[Multi-lenguaje:] ROS es independiente del lenguaje, y se puede programar en varios lenguajes. La especificación ROS trabaja en la capa de mensajería. Las conexiones \textit{peer-to-peer} se negocian en XML-RPC, que existe en un gran número de lenguajes. Para soportar un nuevo lenguaje, se pueden reenvolver clases C ++ (lo cual se hizo para el cliente Octave, por ejemplo) o se escriben clases permitiendo que se generen mensajes. Estos mensajes se describen en IDL (\textit{Interface Definition Language}). \cite{quigley2009ros}
+\end{description}
+
+\section{Arquitectura}
+
+ROS está implementado bajo los siguientes conceptos fundamentales:
+
+\begin{itemize}
+	\itemsep1pt \parskip1pt \parsep1pt
+	\item Nodos: Son procesos que realizan cálculos; en el contexto de ROS, este término es intercambiable con ``módulo de software'' ya que está diseñado para ser altamente modular: un sistema está compuesto típicamente de muchos nodos.
+
+	\item Mensajes:	Los nodos se comunican entre si al pasar mensajes, que no es más que una estructura de datos de tipo estricto. Los tipos de datos soportados pueden ser estándar (entero, flotante, booleano, etc.), así como también arreglos de estos o constantes. Un mensaje puede estar compuesto por varios mensajes y el nivel de anidamiento al que pueden llegar es arbitrario.
+
+	\item Tópicos: Un nodo publica un mensaje a través de un tópico, que es sencillamente una cadena de caracteres tal como ``odometría'' o ``mapa''. Un nodo que esté interesado en un tipo de dato específico se suscribirá al tópico apropiado. En cualquier momento dado, pueden existir múltiples publicadores o suscriptores de forma concurrente para un tópico particular y un nodo puede publicar o suscribirse a múltiples tópicos. Por lo general, los publicadores y suscriptores no están al tanto de la existencia del otro.
+
+	\item Servicios: Si bien el modelo publicar-suscribir basado en tópicos es un paradigma de comunicaciones flexible, el esquema de enrutamiento de ``emisión'' no es apropiado para las transacciones síncronas, lo cual puede simplificar el diseño de algunos nodos. A esto se le llama ``servicio'' en ROS, definidos por un nombre y un par de mensajes tipados, uno para la petición y otro para la respuesta. Es de notar que, a diferencia de los tópicos, solo un nodo puede anunciar un servicio con un nombre particular; por ejemplo, solamente puede haber un servicio llamado ``clasificar\_imagen''. \cite{quigley2009ros}
+\end{itemize}
+
+\section{Requisitos de Instalación}
+
+ROS está organizado en distribuciones, que cuentan cada una con sus respectivos requisitos de instalación. Por consenso, cada mes de mayo se lanza una nueva distribución de ROS, y las distribuciones de años pares son de soporte extendido, con 5 años de soporte. Las distribuciones de años impares son distribuciones regulares, con soporte por 2 años. Igualmente, la plataforma soportada por defecto es Ubuntu Linux, mientras que otros sistemas operativos, tales como OS X, Android, Arch Linux, Debian y Windows están bajo soporte experimental, por parte de la comunidad.
+
+Al momento de la elaboración de este proyecto, la versión instalada es ``\textit{Indigo Igloo}'' (con soporte LTS o \textit{Long Term Support} -- Soporte de Larga Duración), con los siguientes requisitos:
+
+\begin{itemize}
+	\itemsep1pt \parskip1pt \parsep1pt
+	\item Ubuntu Saucy (13.10) o Ubuntu Trusty (14.04 LTS)
+	\item C++03
+	\item Boost 1.53
+	\item Lisp SBCL 1.0.x
+	\item Python 2.7
+	\item CMake 2.8.11 \cite{rosrequirements}
+\end{itemize}
+
+Durante el proceso de instalación, se lleva a cabo la satisfacción de dependencias.
+
+\section{Procedimiento de Instalación}
+
+\subsection{Descripción de Entornos de Desarrollo}
+
+Los entornos y dispositivos utilizados para llevar a cabo el proyecto, para pruebas de instalación y/o funcionamiento, son los siguientes:
+
+\begin{itemize}
+	\item Máquina Virtual: Oracle \textregistered{} VirtualBox VM\textsuperscript{TM}, 2 GB RAM, 30 GB disco duro, con Ubuntu Trusty Tahr 14.04.2 de 64 bits.
+	\item Computador Portatil: Lenovo \textregistered{} Z50-70, procesador Intel \textregistered{}  Core\textsuperscript{TM} i7-4510U, 6 GB RAM, 500 GB disco duro, con Ubuntu Trusty Tahr 14.04.2 de 64 bits.
+	\item Microsoft \textregistered{}  XBOX 360 \textregistered{}  Kinect\textsuperscript{TM}
+\end{itemize}
+
+En la máquina virtual se llevó a cabo la comprobación del procedimiento de instalación, ya que es un entorno que permite restaurar a un punto anterior con facilidad, en caso de inconvenientes tales como paquetes mal instalados, etc.
+
+\subsection{Instalación}
+
+El proceso de instalación de ROS está excelentemente documentado en su \textit{wiki} oficial accesible desde \url{http://wiki.ros.org/ROS/Installation}, por lo cual seguimos los pasos tomando nota de cualquier dependencia faltante o error.
+
+Para comenzar, en el enlace previamente mencionado, hacemos clic en ``Indigo installation instructions'', puesto que es la versión de soporte extendido y es la compatible con la versión instalada de Ubuntu.
+
+Una vez allí, bajo el apartado ``Supported'', hacemos clic en ``Ubuntu''.
+
+En adelante, solamente seguimos los siguientes pasos haciendo énfasis en la versión instalada de Ubuntu, tomados directamente del sitio:
+
+\begin{enumerate}
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+	\item Configure sus repositorios de Ubuntu
+
+	Configure sus repositorios de Ubuntu para activar los repositorios ``restricted'', ``universe'' y ``multiverse''. La guía de configuración de repositorios de Ubuntu, disponible en el siguiente enlace \url{https://help.ubuntu.com/community/Repositories/Ubuntu} (en inglés) detalla adecuadamente los pasos necesarios.
+	\item Configure el archivo sources.list
+
+	Configure su computador para aceptar software desde packages.ros.org. Esta distribución de ROS \textbf{sólo} soporta Saucy (Ubuntu 13.10) y Trusty (Ubuntu 14.04) para paquetes Debian.
+
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+	\end{lstlisting}
+	\end{blackcodebox}
+
+	\item Configure sus llaves
+
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-key\\ 0xB01FA116
+	\end{lstlisting}
+	\end{blackcodebox}
+
+	\item Instalación
+	Primero debe asegurarse que su índice de paquetes Debian esté actualizado:
+
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+sudo apt-get update
+	\end{lstlisting}
+	\end{blackcodebox}
+
+	Si está utilizando Ubuntu Trusty 14.04.2 y experimenta problemas con las dependencias durante la instalación de ROS, quizás deba instalar dependencias adicionales del sistema.
+
+	\begin{redwarningbox}
+	No instale estos paquetes si está utilizando 14.04, ya que destruirá su servidor X (gráfico):
+	\end{redwarningbox}
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+sudo apt-get install xserver-xorg-dev-lts-utopic mesa-common-dev-lts-utopic libxatracker-dev-lts-utopic libopenvg1-mesa-dev-lts-utopic libgles2-mesa-dev-lts-utopic libgles1-mesa-dev-lts-utopic libgl1-mesa-dev-lts-utopic libgbm-dev-lts-utopic libegl1-mesa-dev-lts-utopic
+	\end{lstlisting}
+	\end{blackcodebox}
+	\begin{redwarningbox}
+	No instale los paquetes anteriores si está utilizando 14.04, ya que destruirá su servidor X (gráfico). Alternativamente, intente instalar sólo lo siguiente para corregir problemas de dependencias:
+	\end{redwarningbox}
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+sudo apt-get install libgl1-mesa-dev-lts-utopic
+	\end{lstlisting}
+	\end{blackcodebox}
+
+	Existen muchas bibliotecas y herramientas en ROS. Se han provisto cuatro configuraciones por defecto para iniciar. También se pueden instalar paquetes de ROS de forma individual.
+
+	\begin{itemize}
+		\item Instalación de Escritorio Completa: (Recomendada): ROS, rqt, rviz, bibliotecas genéricas para robots, simuladores 2D/3D, navegación y percepción 2D/3D
+
+		Indigo usa Gazebo 2, la cual es la versión por defecto en Trusty y es la recomendada. Si desea actualizar a Gazebo 3 vea las instrucciones en \url{http://wiki.gazebosim.org/wiki/Install/Gazebo_and_ROS#Gazebo_3.x_series} acerca de cómo actualizar el simulador.
+
+
+		\begin{blackcodebox}
+		\begin{lstlisting}[language=bash]
+sudo apt-get install ros-indigo-desktop-full
+		\end{lstlisting}
+		\end{blackcodebox}
+
+		\item Instalación de Escritorio: ROS, rqt, rviz, y bibliotecas genéricas para robots.
+
+		\begin{blackcodebox}
+		\begin{lstlisting}[language=bash]
+sudo apt-get install ros-indigo-desktop
+		\end{lstlisting}
+		\end{blackcodebox}
+
+		\item ROS-Base: (Esencial) Las bibliotecas de paquete, generación y comunicación. No incluye herramientas de entorno gráfico.
+
+		\begin{blackcodebox}
+		\begin{lstlisting}[language=bash]
+sudo apt-get install ros-indigo-ros-base
+		\end{lstlisting}
+		\end{blackcodebox}
+
+		\item Paquete Individual: También puede instalar un paquete específico de ROS package (reemplace subguiones con guiones del nombre del paquete):
+
+		\begin{blackcodebox}
+		\begin{lstlisting}[language=bash]
+sudo apt-get install ros-indigo-PAQUETE
+		\end{lstlisting}
+		\end{blackcodebox}
+		por ejemplo:
+
+		\begin{blackcodebox}
+		\begin{lstlisting}[language=bash]
+sudo apt-get install ros-indigo-slam-gmapping
+		\end{lstlisting}
+		\end{blackcodebox}
+
+		Para listar paquetes disponibles, use:
+
+		\begin{blackcodebox}
+		\begin{lstlisting}[language=bash]
+apt-cache search ros-indigo
+		\end{lstlisting}
+		\end{blackcodebox}
+	\end{itemize}
+	\item Inicialice rosdep
+
+	Antes de poder utilizar ROS, se debe inicializar rosdep. rosdep permite instalar dependencias del sistema con facilidad para código fuente que desee compilar y es requerido para poder ejecutar algunos componentes centrales en ROS.
+
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+sudo rosdep init
+rosdep update
+	\end{lstlisting}
+	\end{blackcodebox}
+
+	\item Configuración de entorno
+
+	Es conveniente si las variables de entorno de ROS son agregadas automáticamente a su sesión Bash cada vez que se invoca un nuevo terminal:
+
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+	\end{lstlisting}
+	\end{blackcodebox}
+
+	Si tiene más de una distribución de ROS instalada, \url{~/.bashrc} sólo debe tomar como fuente el \url{setup.bash} para la versión que esté en uso actualmente.
+
+	Si simplemente desea cambiar el entorno del terminal actual, puede escribir:
+
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+source /opt/ros/indigo/setup.bash
+	\end{lstlisting}
+	\end{blackcodebox}
+
+	\item Obtener rosinstall
+
+rosinstall es una herramienta de línea de comandos frecuentemente utilizada en ROS que es distribuida por separado. Le permite descargar con facilidad muchos árboles fuentes para paquetes ROS con un solo comando.
+
+Para instalar esta herramienta en Ubuntu, ejecute:
+
+	\begin{blackcodebox}
+	\begin{lstlisting}[language=bash]
+sudo apt-get install python-rosinstall
+	\end{lstlisting}
+	\end{blackcodebox}
+\end{enumerate}
+
+\section{Módulos Disponibles para SLAM en ROS}
+
+Debido a la naturaleza propia del software, es improbable, para no decir imposible, poder realizar un listado exhaustivo de todos los módulos disponibles. Sin embargo, se listan acá los más populares, con el fin de brindar alternativas para elaborar mapas de entorno con distintos tipos de sensores.
+
+Es de notar que algunos paquetes requieren obtener datos de un sensor láser, por lo cual el Kinect no cumpliría con ese requerimiento; sin embargo, hay un paquete o nodo de ROS que permite convertir las imágenes con datos de profundidad capturadas por un sensor RGB-D (tal como el Kinect) y emular un sensor láser. Este puede encontrarse acá: \url{http://wiki.ros.org/depthimage_to_laserscan}
+
+\begin{itemize}
+	\itemsep1pt \parskip1pt \parsep1pt
+	\item gmapping (\url{http://wiki.ros.org/gmapping})
+	\item hector\_slam (\url{http://wiki.ros.org/hector_slam})
+	\item RTAB-Map (\url{http://wiki.ros.org/rtabmap})
+	\item rgbdslam (\url{http://wiki.ros.org/rgbdslam})
+	\item rgbdslam V2 (versión actualizada) (\url{http://felixendres.github.io/rgbdslam_v2/})
+\end{itemize}
+
+Tras evaluar documentación disponible, ejemplos de código y funcionamiento y versiones soportadas de cada módulo en ROS, se decidió utilizar RTAB-Map (descrito en el siguiente capítulo).
+
+Es de destacar, que RTAB-Map cuenta con soporte directo por parte del desarrollador del mismo, por lo cual será utilizado en este proyecto para la generación de mapas.

@@ -1,0 +1,386 @@
+\documentclass[12pt,oneside]{book}
+\usepackage{ulamonog} %proyecto de grado
+\usepackage[utf8]{inputenc}
+
+% Para texto en chino, japonés o coreano:
+\usepackage{CJKutf8}
+
+% Para imágenes, tablas más agradables visualmente y listas de chequeo en tablas:
+\usepackage{booktabs}%
+\usepackage{graphicx}%
+\graphicspath{ {img/} }
+\usepackage{float}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\usepackage[flushleft]{threeparttable}
+\usepackage{adjustbox}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+% Para mostrar código fuente:
+\usepackage{textcomp}
+\usepackage{listings}
+\lstset{
+basicstyle=\small\ttfamily,
+columns=flexible,
+breaklines=true,
+upquote=true,
+showstringspaces=false
+}
+
+% Para mostrar cuadros de información/advertencias:
+\usepackage{xcolor}
+\usepackage[tikz]{bclogo}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[many]{tcolorbox}
+
+\definecolor{bgblue}{RGB}{245,243,253}
+\definecolor{ttblue}{RGB}{91,194,224}
+\definecolor{electricyellow}{rgb}{1.0, 1.0, 0.0}
+
+\mdfdefinestyle{mystyle}{%
+  rightline=true,
+  innerleftmargin=10,
+  innerrightmargin=10,
+  outerlinewidth=3pt,
+  topline=false,
+  rightline=true,
+  bottomline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+}
+
+\newtcolorbox{blackcodebox}[1][]{
+  breakable,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  toprule=0pt,
+  leftrule=2pt,
+  rightrule=2pt,
+  titlerule=0pt,
+  arc=0pt,
+  outer arc=0pt,
+  colframe=black,
+}
+
+\newtcolorbox{redwarningbox}[1][]{
+  breakable,
+  freelance,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=0pt,
+  boxrule=0pt,
+  colframe=white,
+  overlay unbroken and first={
+  \draw[red!75!black,line width=3pt]
+    ([xshift=5pt]frame.north west) -- 
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    ([xshift=-5pt]frame.north east) -- 
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay unbroken app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) -- 
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) -- 
+    ([xshift=-5pt]frame.south east);
+  },
+  overlay middle and last={
+  \draw[red!75!black,line width=3pt]
+    (frame.north west) -- 
+    (frame.south west);
+  \draw[red!75!black,line width=3pt]
+    (frame.north east) -- 
+    (frame.south east);
+  },
+  overlay last app={
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south west) --
+    ([xshift=5pt]frame.south west);
+  \draw[red!75!black,line width=3pt,line cap=rect]
+    (frame.south east) --
+    ([xshift=-5pt]frame.south east);
+  },
+}
+
+% Agrega apéndices:
+\usepackage[titletoc]{appendix}
+
+% Corrige problemas de fuentes:
+\usepackage[T1]{fontenc}
+
+\usepackage[activeacute,spanish]{babel}
+
+% Colocar citas:
+\usepackage{csquotes}
+
+\usepackage{color}
+\usepackage[colorlinks]{hyperref}
+
+% ***************************************************************** %
+% En el siguiente comando se pueden modificar:
+% Titulo, Autor, Palabras clave
+% ***************************************************************** %
+
+% si se va a imprimir,
+% se incluye al final despues de citecolor=blue, el comando draft=true
+% por lo cual se descomenta la última línea y se comenta la anterior.
+% Las siguientes son propiedades del pdf, más no cambian nada dentro del
+% texto de la monografía
+\hypersetup{pdftitle={Estudio e Implementación de una Plataforma de Software para el intercambio de valores entre startups},
+pdfauthor={Julio Manuel Paredes Lugo},
+pdfsubject={Proyecto de Grado}, % se deja igual, a menos que sea la propuesta
+pdfkeywords={Startups, Intercambio de valores, Red Social, Plataforma, Desarrollo Web}, pdfstartview=FitH,
+% bookmarks=true, citecolor=blue}
+bookmarks=true, citecolor=blue, draft=true}
+
+% ***************************************************************** %
+% FIN DE
+% Titulo, Autor, Palabras clave
+% ***************************************************************** %
+
+% Si desea que no aparezca la lista de tablas o figuras descomente las siguientes lineas
+% \nolistoftables%
+% \nolistoffigures%
+\usepackage[numbers]{natbib} %Agregado numbers para compatibilidad con la bibliografía estilo IEEEtranN
+
+\sloppy
+
+\begin{document}
+
+\frontmatter
+
+% ***************************************************************** %
+% Portada y resumen
+% ***************************************************************** %
+
+% Si desea que el logo de la ULA aparezca en la parte superior,
+% descomente la siguiente línea. Por defecto aparece en la parte inferior
+\logoarriba{}
+
+% Año en el cual se entrega el proyecto de grado o la propuesta
+\copyrightyear{2020}
+
+% Al final cuando hayan presentado, sin comentar,
+% deberia ser el número de tesis presentada y la opción, IO por ejemplo
+% (Actualmente, 11-03-08, no se está trabajando con esta metodología de llevar un
+% número de proyecto para las tesis, por lo cual debe ir comentado)
+%\numproy{23SC}
+
+% En caso de hacer la propuesta, descomente la siguiente
+% instrucción. Para el Proyecto de Grado debe comentarse. Modifica
+% tanto la categoría de la monografía, como la aparición de
+% "Presentado ante la ilustre Universidad de Los Andes
+% como requisito parcial para obtener el Título de" en la portada
+%\tipomonografia{Propuesta de Proyecto de Grado}
+
+% Título de la monografía, el cual saldrá en la portada
+\title{Estudio e Implementación de una Plataforma de Software para el intercambio de valores entre startups}
+
+% Autor de la monografía, el cual saldrá en la portada
+\author{Julio Manuel Paredes Lugo}
+
+% La fechaentrega, presentaciondia, presentacionlugar
+% y mencionespecial, es para aquel caso en el cual se
+% vaya a utilizar la hoja del veredicto en el formato
+% que se presenta aquí. El primerjurado, segundojurado,
+% y cedula, son campos que pueden llenarse, pero sólo
+% aparecerán si se utiliza la página del veredicto
+
+% Cédula del autor de la monografía
+\cedula{26.373.468}
+
+% Tutor del Proyecto de Grado
+\tutor{Prof.\ Dr.\ Gerard Páez Monzón}
+
+% Cualquiera de los instructores que aparecen a continuación
+% pueden comentarse o descomentarse según sea el caso:
+
+%%% Cotutor del Proyecto de Grado
+% \cotutor{Dra. propuesta}
+%%% Asesor del Proyecto de Grado
+% \asesor{Dr. Asesor}
+%%% Asesor Industrial del Proyecto de Grado
+% \asesorindustrial{Dr. Asesor Industrial}
+%%% Tutor Industrial del Proyecto de Grado
+% \tutorindustrial{Dr. Tutor Industrial}
+%%% Jurados del Proyecto de Grado
+\primerjurado{Prof.\ Por definir}
+\segundojurado{Prof.\ Por definir}
+
+% ***************************************************************** %
+% Si sabe la fecha de presentación
+%
+% con o sin comentar
+% (Esta hoja es un formato para asentar la nota del proyecto de grado;
+% sin embargo, la hoja que se utiliza para ese fin, se busca en la escuela
+% días antes de la presentación)
+% ***************************************************************** %
+\fechaentrega{Septiembre 2020} % Si sabe cuando se presentó
+\presentaciondia{17 de Septiembre de 2020} % si conoce exactamente el día
+\presentacionlugar{Por definir} % si conoce exactamente el lugar donde se presentó
+% ***************************************************************** %
+% FIN DE
+% Si sabe la fecha de presentación
+% ***************************************************************** %
+
+
+% ***************************************************************** %
+% Si tiene mencion especial
+% con o sin comentar
+% ***************************************************************** %
+%\mencionespecial{Este proyecto fue seleccionado como \textbf{mejor
+%proyecto de grado} de la Escuela de Ingeniería de Sistemas, en el
+%IC aniversario de la Facultad de Ingeniería.} % si tiene mención especial
+% (El texto puede cambiarse \mencionespecial{*********} según corresponda
+% ***************************************************************** %
+% FIN DE
+% Si tiene mencion especial
+% con o sin comentar
+% ***************************************************************** %
+
+% NO TOCAR si es Ingenieria de Sistemas
+% \grado{Ingeniero Químico} % por defecto Ingeniero de Sistemas
+
+%\signaturepage ----- NO TOCAR
+
+%%%%%OJO%%%%% Arreglen esto según su opción
+% Si es control y automatizacion se comentan las siguientes líneas. Si es de
+% Sistemas Computacionales comenta la tercera. De Investigación de Operaciones
+% comenta la segunda
+%\opcion{Control y Automatización}
+\opcion{Sistemas Computacionales}
+%\opcion{Investigación de Operaciones}
+
+% Aquí se escribe el resumen de la monografía
+\resumen{Un reto substancial en el desarrollo y masificación de los robots móviles autónomos es el proceso de reconocimiento o modelado de su entorno.
+\\
+Existen múltiples soluciones de software que permiten el control de bases robóticas, planificación de rutas, localización y creación de mapas de entorno para navegación y ubicación de uno o varios robots en éste.
+\\
+En este trabajo se presenta la investigación, documentación e implementación de una plataforma de software adecuada para el manejo del hardware robótico disponible en el Laboratorio de Sistemas Discretos, Automatización e Integración (LaSDAI), con el fin de soportar y utilizar el dispositivo Kinect\textregistered, desarrollado por la compañía Microsoft\textregistered, específicamente mediante el uso del emisor láser y de la cámara infrarroja del mismo, para realizar medidas y generar mapas del entorno que puedan ser utilizados para la localización y navegación de un robot móvil.
+\\
+Se desarrollará utilizando como guía el método PXP que forma parte de los métodos Ágiles de desarrollo, junto con el método Kanban.
+\\
+Dentro de las plataformas de software consideradas, se determina que Robot Operating System (ROS) es la mejor opción por la popularidad que cuenta en la comunidad de investigación y desarrollo robótico.
+}
+
+% Aquí se escriben las palabras claves de la monografía
+\descriptores{Robots Móviles, Construcción de Mapas, Visión por Computador, Kinect, ROS}
+
+% Esto es para que salga la cota en la hoja del resumen. Actualmente,
+% 11-03-08, en la Escuela de Ingeniería de Sistemas no es necesario
+% buscar la cota previamente, sino que el Proyecto de Grado se entrega
+% en la Escuela sin cota.
+%\cota{IXD A01.1}
+
+% Si desea eliminar la frase "Este trabajo fue procesado en LATEX"
+% del resumen, descomente la siguiente línea
+% \sinlatex{}
+
+% ***************************************************************** %
+% FIN DE
+% Portada y resumen
+% ***************************************************************** %
+
+
+% ***************************************************************** %
+% Si tiene dedicatoria
+% con o sin comentar
+% ***************************************************************** %
+\dedicatoria{A mi Abuela Galanda\\ y a mi Abuelo Jesús Antonio.}
+% ***************************************************************** %
+% FIN DE
+% Si tiene dedicatoria
+% ***************************************************************** %
+
+\beforepreface%
+
+% ***************************************************************** %
+% Agradecimientos y capítulos NO numerados
+% ***************************************************************** %
+
+\prefacesection{Agradecimientos}
+% Por cada \input{}, debe existir un archivo .tex con el nombre entre corchetes:
+% Aún no hay agradecimientos, descomentar lo siguiente cuando los haya:
+\input{Agradecimientos}
+
+%%% Capitulo sin numero, antes de la pagina 1
+
+%\prefacesection{Introducción}
+% Este es un ejemplo de una sección no numerada.
+
+
+% ***************************************************************** %
+% FIN DE
+% Agradecimientos y capítulos NO numerados
+% ***************************************************************** %
+
+\afterpreface%
+
+\pagestyle{fancyplain}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{\textsc{\footnotesize\thechapter\ #1}}}
+\renewcommand{\sectionmark}[1]{\markright{\textsc{\footnotesize\thesection\ #1}}}
+\lhead[\fancyplain{}{\textsc{\footnotesize\thepage}}]%
+{\fancyplain{}{\rightmark}}
+\rhead[\fancyplain{}{\leftmark}]%
+{\fancyplain{}{\textsc{\footnotesize\thepage}}} \cfoot{}
+
+\mainmatter%
+
+% ***************************************************************** %
+% Cuerpo
+% ***************************************************************** %
+% De aquí en adelante se desarrollan los capítulos numerados de la monografía
+
+\input{Introduccion}
+
+\input{Capitulo2} % Marco teórico
+
+\input{Capitulo3} % Software de Control Robótico
+
+\input{Capitulo4} % ROS
+
+\input{Capitulo5} % RTAB-Map y Generación de Mapas
+
+\input{Conclusion}
+
+\clearpage
+\appendix
+\renewcommand{\appendixname}{Apéndice}
+\renewcommand{\appendixtocname}{Apéndices}
+\renewcommand{\appendixpagename}{Apéndices}
+\appendixpage
+\noappendicestocpagenum
+\addappheadtotoc
+\input{Apendice}
+
+% Estilo de la bibliografía
+\bibliographystyle{IEEEtranNes}
+% Modificada ya que la original está en inglés.
+
+% ***************************************************************** %
+% Para agregar toda la bibliografia del archivo .bib
+% solo descomente el siguiente comando
+% ***************************************************************** %
+\nocite{*}
+
+% ***************************************************************** %
+% Nombre del archivo con extensión .bib en donde se almacena la bibliografía
+\bibliography{Referencias}
+
+% ***************************************************************** %
+% FIN DE
+% Cuerpo
+% ***************************************************************** %
+
+\end{document}
