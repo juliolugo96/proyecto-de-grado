@@ -1,12 +1,47 @@
 \chapter{Marco Teórico}
 
-En este capítulo, se describen los fundamentos teóricos necesarios para el entendimiento y comprensión del proyecto. Se da una definición de los conceptos de robótica, robots, visión por computadora y la definición de las tareas realizadas por un robot autónomo para la navegación y ubicación de si mismo en un entorno. Se especifican las características técnicas del sistema Kinect y por último, se define la metodología Ágil para desarrollo de proyectos y los métodos PXP y Kanban para el desarrollo de aplicaciones, creando con esto una base teórica con la finalidad de tener una introducción del hardware y software utilizado, las herramientas de diseño y permitir al lector tener una idea de la naturaleza del contenido del resto del documento.
+En este capítulo, son expuestos de manera expédita los conceptos teóricos fundamentales para la comprensión de este trabajo. Se presentan las definiciones de Valor, Emprendimiento, Servicios en Redes Sociales (SNS, por sus siglas en inglés) y Plataforma, así como la descripción esencial de lo que es una aplicación web. Son especificadas las funcionalidades de los entornos de trabajo Vue.js, MongoDB y el servicio de computación en la nube Amazon Web Services (AWS), así como una descripción suscinta de la metodología de la Arquitectura Orientada a Servicios, el Desarrollo Orientado a Funcionalidades y los tableros de tareas Kanban, brindando de esta forma una plataforma teórica que permite al lector apropiarse de una noción de los conceptos acá expuestos y le facilita abordar el contenido expuesto en lo que resta de este proyecto.
 
-\section{Robótica}
-La Robótica es aquella rama dentro de la Ingeniería que se ocupa de la aplicación de la informática al diseño y al uso de máquinas con el objetivo que de lo que de esto resulte pueda de alguna manera sustituir a las personas en la realización de determinadas funciones o tareas.
-En palabras más simples, la robótica es la ciencia y la tecnología de los robots, porque básicamente se ocupa del diseño, manufactura y aplicaciones de los robots que crea. En la Robótica se combinan varias disciplinas al mismo tiempo, como la mecánica, la electrónica, la inteligencia artificial, la informática y la ingeniería de control, en tanto, también, por los quehaceres que desempeña, resulta fundamental el aporte que recibe y extrae de campos tales como el álgebra, los autómatas programables y las máquinas de estados.
+\section{Valor}
+El Oxford Dictionary ubica el origen etimológico de la palabra valor en valere, que evolucionó hacia el francés antiguo como valoir, que signica “ser de significancia o de importancia”. Para definir al valor de manera suscinta, Kenton (2018) lo describe como la “importancia o valía monetaria, material o de juicio que posee un activo, bien o servicio” \cite{kenton2021}.  Al hablar de valor en el contexto del emprendimiento, Dollinger (2008) plantea el siguiente dilema: “el valor juzga la calidad en términos del precio, y el precio es lo que consideran al momento de adquirir un producto o servicio. Si el dinero no fuese escaso, nada tendría valor, ni siquiera la calidad, porque todos pudiesen comprar cualquier cosa –pero esto, por supuesto, no es cierto. Además, en los negocios donde los precios son señales a las que debemos prestar atención y el dinero es un bien escaso, es el valor, y no la calidad del producto, lo verdaderamente importante” \cite{dollinger2008}. Esto último señala la importancia del valor, concibiéndolo como un índice descriptivo de la valía que le brindan los actores económicos a los productos que yacen en un mercado: por ende, la creación de valor es una de las actividades fundamentales de las sociedades humanas. Una de las actividades esenciales para la creación de valor es el emprendimiento, que como lo describen Mishra y Zachary (2015) consiste en dos fases: la Formulación del Emprendimiento y la Monetización del Emprendimiento. En la primera etapa, el emprendedor inicia con una oportunidad de innovación donde se formula la competencia emprendedora. Muchos emprendimientos fallan en esta etapa. La segunda, por su parte, describe la necesidad de fortalecer un modelo de negocios luego de desarrolladas las competencias de emprendimiento, esto con el objetivo de construir las capacidades dinámicas complementarias requeridas en el proceso emprendedor. Si el emprendimiento es incapaz de obtener mayores inversiones y el modelo de negocios falla, entonces se regresa a la primera etapa.\cite{Mishra2015}
 
-\section{Robots}
+
+\section{Emprendimiento}
+
+\subsection{Definición}
+El término proviene del ya utilizado en el francés a principios del siglo XIX entrepreneur que significa acomerter o comprometerse a realizar algo. La Real Academia Española es bastante explícita cuando define al emprendimiento como: “Acometer y comenzar una obra, un negocio, un empeño, especialmente si encierran dificultad o peligro.” Múltiples autores brindan una serie de definiciones al problema:
+Dollinger (2008) realiza un análisis de las distintas definiciones de emprendimiento que radican en la literatura encontrando los siguientes elementos en común:
+
+	Creatividad e Innovación
+	Identificación, Adquisición y Clasificación de Recursos
+	Organización Económica
+	Oportunidad para tener alguna ganancia o incrementarla bajo riesgo e incertidumbre
+
+Considerando estos cuatro elementos, lo define como: “el control y despliegue de recursos para crear una organización económica innovadora con el propósito de generar ganancias o crecimiento bajo condiciones de riesgo e incertidumbre” \cite{dollinger2008}.
+
+\subsection{Objetivos del Emprendimiento}
+
+Las razones que empujan a individuos y organizaciones a tomar la decisión de emprender son muy variadas y particulares. Según lo enunciado en el curso Introduction to Entrepreneurship de Lumen Learning, las motivaciones esenciales pasan por “la independencia financiera, el éxito económico o la búsqueda de un cambio social a una situación negativa”\cite{boundless}.
+
+\subsection{Principios del Emprendimiento}
+
+El emprendimiento al no ser una ciencia o una disciplina regida por una organización o estándar, tiene múltiples principios y fundamentos que lo componen como concepto. Francis Nwokike, emprendedor social, narra en su artículo "10 Principios del Emprendimiento" a partir de sus experiencias en este mundo cuáles deben ser los diez fundamentos y principios que todo emprendedor debe seguir. Los cuales son \cite{principles}:
+
+\begin{enumerate}
+	\itemsep1pt \parskip1pt \parsep1pt
+	\item Ser un proveedor de soluciones
+	\item Tener una visión
+	\item Escoger el equipo correcto
+	\item Construir un Producto o Servicio Viable
+	\item Reducir al mínimo la preocupación por el capital. El capital no escasea, la visión sí.
+	\item Ser responsable del éxito o fracaso del negocio
+	\item Entender que el crecimiento no es un evento único, es un proceso continuo.
+	\item Conocer bien a los clientes
+	\item Definir asertivamente las prioridades
+	\item Nunca darse por vencido
+\end{enumerate}
+
+
 El término robot alcanza su primera repercusión en la tercera década del siglo pasado, a instancias de R.U.R (\textit{Robots Universal Rossum}), una obra teatral de ciencia ficción escrita por el autor checo Karel Čapek, en la cual por primera vez se hace alusión al concepto de robot, extraído del término checo ``robota'', que significaba ``trabajos forzados''.
 
 A su vez, el término ``robótica'' es acuñado por Isaac Asimov, definiendo a la ciencia que estudia a los robots. Asimov creó también las Tres Leyes de la Robótica, definidas de esta manera:
@@ -17,6 +52,17 @@ A su vez, el término ``robótica'' es acuñado por Isaac Asimov, definiendo a l
 	\item Un robot debe obedecer las órdenes dadas por los seres humanos, salvo que estén en conflictos con la primera ley.
 	\item Un robot debe proteger su propia existencia, a no ser que esté en conflicto con las dos primeras leyes.
 \end{enumerate}
+
+\section{Plataforma}
+El término plataforma viene del francés \italic{plateforme} que significa plan de suelo.
+Kristjansson et al. (2004) hacen constar que el término plataforma presenta múltiples acepciones y conceptualizaciones a partir del contexto donde se solicite su definición. Así que, tras un estudio donde presentan catorce definiciones distintas, sugieren definir el término plataforma en el contexto del desarrollo de productos como “una colección de componentes principales que son reutilizados para obtener una ventaja competitiva”.
+\cite{kristjansson2004term}
+
+\subsection{Plataformas Digitales}
+
+
+
+
 
 Desde sus comienzos como disciplina y como parte fundamental de la Ingeniería, la Robótica ha estado incansablemente buscando construir artefactos que materialicen el deseo humano de crear seres a su semejanza a quienes poder delegarles tareas, trabajos o actividades por demás pesadas y desagradables de llevar a cabo. Pero y aunque muchos ni se lo esperen, desde tiempos inmemoriales, muy, muy lejos de las computadoras, hubo unas cuantas expresiones de la robótica. Porque por ejemplo, los antiguos egipcios unieron brazos mecánicos a las estatuas de sus dioses y esgrimían que el movimiento de los miembros se llevaba a cabo por obra y gracias de estos, inclusive los griegos construyeron estatuas que operaban con sistemas hidráulicos, los cuales eran utilizados para fascinar a los adoradores de los templos.
 

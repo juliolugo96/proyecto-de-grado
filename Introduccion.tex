@@ -1,65 +1,176 @@
 \chapter{Introducción}
 
-En este capítulo se definen los antecedentes que son la base para la presentación del problema así como también el planteamiento de este último, la justificación del proyecto de grado, los objetivos y la metodología que encaminaron el desarrollo de la solución del mismo.
+En este capítulo son definidos los antecedentes que representan la base sobre la cual se erigen tanto la presentación como el planteamiento del problema, la justificación de este trabajo, los objetivos a alcanzar y la metodología utilizada para dar solución al problema planteado.
 
 \section{Antecedentes}
 
-El filósofo Immanuel Kant propuso a través de su teoría de la percepción, que nuestro conocimiento del mundo exterior depende de nuestras formas de percepción. Así como el cuerpo humano posee, en general, cinco sentidos universalmente conocidos que le ayudan a percibir el entorno que lo rodea, el estudio de los mismos lo ha llevado a investigar y desarrollar maneras de emular estos sentidos de forma artificial, con múltiples propósitos; entre ellos, el de proveer a entidades hechas por el hombre de la habilidad de reconocer el mundo a su alrededor, y en consecuencia, la capacidad de actuar en él.
+El intercambio, el acto de dar o tomar algo en espera de recibir algo a cambio, es un concepto central en todas las ciencias humanas  \cite{Anderson1999}. Investigadores asociados al mercadeo lo han percibido como “el elemento clave subyacente para obtener resultados deseados en cualquier ámbito”, basados en la premisa de que los problemas de las sociedades humanas son resueltos cuando ocurren procesos de intercambio \cite{Bagozzi1994}. De esta manera, se entiende cómo las necesidades reflejadas en las sociedades, impulsan a las organizaciones humanas a crear valor. En ese sentido, las organizaciones humanas, los individuos, o las instituciones son llamadas entidades dentro del proceso del intercambio de valor. Una entidad es definida como un “actor individual, económico y social con objetivos específicos”.
+\\
+El valor, de manera general, se crea cuando dos entidades con recursos complementarios se relacionan entre sí. Sin embargo, para que esta relación y sus consecuentes interacciones se establezcan, es necesario que ambas entidades estén dentro de un mismo ecosistema, y es allí donde la necesidad de un ecosistema exhorta a los emprendedores a buscar soluciones y estrategias para afrontarla y obtener valor con eso.
+\\
+La estrategia propuesta por Boundaryless S.l.r. \cite{boundarylessplatform} para satisfacer esta necesidad, es la construcción de plataformas. Una plataforma, en este contexto, es un negocio cuyo objetivo es facilitar las interacciones entre, al menos, dos grupos distintos (generalmente proveedores y consumidores) \cite{noauthor_itif_2018} . Su idea se basa en diseñar e implementar un espacio común donde sea  posible interconectar a las distintas entidades bien sea fortaleciendo ecosistemas existentes, o creando nuevos y así, generar valor a partir de la interconectividad y la propia capacidad de realizar intercambios. 
+\\
+La complejidad y la aplicabilidad de estos conceptos, hacen a la estrategia de construcción de plataformas una herramienta de planificación sólida al momento de iniciar un emprendimiento que, como entidad, busca capturar valor a partir de los intercambios que realizan otras entidades. Hoy día, los intercambios de valores se han transportado, como gran parte de las actividades contidianas del ser humano, al mundo digital. Una de estas plataformas es LinkedIn, construida por Reid Hoffman en 2002, que emergió hacia el ecosistema del mundo laboral y permite relacionar una multitud de entidades entre sí, como compañias y trabajadores, así como estimular el intercambio de valor entre ellas y adquiriendo beneficios a partir de ello.
+\\
+Haciendo uso de estos preceptos, Ignis Gravitas, Inc. desarrolló para el año 2017 un prototipo conocido como “Zona Gravitas”, donde se buscaba encontrar una solución al problema de la interconexión de emprendedores; sin embargo, dicha solución no llegó a ser terminada y su desarrollo fue pospuesto para brindar prioridad a la construcción de la “Zona Ignis”.
 
-Nuestra condición humana nos permite percibir la estructura en tres dimensiones del mundo a nuestro alrededor con aparente facilidad. Por ejemplo, con sólo ver alrededor en una habitación llena de cosas, usted podría contar e inclusive nombrar a cada uno de los objetos que le rodea; inclusive, podría adivinar la textura de los mismos sin necesidad de hacer uso del sentido del tacto. Así mismo, la percepción en tres dimensiones le permite juzgar con gran precisión la distancia desde su ubicación actual hasta cada objeto de interés, permitiéndole tocarlo, tomarlo o manipularlo si así lo desea. Esta percepción, que nosotros como seres humanos llamamos sentido de la vista, se efectúa a través de células especializadas que tienen receptores que reaccionan a estímulos específicos (en este caso, ondas de radiación electromagnética de longitudes específicas, que se registran como la sensación de la luz), ubicadas en nuestros ojos.
 
-Si bien la descripción del sentido de la vista es -o parece ser- sencilla, se trata de un sentido sumamente complejo y de hecho, podría decirse que es uno de los sentidos más importantes para el ser humano, así como el más perfecto y evolucionado.
+\section*{Definición del Problema}
 
-¿Por qué se habla de complejidad? Szeliski nos explica que, ``en parte, es porque la visión es un problema inverso, donde buscamos encontrar variables desconocidas dada información insuficiente para especificar totalmente la solución. Por tanto, debemos recurrir a modelos físicos y probabilísticos para discerner entre soluciones potenciales. Sin embargo, modelar el mundo visual en toda su complejidad es mucho más difícil que, por ejemplo, modelar el tracto vocal que produce sonidos hablados.'' \citep{RS:09}
+Ignis Gravitas, Incorporated, en su área de desarrollo tecnológico, desea construir una plataforma digital donde sus usuarios puedan, a través de sus interacciones, generar un ecosistema donde los emprendimientos sean capaces de realizar intercambios de valores y así, poder  difundir la cultura del emprendimiento que posee la compañía.
+\\
+Si bien Ignis Gravitas cuenta con una plataforma digital para el desarrollo y gestión de emprendimientos (denominada “Zona Ignis”), se carece de una  plataforma digital independiente que permita la interacción e interconexión directa e indirecta entre usuarios de distintos emprendimientos. Esto condiciona fuertemente el desarrollo y difusión de la cultura de emprendimiento que desea transmitir Ignis Gravitas como marca a través de sus productos y servicios.
 
-Esta complejidad lo hace convertirse en un campo de estudio de gran importancia, cuya denominación, a los fines de la emulación mencionada anteriormente, es de la Visión Artificial, también conocida como Visión por Computador.
+\section*{Objetivos}
 
-El inicio de la visión artificial, desde el punto de vista práctico, fue marcado por Larry Roberts, el cual, en 1961 creó un programa que podía ``ver'' una estructura de bloques, analizar su contenido y reproducirla desde otra perspectiva, demostrando así a los espectadores que esa información visual que había sido mandada al ordenador por una cámara, había sido procesada adecuadamente por él. \citep{bb68865}
+\subsection*{Objetivo General}
 
-\section{Definición del Problema}
+Desarrollar un software que permita establecer una plataforma digital de intercambio de valores entre emprendimientos, para facilitar la transmisión de la cultura de emprendimiento de Ignis Gravitas.
 
-El Laboratorio de Sistemas Discretos, Automatización e Integración, LaSDAI (ver más en el apéndice \ref{App:DescripcionLasdai}), en sus áreas de Visión por Computador y Robótica, desea estudiar alternativas de plataformas de software para poder utilizar robots autónomos, que provean soporte para sistemas de medición láser, infrarrojo o una combinación de ambos, mediante los cuales se pueda realizar medidas de distancias y así, poder generar mapas del entorno a través de dichas medidas.
-
-Si bien se cuenta ya con dos plataformas robóticas (denominados ``LR1'' y ``LR2'') se carece de una plataforma programática común, con amplio soporte de la comunidad de investigación en robótica y de conocimiento en LaSDAI\@. Esta condición limita sustancialmente la investigación, el uso y la difusión de tecnologías afines a la robótica y la visión por computadora, dejando de lado este campo de investigación.
-
-\section{Justificación}
-
-LaSDAI posee y utiliza dos plataformas robóticas, los cuales cuentan cada uno con interfaces programáticas desarrolladas por separado. Esto, si bien es adecuado para el uso específico de cada plataforma, supone problemas de intercomunicación e interoperación, sin mencionar el costo en mantenimiento de dichas interfaces a nivel de código. Por ende, establecer una plataforma de software común para ambos, reduce a lo mínimo necesario la codificación personalizada para cada plataforma robótica, provee soporte al involucrar a un mayor número de personas y facilita el desarrollo de otras plataformas robóticas derivadas de esta.
-
-\section{Objetivos}
-
-\subsection{Objetivo General}
-
-Investigar y desarrollar documentación adecuada que permita establecer una plataforma común de software para el manejo y navegación de robots móviles, que provea soporte a sensores tales como Microsoft Kinect, para obtener datos y realizar mediciones de entorno.
-
-\subsection{Objetivos Específicos}
+\subsection*{Objetivos Específicos}
 
 \begin{enumerate}
-	\itemsep1pt \parskip1pt \parsep1pt
-	\item Analizar las alternativas en plataformas de software disponibles para control robótico.
-	\item Analizar el software disponible para elaboración de mapas de entorno.
-	\item Analizar los requerimientos del módulo de creación de mapas.
-	\item Generar un mapa de entorno mediante el software seleccionado.
-	\item Realizar documentación de la estructura de los mapas generados mediante el software.
-	\item Realizar documentación adecuada y actualizada para la difusión y posterior uso del software.
+	\itemsep1pt \parskip0pt \parsep0pt
+	\item Determinar las herramientas de software disponibles para la construcción de la plataforma digital.
+    \item Implementar una plataforma digital con las herramientas seleccionadas basado en los requerimientos estipulados.
+    \item Generar una interfaz de documentación adecuada para el posterior mantenimiento y evolución del software.
 \end{enumerate}
 
-\section{Metodología Utilizada}
+\section*{Alcance del trabajo}
 
-Con la finalidad de llevar a cabo el desarrollo del proyecto de grado de forma eficiente y a la vez incorporar metodologías actuales enfocadas al desarrollo por parte de individuos (como es normalmente el caso en cuanto a proyectos de grado), se estudió el uso del método PSP~\citep{Humphrey200503} (Personal Software Process) mejorado con prácticas tomadas de los métodos de programación Ágiles, en particular, el método Extreme Programming, orientado a una sola persona, es decir, PXP~\citep{pxppaper} (Personal eXtreme Programming) integrado con el método Kanban.
+La solución propuesta en este proyecto culminará en el desarrollo de una plataforma web ejecutada en un proveedor de cómputo en la nube (Amazon Web Services), construida en base a una Arquitectura Cliente-Servidor. Dicha plataforma se constituye como una Red Social que permite a los distintos usuarios de este software interactuar entre sí, intercambiando valor entre ellos. Con esto, se espera proveer a los usuarios de Ignis Gravitas, Inc. de una solución que permita interconectarse entre sí y; de esta manera, estimular las interacciones entre los mismos para incentivar el intercambio de valor. La solución estará limitada a nivel de funcionalidades a una plataforma con gestión de usuario estándar, gestión de publicaciones, gestión de productos, gestión de emprendimientos, gestión de trabajos e interconexión de usuarios y/o emprendimientos mediante seguimiento entre pares.
 
-Esto se llevó a cabo mediante las siguientes actividades realizadas:
+
+\section*{Metodología a Utilizar}
+
+Para desarrollar el proyecto de grado de manera eficiente y eficaz, aplicando metodologías estándares dentro del ámbito profesional de la ingeniería del software, cada parte del proyecto usará una metodología particular. Para el proceso de investigación teórica, se hará uso de una investigación exploratoria, donde se buscarán definir los aspectos claves del proyecto. Se utilizará una metodología de Desarrollo Basado ) para el desarrollo de software, combinada con el método Kanban para el desglose y gestión de tareas. Para este último proceso, se ejecutará la siguiente serie de actividades:
 
 \begin{itemize}
 	\itemsep1pt \parskip1pt \parsep1pt
-	\item Recolección de requerimientos.
-	\item Planificación.
-	\item Inicialización de iteración.
-	\begin{itemize}
-		\item Diseño.
-		\item Implementación.
-		\item Pruebas de sistema.
-		\item Retrospectiva, análisis de resultados.
-	\end{itemize}
-	\item Finalización de iteración.
+		\item Análisis y extracción de requerimientos de usuario a través de reuniones con el CEO de Ignis Gravitas, Inc, además de la delimitación del primer Producto Mínimo Viable (MVP, por sus siglas en inglés). A ello, se une del establecimiento de los cronogramas de inicio y fin del proyecto.
+		\item Elaboración de un formato estandarizado para requerimientos de usuario mediante el uso de Historias de Usuario siguiendo el estándar de calidad INVEST.
+		\item Definición detallada de casos de uso descriptivos de la plataforma en sus distintos niveles, así como la generación de modelos gráficos de estos.
+		\item Construcción de diagramas UML de clases, actividad, secuencia, estado y despliegue, detallando así todas las interacciones y estados que puede tener la plataforma en su totalidad.
+		\item Diseño y definición de una arquitectura de software de alto nivel, así como la investigación y posterior elección de las herramientas a utilizar para el desarrollo del software.
+		\item Implementación de las pruebas de software basado en las Condiciones de Satisfacción de los requerimientos establecidos.
+		\item Desarrollo, prueba y despliegue continuo del software orientado a una dinámica de Integración y Despliegues continuos (CI/CD por sus siglas en inglés).
+		\item Entrega del producto realizado a Ignis Gravitas, Inc al momento de cumplirse todas las Condiciones de Satisfacción de cada requerimiento.
 \end{itemize}
+
+\section*{Cronograma de Actividades}
+
+A continuación se describen las actividades asociadas al desarrollo del proyecto de grado:
+
+\begin{description}
+	\itemsep1pt \parskip1pt \parsep1pt
+	\item[Actividad 1.] Reunión inicial con el CEO de Ignis Gravitas para definir los objetivos iniciales del producto. 
+	\item[Actividad 2.] Adecuación del Entorno de Desarrollo.
+	\item[Actividad 3.] Reuniones continuas para obtener los planos esquemáticos visuales de la arquitectura de la información (conocidos comúnmente como wireframes) así como para su validación.
+	\item[Actividad 4.] Reunión final para validación de los wireframes de la primera iteración.
+	\item[Actividad 5.] Obtención del modelo visual general de la aplicación.
+	\item[Actividad 6.] Desarrollo de lista de requerimientos funcionales del producto a construir.
+	\item[Actividad 7.] Depuración de los diseños iniciales de las interfaces visuales.
+	\item[Actividad 8.] Generación del diagrama de despliegue.
+	\item[Actividad 9.] Generación del diagrama del diseño de datos.
+	\item[Actividad 10.] Investigación sobre las herramientas disponibles y estándares de seguridad en autenticaciones.
+	\item[Actividad 11.] Diseño del diagrama de casos de uso para la autenticación.
+	\item[Actividad 12.] Implementación funcional de la API de autenticación.
+	\item[Actividad 13.] Implementación de las interfaces gráficas de usuario para el proceso de autenticación.
+	\item[Actividad 14.] Pruebas unitarias sobre la autenticación.
+	\item[Actividad 15.] Diseño de diagramas de uso de las distintas publicaciones del sitio.
+    \item[Actividad 16.] Construcción de la vista principal de publicaciones.
+    \item[Actividad 17.] Definición y adaptación de la vista principal de búsquedas.
+    \item[Actividad 18.] Desarrollo de la interfaz gráfica para las publicaciones.
+    \item[Actividad 19.] Implementación de la API de publicaciones.
+    \item[Actividad 20.] Pruebas unitarias y de integración sobre las publicaciones
+    \item[Actividad 21.] Construcción de diagramas de uso de los distintos perfiles del sitio.
+    \item[Actividad 22.] Construcción de las interfaces gráficas para los distintos perfiles especificados en las reuniones.
+    \item[Actividad 23.] Implementación de la API de perfiles.
+    \item[Actividad 24.] Pruebas unitarias y de integración sobre cada uno de los perfiles.
+    \item[Actividad 25.] Construcción de diagramas de uso de la sección de búsquedas y muestra de trabajos.
+    \item[Actividad 26.] Construcción de las interfaces gráficas de la sección de trabajos.
+    \item[Actividad 27.] Implementación de la API de trabajos.
+    \item[Actividad 28.] Pruebas unitarias y de integración sobre la sección de trabajos.
+    \item[Actividad 29.] Diseño de diagramas de uso de la sección de búsquedas y muestra de productos.
+    \item[Actividad 30.] Construcción de las interfaces de usuario de la galería de productos y propuestas de valor.
+    \item[Actividad 31.] Implementación de la API de productos.
+    \item[Actividad 32.] Pruebas unitarias y de integración sobre la vista de productos.
+    \item[Actividad 33.] Despliegue completo de la primera versión de la aplicación.
+    \item[Actividad 34.] Correcciones menores en reuniones constantes con los interesados del producto.
+    \item[Actividad 35.] Pruebas de sistema completas sobre toda la plataforma.
+    \item[Actividad 36.] Optimizaciones de pertinencia sobre la capa de interfaces y la capa de datos.
+    \item[Actividad 37.] Entrega final del producto.
+    Planificación para mantenimiento del producto.
+\end{description}
+
+El cronograma de trabajo para el desarrollo del proyecto de grado se refleja en la tabla~\ref{tab:cronogramatrabajo}.
+
+\begin{center}
+\begin{longtable}[c]{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \caption{Cronograma de Trabajo del Proyecto de Grado}
+    \label{tab:cronogramatrabajo}
+    \\ \hline
+    ~                      & \multicolumn{16}{c|}{\textbf{Semanas}} \\ \hline
+    \textbf{Actividades}   & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 \\ \hline
+    Actividad 1            & X & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 2            & X & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 3            & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 4            & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 5            & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 6            & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 7            & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 8            & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 9            & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 10            & ~ & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 11            & ~ & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 12            & ~ & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 13            & ~ & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 14            & ~ & ~ & ~ & ~ & X & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 15            & ~ & ~ & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 16            & ~ & ~ & ~ & ~ & X & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 17            & ~ & ~ & ~ & ~ & ~ & X & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 18            & ~ & ~ & ~ & ~ & ~ & X & ~ & ~ & ~ & ~  & ~ & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 19            & ~ & ~ & ~ & ~ & ~ & X & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 20            & ~ & ~ & ~ & ~ & ~ & ~ & X & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 21            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & X & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 22            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & X & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 23            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & X & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 24            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & X & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 25            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & X  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 26            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & X  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 27            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & X  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 28            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & X  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 29            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & X  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 30            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & X  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 31            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & X  & ~  & ~  & ~  & ~  \\ \hline
+    Actividad 32            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & X  & ~  & ~  & ~  \\ \hline
+    Actividad 33            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & X  & ~  & ~  \\ \hline
+    Actividad 34            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & X  & X  & ~  \\ \hline
+    Actividad 35            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & X  & ~  \\ \hline
+    Actividad 36            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & X  \\ \hline
+    Actividad 37            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & X \\ \hline
+\end{longtable}
+\end{center}
+
+\section*{Cronograma de Evaluación}
+
+El cronograma de evaluaciones para el desarrollo del proyecto de grado se refleja en la tabla~\ref{tab:cronogramaevaluaciones}.
+
+\begin{table}[!ht]
+	\scriptsize
+	\caption{Cronograma de Evaluaciones y Fechas de Entrega}
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    ~                               & \multicolumn{16}{c|}{\textbf{Semanas}} \\ \hline
+    \textbf{Actividades}            & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 \\ \hline
+    Evaluación del tutor            & X & X & X & X & X & X & X & X & X & X  & X  & X  & X  & X  & X  & X  \\ \hline
+    Entrega de la propuesta         & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Seminario                       & ~ & ~ & X & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & X  & ~  \\ \hline
+    Presentación ante el grupo      & ~ & ~ & X & ~ & ~ & X & ~ & ~ & X & ~  & ~  & X  & ~  & ~  & X  & ~  \\ \hline
+    Presentación de avance          & ~ & ~ & ~ & ~ & ~ & ~ & ~ & X & X & ~  & ~  & ~  & ~  & ~  & ~  & ~  \\ \hline
+    Entrega final                   & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & X  & X  & ~  \\ \hline
+    Correcciones                    & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & X  & X  \\ \hline
+    Defensa del proyecto            & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~ & ~  & ~  & ~  & ~  & ~  & ~  & X  \\ \hline
+    \end{tabular}
+	\label{tab:cronogramaevaluaciones}
+\end{table}

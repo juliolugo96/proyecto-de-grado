@@ -1,6 +1,10 @@
 \documentclass[12pt,oneside]{book}
+
 \usepackage{ulamonog} %proyecto de grado
 \usepackage[utf8]{inputenc}
+
+\usepackage{longtable}
+
 
 % Para texto en chino, japonés o coreano:
 \usepackage{CJKutf8}
@@ -140,9 +144,7 @@ showstringspaces=false
 \hypersetup{pdftitle={Estudio e Implementación de una Plataforma de Software para el intercambio de valores entre startups},
 pdfauthor={Julio Manuel Paredes Lugo},
 pdfsubject={Proyecto de Grado}, % se deja igual, a menos que sea la propuesta
-pdfkeywords={Startups, Intercambio de valores, Red Social, Plataforma, Desarrollo Web}, pdfstartview=FitH,
-% bookmarks=true, citecolor=blue}
-bookmarks=true, citecolor=blue, draft=true}
+pdfkeywords={Startups, Intercambio de valores, Red Social, Plataforma, Desarrollo Web}, pdfstartview=FitH, citecolor=blue, draft=true}
 
 % ***************************************************************** %
 % FIN DE
@@ -152,7 +154,7 @@ bookmarks=true, citecolor=blue, draft=true}
 % Si desea que no aparezca la lista de tablas o figuras descomente las siguientes lineas
 % \nolistoftables%
 % \nolistoffigures%
-\usepackage[numbers]{natbib} %Agregado numbers para compatibilidad con la bibliografía estilo IEEEtranN
+\usepackage[numbers, square]{natbib} %Agregado numbers para compatibilidad con la bibliografía estilo IEEEtranN
 
 \sloppy
 
@@ -169,7 +171,7 @@ bookmarks=true, citecolor=blue, draft=true}
 \logoarriba{}
 
 % Año en el cual se entrega el proyecto de grado o la propuesta
-\copyrightyear{2020}
+\copyrightyear{2022}
 
 % Al final cuando hayan presentado, sin comentar,
 % deberia ser el número de tesis presentada y la opción, IO por ejemplo
@@ -215,7 +217,7 @@ bookmarks=true, citecolor=blue, draft=true}
 %%% Tutor Industrial del Proyecto de Grado
 % \tutorindustrial{Dr. Tutor Industrial}
 %%% Jurados del Proyecto de Grado
-\primerjurado{Prof.\ Por definir}
+\primerjurado{Prof.\ Junior Altar}
 \segundojurado{Prof.\ Por definir}
 
 % ***************************************************************** %
@@ -226,9 +228,9 @@ bookmarks=true, citecolor=blue, draft=true}
 % sin embargo, la hoja que se utiliza para ese fin, se busca en la escuela
 % días antes de la presentación)
 % ***************************************************************** %
-\fechaentrega{Septiembre 2020} % Si sabe cuando se presentó
-\presentaciondia{17 de Septiembre de 2020} % si conoce exactamente el día
-\presentacionlugar{Por definir} % si conoce exactamente el lugar donde se presentó
+\fechaentrega{Enero 2022} % Si sabe cuando se presentó
+\presentaciondia{15 de Enero de 2022} % si conoce exactamente el día
+\presentacionlugar{Facultad de Ingeniería} % si conoce exactamente el lugar donde se presentó
 % ***************************************************************** %
 % FIN DE
 % Si sabe la fecha de presentación
@@ -263,19 +265,11 @@ bookmarks=true, citecolor=blue, draft=true}
 %\opcion{Investigación de Operaciones}
 
 % Aquí se escribe el resumen de la monografía
-\resumen{Un reto substancial en el desarrollo y masificación de los robots móviles autónomos es el proceso de reconocimiento o modelado de su entorno.
-\\
-Existen múltiples soluciones de software que permiten el control de bases robóticas, planificación de rutas, localización y creación de mapas de entorno para navegación y ubicación de uno o varios robots en éste.
-\\
-En este trabajo se presenta la investigación, documentación e implementación de una plataforma de software adecuada para el manejo del hardware robótico disponible en el Laboratorio de Sistemas Discretos, Automatización e Integración (LaSDAI), con el fin de soportar y utilizar el dispositivo Kinect\textregistered, desarrollado por la compañía Microsoft\textregistered, específicamente mediante el uso del emisor láser y de la cámara infrarroja del mismo, para realizar medidas y generar mapas del entorno que puedan ser utilizados para la localización y navegación de un robot móvil.
-\\
-Se desarrollará utilizando como guía el método PXP que forma parte de los métodos Ágiles de desarrollo, junto con el método Kanban.
-\\
-Dentro de las plataformas de software consideradas, se determina que Robot Operating System (ROS) es la mejor opción por la popularidad que cuenta en la comunidad de investigación y desarrollo robótico.
+\resumen{Teniendo como objetivo la construcción de un sistema computacional que aloje y facilite el intercambio de valores entre emprendimientos dentro de la red para Ignis Gravitas, Inc., se ha propuesto la elaboración de una plataforma en línea que suministre a los internautas la capacidad de construir perfiles públicos para emprendimientos, con los cuales puedan interactuar e interrelacionarse con otros emprendedores y con profesionales de la industria, y sean capaces a su vez de realizar intercambios de valores de diversa índole con transacciones verificadas y seguras. En el presente trabajo se realiza una exposición completa sobre la metodología para diseñar y ejecutar el proceso de construcción de la plataforma antes descrita. Como enfoque metodológico para el desarrollo de este proyecto, se utilizó una metodología FDD (Feature Driven Development), enfocada al desarrollo de software. En lo que respecta a implementación, se hizo uso de Vue.js como marco de trabajo para la interfaz gráfica, desde la cual se mostraba la información extraída de una Base de Datos Relacional asociada al manejador PostgreSQL localizada en AWS (Amazon Web Services) mediante el servicio RDS (Relational Database Service), y de una localizada en un servicio independiente MongoAtlas. Dadas estas herramientas y su integración adecuada, se logró construir la plataforma en línea que cumple con los objetivos propuestos.
 }
 
 % Aquí se escriben las palabras claves de la monografía
-\descriptores{Robots Móviles, Construcción de Mapas, Visión por Computador, Kinect, ROS}
+\descriptores{Plataforma digital, Emprendimiento, Intercambio de valores, Ingeniería del Software, Red Social}
 
 % Esto es para que salga la cota en la hoja del resumen. Actualmente,
 % 11-03-08, en la Escuela de Ingeniería de Sistemas no es necesario
@@ -285,7 +279,7 @@ Dentro de las plataformas de software consideradas, se determina que Robot Opera
 
 % Si desea eliminar la frase "Este trabajo fue procesado en LATEX"
 % del resumen, descomente la siguiente línea
-% \sinlatex{}
+\sinlatex{}
 
 % ***************************************************************** %
 % FIN DE
@@ -303,7 +297,7 @@ Dentro de las plataformas de software consideradas, se determina que Robot Opera
 % Si tiene dedicatoria
 % ***************************************************************** %
 
-\beforepreface%
+\beforepreface %
 
 % ***************************************************************** %
 % Agradecimientos y capítulos NO numerados
@@ -346,11 +340,13 @@ Dentro de las plataformas de software consideradas, se determina que Robot Opera
 
 \input{Capitulo2} % Marco teórico
 
-\input{Capitulo3} % Software de Control Robótico
+\input{Capitulo3} % Análisis metodológico
 
-\input{Capitulo4} % ROS
+\input{Capitulo4} % Análisis de requerimientos
 
-\input{Capitulo5} % RTAB-Map y Generación de Mapas
+\input{Capitulo5} % Descripción de arquitectura y tecnologías
+
+\input{Capitulo6} % Descripcion de la plataforma funcional
 
 \input{Conclusion}
 
@@ -365,7 +361,7 @@ Dentro de las plataformas de software consideradas, se determina que Robot Opera
 \input{Apendice}
 
 % Estilo de la bibliografía
-\bibliographystyle{IEEEtranNes}
+\bibliographystyle{apa}
 % Modificada ya que la original está en inglés.
 
 % ***************************************************************** %
