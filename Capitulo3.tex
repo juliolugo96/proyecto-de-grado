@@ -1,148 +1,139 @@
-\chapter{Software de Control Robótico}
+\chapter{Marco Metodológico}
 
-Este capítulo pretende ahondar en las características de las plataformas o software de control robótico, comenzando por su definición, la exposición de las características más comunes, los criterios bajo los cuales se selecciona una lista de posibles plataformas para el desarrollo del proyecto y finalmente, la justificación de la plataforma de software escogida.
+En este capítulo se pretende ahondar en la metodología utilizada para resolver el problema planteado desde el punto de vista de la gestión de proyectos, así como los cronogramas y métodos planteados para su solución.
 
-\section{Definición}
 
-Por lo general, cuando se piensa en robótica el enfoque se realiza sobre los componentes de hardware: actuadores, motores, sensores, etc., y se piensa muy poco sobre el software de control que se utilizará.
+\section{Desarrollo Orientado a Funcionalidades (FDD)}
 
-Podemos comenzar por definir dicho software como el conjunto de módulos o programas que se encarga indicarle al hardware del robot qué tareas o funciones debe realizar. Dichas funciones son altamente variadas y van desde el control de los actuadores o sensores hasta el manejo de algoritmos de navegación autónoma o reconocimiento del terreno.
+La metodología elegida para la construcción de la plataforma planteada como problema en el Capítulo 1 fue el Desarrollo Orientado a Funcionalidades (FDD, por sus siglas en inglés) adaptado a una serie de entregas semanales, que sería reportadas los días sábado, desde el inicio del proceso de construcción de la plataforma, hasta el día de entrega, en la semana dieciséis (16) de desarrollo. Esta metodología fue elegida para facilitar el uso inmediato del sistema con sus funcionalidades actuales y, de esta manera, agilizar el proceso de pruebas de sistema, al realizarse en cada entrega.
 
-Definir una plataforma común de software para múltiples robots es un reto porque, a menos que sean robots construidos en masa y con un propósito igualmente común, normalmente no hay dos robots iguales, o con la misma estructura y/o componentes. No obstante, la forma de crear una aplicación para un robot no es distinta de la empleada para crear cualquier otro tipo de aplicación: un desarrollador escribe la aplicación en determinado lenguaje, lo compila enlazado con las bibliotecas adecuadas para ser ejecutado en determinado sistema operativo y por último, ejecutarlo en el computador que controla al robot.
-
-\subsection{Software de Robots}
-
-Si bien el proceso de desarrollo de software para robots posee muchas características comunes con el desarrollo de una aplicación común, éstos cuentan con requerimientos específicos que deben ser tomados en cuenta. Desarrollar software para robots móviles es una tarea compleja, ya que un robot es un sistema complejo en si mismo y además este proceso suele ser más exigente que la creación de una aplicación ``estándar'' como manejadores de bases de datos, \textit{suites} ofimáticas, etc. Los siguientes son algunos condicionantes propios, que diferencian el desarrollo de software robótico de otros ámbitos:
-
-\begin{enumerate}
-	\itemsep1pt \parskip1pt \parsep1pt
-	\item A diferencia de una aplicación estándar, una aplicación robótica está directamente enlazada a la realidad física, donde dicho enlace es llevado a cabo a través de sensores y actuadores, donde los primeros obtienen información del entorno y los segundos la modifican. Por tanto, el programa debe poder responder a cualquier cambio en el entorno de forma ágil, para así poder enviar ajustes a los actuadores rápidamente. Esto obliga a que la actuación del software entre en la categoría de tiempo real, como mínimo \textit{soft} o blando, si no estricto.
-
-	\item Por lo general, un robot debe realizar múltiples tareas a la vez: monitorear sensores, actualizar la interfaz gráfica con el usuario, enviar órdenes a los actuadores, comunicar datos a otros procesos, procesar datos, etc., por lo cual se requiere concurrencia y esto añade complejidad, en mayor o menor grado.
-
-	\item Si bien esto no es imprescindible (en especial en robots autónomos), el software que es ejecutado en el robot debe actualizar constantemente la interfaz gráfica con el usuario, ya que es una herramienta muy útil para realizar depuración de datos y comportamiento y para visualizar en tiempo de ejecución, las estructuras y variables internas, tales como representaciones del mundo, mapas, estados, etc.
-
-	\item Siguiendo los actuales esquemas de desarrollo de software, el software de robots es cada vez más distribuido. Es usual que las aplicaciones de robots tengan que establecer alguna comunicación con otros procesos ejecutándose en la misma máquina o en una diferente. La distribución ofrece posibilidades ventajosas como ubicar la carga computacional en nodos con mayor capacidad o la visualización remota; y en sistemas multirrobot, hace posible la integración sensorial, la centralización y la coordinación.
-
-	\item La diversidad que existe, tanto en hardware como software, hace más compleja la tarea de programación. En cuanto al hardware, cada día se hace mayor la gran diversidad de dispositivos sensoriales y de actuación, y por lo tanto de interfaces; esto obliga al programador a dominarlos para acceder a ellos desde las aplicaciones. Por otro lado, mientras que en muchos campos de la informática sí hay bibliotecas que un programador puede emplear para construir su propio programa, en el software de robots no hay un marco homogéneo ni hay estándares que propicien la reutilización de código y la integración. En robótica cada aplicación prácticamente ha de construirse desde cero para cada robot concreto.
-
-	\item Ya que el campo que estudia el comportamiento de robots, para dividirlo en unidades básicas sigue siendo materia de investigación, no existe una guía universalmente admitida sobre la forma de organizar el código de las aplicaciones de robots para que sean escalables y reutilizables. Cada desarrollador escribe su aplicación combinando \textit{ad-hoc} los bloques de código que puedan existir en su entorno.
-\end{enumerate}
-
-\subsection{Plataformas de Software}
-
-De la misma forma como los dispositivos electromecánicos -mejor conocidos como robots- que pretenden controlar, el software escrito para ellos presenta, con el pasar del tiempo, cada vez más complejidad y ofrecen mayor funcionalidad. Para ayudar con ambos aspectos, se ha ido implantando \textit{middleware} que simplifica el desarrollo de nuevas aplicaciones en esas áreas, proporcionando contextos nítidos, estructuras de datos predefinidas, bloques muy depurados de código de uso frecuente, protocolos estándar de comunicaciones, mecanismos de sincronización, etc. De forma paralela, a medida que el desarrollo de software para robots móviles ha ido madurando también han ido apareciendo diferentes plataformas \textit{middleware}.
-
-Actualmente, los fabricantes más avanzados incluyen plataformas de desarrollo para simplificar a los usuarios la programación de sus robots. Por ejemplo, ActivMedia ofrece la plataforma ARIA para sus robots Pioneer, PeopleBot, etc.; iRobot ofrecía Mobility para sus B14 y B21; Evolution Robotics vende su plataforma ERSP; y Sony ofrece OPEN-R para sus Aibo.
-
-De igual forma, muchos grupos de investigación han creado sus propias plataformas de desarrollo. Varios ejemplos son la suite de navegación CARMEN de Carnegie Mellon University, OROCOS, Player/Stage/Gazebo (PSG), Miro, JDE, MARIE, etc..
-
-El objetivo fundamental de estas plataformas es hacer más sencilla la creación de aplicaciones para robots, a través de las siguientes características comunes: uniformar y simplificar el acceso al hardware, ofrecer una arquitectura de software concreta y proporcionar un conjunto de bibliotecas o módulos con funciones de uso común en robótica que el cliente puede reutilizar para programar sus propias aplicaciones.
-
-Este objetivo se intenta lograr mediante las siguientes acciones: \cite{canas06programacion}
-
+El Desarrollo Orientado a Funcionalidades (Feature Driven Development o FDD) es uno de los llamados métodos ágiles dentro de la ingeniería del software, conocido por su alta adaptabilidad a los cambios y por sus tiempos de iteración cortos. Dicho método fue desarrollado por Jeff De Luca y Peter Code, y fue nombrado de esta manera en 1997 \cite{fdd}.
+Goyal (2008) menciona que, en este enfoque, se asume que “cada etapa está 100\% completa antes de que la siguiente etapa comience” \cite{goyal2008}.
+Por su parte, Khramtchenko (2004) destaca dos etapas principales de este proceso de desarrollo \cite{khramtchenko2004comparing}:
 \begin{itemize}
-	\itemsep1pt \parskip1pt \parsep1pt
-	\item Abstracción del Hardware:
-
-	El sistema operativo provee acceso a sensores y actuadores, aunque lo hace de forma más definida y compleja, totalmente opuesto a como lo hacen las plataformas. Un ejemplo de esto es el siguiente: si se dispone de un robot Pioneer equipado con un sensor láser SICK, la aplicación puede acceder a sus medidas a través de las funciones de la plataforma ARIA o pedirlas y recogerlas directamente a través del puerto serie. Utilizando ARIA basta invocar un método sobre cierto objeto de una clase y la plataforma se encargará de mantener actualizadas las variables con las lecturas. Utilizando sólo el sistema operativo, la aplicación debe solicitar y recoger periódicamente las lecturas al sensor láser a través del puerto serie, y debe conocer el protocolo del dispositivo para componer y analizar correctamente esos mensajes de bajo nivel.
-
-	De la misma forma se ofrece el acceso abstracto para los actuadores. Por ejemplo, en vez de ofrecer comandos de velocidad para cada una de las dos ruedas motrices de un robot Pioneer, la plataforma Miro ofrece una sencilla interfaz de V-W (velocidad de tracción y de giro) para la actuación motriz, la cual se encarga de hacer las transformaciones oportunas, de enviar a cada rueda las consignas necesarias para que el robot consiga esas velocidades comandadas de tracción y de giro.
-
-	En virtud que hay gran heterogeneidad en cuanto al hardware dentro de la robótica, un primer paso bastante importante para llevar a cabo la reutilización de software es la de homogeneizar el acceso al hardware; esta característica está presente en varias plataformas, aunque cada una lo hace a su manera. En la plataforma ERSP de Evolution Robotics el acceso al bajo nivel recibe el nombre de \textit{Hardware Abstraction Layer} (HAL), y en Miro, \textit{Service Layer}. En OPEN-R, en Mobility y en ARIA la API de acceso a los sensores y actuadores viene dada por los métodos de un conjunto objetos. En JDE y en PSG el acceso abstracto al hardware lo marca un protocolo entre las aplicaciones y los servidores.
-
-	\item Arquitectura de software:
-
-	La arquitectura de software defina la manera como se accede a los sensores, motores o funcionalidades por parte del código de la aplicación. Para hacerlo, se pueden realizar llamados a funciones, invocar métodos, enviar mensajes, leer variables, entre otros. Algunos ejemplos de esto los proveen CARMEN al usar interfaces funcionales, Miro al realizar invocación de métodos de objetos distribuidos, TCA al pasar mensajes entre módulos y JDE al leer y escribir variables y activar procesos.
-
-	Así mismo, el software escrito para la plataforma de software particular, también toma la misma arquitectura. Mencionando los mismos ejemplos del párrafo anterior, en CARMEN se puede plantear el software como un conjunto de interfaces, en Miro, como una colección de métodos, en TCA, como un conjunto de módulos que pasan mensajes entre sí a través de la red, etc. Esto puede restringir en mayor o menor grado la forma como se realiza el software, de forma cerrada (muy restrictiva) o abierta (restricción en mínima cantidad.)
-
-	A medida que se avanza en complejidad, cada plataforma utiliza mecanismos concretos para poder distribuirse en múltiples unidades de forma concurrente. El mecanismo multitarea que ofrece la plataforma envuelve y simplifica la interfaz del \textit{kernel} subyacente para la multiprogramación, en la cual se apoyan siempre. Al igual que ocurre con la interfaz abstracta de acceso al hardware, la interfaz de multitarea abstracta facilita la portabilidad.
-
-	\item Funcionalidades de uso común:
-
-	Permite la reutilización (de forma íntegra o por partes) de funcionalidades básicas como filtros de color y complejas como algoritmos de control o técnicas de percepción, tales como: localización, navegación local segura, navegación global, seguimiento de personas, habilidades sociales, construcción de mapas, etc. Esto reduce la repetición de código y por ende, de trabajo y de esfuerzo de programación. Por otro lado, el código ya provisto es extensamente probado en búsqueda de errores, lo cual se traduce en menor cantidad de errores en el programa completo, permitiéndole al desarrollador concentrarse en escribir su aplicación y no en detalles de bajo nivel.
-	Esto se lleva a cabo dependiendo de la arquitectura de software y del encapsulamiento realizado por ella. Dependiendo del modelo de negocios de los fabricantes, estas funcionalidades pueden venir incluidas con su aplicación, o venderse por separado.
-
-	\item Arquitectura cognitiva:
-
-	La arquitectura cognitiva de un robot se refiere a la forma como se organizan sus capacidades sensoriales y de actuación para generar un conjunto de comportamientos: para comportamientos simples cualquier organización puede resultar válida, no así para comportamientos complejos, ya que con una mala organización la complejidad puede tornarse inmanejable.
-
-	Dividir el comportamiento artificial en unidades reutilizables es una cuestión muy complicada. Se considera que hasta el momento es muy pronto pretender buscar estándares en esta área y se recomienda sólo enfocar la estandarización de forma exclusiva al acceso a los sensores y actuadores.
-
-	Existen múltiples relaciones entre las arquitecturas de software y cognitivas: las cognitivas se materializan en alguna arquitectura de software, por tanto, los comportamientos que son generados siguiendo un determinado paradigma terminan siendo implementados con algún programa concreto.
-
-	Entre las propuestas cognitivas más fiables contamos con arquitecturas de software deliberativas, híbridas, basadas en comportamientos, etc, con el objetivo de favorecer la escalabilidad de la plataforma.
-
-	No todas las plataformas están basadas en un modelo cognitivo; algunas combinan más adecuadamente con determinadas escuelas cognitivas, dependiendo del sistema en el que esté: los deliberativos clásicos van de la mano con la programación lógica, descompuestos funcionalmente en bibliotecas y manteniendo un solo flujo de control iterativo, mientras que los sistemas basados en comportamientos van mejor con la programación concurrente, con varios módulos ejecutados en paralelo.
-
-	\item Plataformas de software libre:
-
-	La intención tras liberar el código fuente bajo licencias de software libre por parte de los grupos de investigación, es la de contribuir con el libre intercambio de información en el área, ayudando al avance de la disciplina robótica. Unos ejemplos de estos (algunos de los cuales serán mencionados más adelante) son los siguientes:
-
-	\begin{itemize}
-		\item ARIA: \textit{Advanced Robot Interface for Applications} o ARIA es desarrollada y mantenida por ActivMedia Robotics específicamente para sus robots, pero liberada bajo licencia GPL. Está diseñado como cliente/servidor y su entorno de programación es orientado a objetos (aunque sus objetos no son distribuidos sino ubicados en la máquina conectada físicamente al robot) e incluye soporte para comunicaciones por red y programación multitarea. A diferencia de CARMEN, sus aplicaciones deben de escribirse en C++, aunque provee soporte en Linux y Windows de 32 bits.
-
-		Para acceder al hardware se provee una colección de clases que conforman una API (\textit{Application Programming Interface} -- Interfaz de Programación de Aplicación), tales como ArRobot, Packet Receiver, Packet Sender, ArRangeDevices, ArSonarDevice, ArSick, ArNetworking, ArPeriodicTask o ArThreads, entre otras. Estas son incluidas como comportamientos básicos integrados en la plataforma; otros comportamientos tales como la construcción de mapas, navegación, localización o la identificación de objetos por color y su seguimiento se venden por separado.
-
-		\item Miro: es una plataforma orientada a objetos (distribuidos) basada en la arquitectura/estándar CORBA (\textit{Common Object Request Broker Architecture}), desarrollada en la Universidad de Ulm en Alemania y publicada bajo la licencia LGPLv2. Miro no impone ninguna restricción en el lenguaje de programación utilizado, aunque está escrito enteramente en C++.  Consta de tres niveles: una capa de dispositivos, que proporciona interfaces en forma de objetos para actuadores y sensores, una capa de servicios, que provee la descripción de las interfaces anteriores haciéndolas accesibles remotamente, y el entorno de clases, que contiene herramientas para visualización, generación de históricos así como módulos comunes y ya mencionados previamente, como construcción de mapas, generación de comportamientos o planificación de caminos.
-
-		\item Player/Stage/Gazebo (PSG): creada inicialmente en la Universidad de South California; comprende los simuladores Stage y Gazebo y el servidor Player al que se conectan las aplicaciones mediante una arquitectura cliente/servidor para recoger datos sensoriales o comandar órdenes a los actuadores. Esto le proporciona una independencia de lenguaje y mínimas restricciones de arquitectura. Es una plataforma muy completa debido a los simuladores que incorpora y a que provee soporte a gran variedad de robots; sumado a esto, cuenta con una creciente y muy activa comunidad de desarrolladores, que añade nuevas capacidades y amplía el hardware soportado. Su forma de funcionamiento es basada en archivos al estilo de Unix, representando mediante estos a los sensores y actuadores, proveyendo las cinco operaciones básicas sobre los mismos: apertura, lectura, escritura, configuración y cierre. De igual manera, los dispositivos se organizan por categorías, abstrayéndolos mediante interfaces comunes.
-	\end{itemize}
+    \item Descubrir la lista de funcionalidades a implementar.
+    \item Implementación funcionalidad por funcionalidad.
 \end{itemize}
 
-Por lo visto anteriormente, y dadas sus ventajas, podemos considerar que la mejor opción para unificar el desarrollo de plataformas robóticas en el aspecto de software es hacerlo a través de (\textit{frameworks}) o plataformas de software.
+Cada iteración dura alrededor de una a tres semanas, y al final de cada una de ellas se debe entregar una funcionalidad con la que el cliente pueda interactuar. Cada iteración, como se muestra también en la Figura \ref{figure:FDDworkflow} incluye el siguiente cuerpo formal:
 
-\section{Criterios de Selección}
+\begin{itemize}
+    \item Reunión inicial donde se especifican las funcionalidades requeridas.
+    \item Proceso de diseño de clases, métodos y documentación.
+    \item Revisión del diseño.
+    \item Desarrollo de los métodos y las pruebas unitarias.
+    \item Revisión del código.
+    \item Despliegue de la funcionalidad.
+\end{itemize}
 
-Antes de mencionar las plataformas consideradas para el desarrollo de este proyecto, es muy importante destacar la forma éstas como serán discriminadas con la finalidad de seleccionar la más adecuada para el uso futuro en LaSDAI.
 
-En primer lugar, y atendiendo a las diversas ventajas que esto implica, se enfoca como uno de los principales requisitos indispensables que la plataforma de software esté desarrollada o posea licencias de Software Libre, ya que esto facilita cualquier desarrollo futuro que desee realizarse en él. La existencia o ausencia de licencias de Software Libre basta como criterio en si mismo.
-
-Después, se espera que dicha plataforma cuente con soporte actual de la comunidad: es decir, que existan grupos de usuarios en foros y/o listas de correo que estén activas y que respondan a dudas de los usuarios. También se toma en cuenta que exista soporte por parte del equipo de desarrolladores a cargo de la plataforma y que ésta sea actualizada regularmente. Esto es sumamente importante ya que hace más factible que nuevos desarrolladores puedan obtener respuesta a sus consultas o inconvenientes y que en caso de existir estos últimos, se pueda llegar a corregirlos. Para evaluar este criterio, se toman en cuenta la cantidad de grupos disponibles para consulta, de preferencia a través de foros de ayuda y la última fecha de actualización de la plataforma de software como tal; mientras más reciente, mejor.
-
-Luego, se tiene como requerimiento altamente deseable (mas no excluyente), que dicha plataforma soporte los lenguajes de programación en uso actualmente por LaSDAI, o cuyo uso pueda ser deseable en un futuro no muy lejano. Este criterio se da por existente si la plataforma soporta al menos uno de los lenguajes mencionados.
-
-Además, en virtud que este proyecto está basado en el uso del Kinect como sensor para generación de mapas de entorno, no es de extrañar que este sea un requerimiento con alto peso, ya que al contar con soporte ya existente, hace más sencilla la tarea de llevar a cabo la generación de mapas en un robot móvil. Si la plataforma cuenta con al menos un módulo soportado actualmente por algún desarrollador o grupo de desarrolladores, se coloca este criterio como afirmativo.
-
-Por último, aunque vinculado al segundo requisito, se desea que la plataforma de software a escoger, posea documentación amplia y frecuentemente actualizada, porque sólo un programador sabe cuán difícil es desarrollar en un nuevo entorno sin poder contar con documentación o referencias adecuadas. Este criterio basa su existencia o ausencia en una evaluación propia y por tanto, subjetiva de la documentación, ya que establecer una serie de reglas para la evaluación de este criterio, es una materia de estudio en si mismo.
-
-\subsection{Evaluación de Criterios}
-
-Para llevar a cabo la evaluación de cada plataforma, se procedió de la siguiente manera:
-
-Por cada uno de los elementos en la lista de plataformas (Tabla \ref{table:platcons}), se realizó una búsqueda no-exhaustiva en los motores de búsqueda correspondientes a Google Web (\url{https://google.com/}) y Google Académico (\url{https://scholar.google.co.ve/}), buscando a su vez características en la lista de criterios para cada uno, evaluándose en cuanto a existencia o ausencia de cada parámetro, o en el caso de criterios que podían ser parciales, colocando la simbología correspondiente, tal como se detalló en la sección pasada.
-
-\section{Plataformas de Software Consideradas}
-
-\begin{table}[H]
-\begin{adjustbox}{max width=\textwidth}
-\begin{threeparttable}
+\begin{figure}[H]
 \centering
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-\multicolumn{1}{c}{{\bf \begin{tabular}[c]{@{}c@{}}Plataforma de\\ Software\end{tabular}}} & {\bf \begin{tabular}[c]{@{}c@{}}Software\\ Libre\end{tabular}} & {\bf \begin{tabular}[c]{@{}c@{}}Soportado por\\ la Comunidad\end{tabular}} & {\bf \begin{tabular}[c]{@{}c@{}}Soporte\\ C / C++ / Python\end{tabular}} & {\bf \begin{tabular}[c]{@{}c@{}}Soporte\\ Kinect\end{tabular}} & {\bf \begin{tabular}[c]{@{}c@{}}Documentación\\ Actualizada\end{tabular}} \\ \midrule
-CARMEN                                           & \cmark                             & \xmark                                   & \cmark                                  & \xmark                             & O                                     \\
-Microsoft Robotics Developer Studio                            & \xmark                             & \xmark                                   & \xmark                                  & \cmark                             & \cmark                                  \\
-MOOS                                            & \cmark                             & \text{\sffamily O}                             & \cmark                                  & \xmark                             & \text{\sffamily O}                            \\
-OpenRDK                                          & \cmark                             & \text{\sffamily O}                             & \cmark                                  & \xmark                             & \cmark                                  \\
-OpenRTM-aist                                        & \cmark                             & \cmark                                   & \cmark                                  & \cmark                             & \cmark                                  \\
-ORCA                                            & \cmark                             & \xmark                                   & \cmark                                  & \xmark                             & \cmark                                  \\
-Player                                           & \cmark                             & \text{\sffamily O}                             & \cmark                                  & \cmark                             & \cmark                                  \\
-Robot Construction Kit (RoCK)                               & \cmark                             & \text{\sffamily O}                             & \text{\sffamily O}                            & \cmark                             & \cmark                                  \\
-Robot Operating System (ROS)                                & \cmark                             & \cmark                                   & \cmark                                  & \cmark                             & \cmark                                  \\
-Yet Another Robot Platform (YARP)                             & \cmark                             & \text{\sffamily O}                             & \cmark                                  & \text{\sffamily O}                       & \cmark                                  \\ \bottomrule
-\end{tabular}
-\begin{tablenotes}
-\item Leyenda: \cmark = sí, \text{\sffamily O} = parcial, \xmark = no
-\end{tablenotes}
-\end{threeparttable}
-\end{adjustbox}
-\caption{Plataformas de Software consideradas}\label{table:platcons}
-\end{table}
+\includegraphics[width=0.80\textwidth]{img/5.png}
+\caption{Plan de trabajo estándar del Desarrollo Orientado a Funcionalidades. Fuente: https://www.intellectsoft.net/blog/wp-content/uploads/Feature-Driven-Development-.jpg }
+\label{figure:FDDworkflow}
+\end{figure}
 
-\section{Plataforma de Software Seleccionada}
 
-Dada la popularidad, la facilidad de uso e independencia de lenguajes del sistema de comunicación interprocesos, la fácil integración de una amplia gama de herramientas como las de visualización de los datos de movimiento y sensores del robot, implementación de los algoritmos de planificación de ruta y de percepción y controladores de bajo nivel para sensores comúnmente utilizados y las herramientas de administración que permiten el monitoreo y la inspección de mensajes, hacen que ROS sea el candidato perfecto para el uso en proyectos en el área de robótica móvil.
+\section{Metodología FDD utilizada}
 
-Por último pero no por ello menos importante, ROS cuenta con amplia documentación \cite{answersros} para cualquier nivel de usuario, desde principiante hasta experto, por lo que cualquier nuevo desarrollo puede efectuarse con una curva de aprendizaje leve, desde el punto de vista coloquial de esta frase. De igual forma, también cuenta con múltiples foros activos donde los mismos usuarios interactúan para consultar y resolver dudas.
+Para desglosar y sistematizar la metodología usada en el desarrollo de las funcionalidades de este producto, se procedió a hacer uso de un modelo propuesto por la Dynamic Domain Corporation \cite{fdd}. La misma divide la construcción del proyecto en cinco fases (entre paréntesis el porcentaje total de tiempo del proyecto invertido en cada fase), como se ve en la figura \ref{figure:FDDsteps}:
+
+\begin{itemize}
+    \item Desarrollar un modelo general. (14\%)
+    \item Construir una lista de funcionalidades. (5\%)
+    \item Planificar por funcionalidad. (4\%)
+    \item Diseñar por funcionalidad.
+    \item Desarrollar la funcionalidad. (77\%  tanto para diseño y desarrollo)
+
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{img/6.png}
+\caption{Pasos usados en la metodología FDD descrita por la Dynamic Domain Corporation (Fuente: http://thedynamicdomain.com/content/images/feature-driven.jpg)}
+\label{figure:FDDsteps}
+\end{figure}
+
+En ese sentido, se postuló el siguiente cronograma de ejecución. Los requerimientos específicos serán detallados en el capítulo siguiente:
+
+\subsection{Semana 1 a Semana 2: Modelo General}
+
+\begin{itemize}
+    \item Reunión inicial con el CEO de Ignis Gravitas para definir los objetivos iniciales del producto.
+    \item Reuniones continuas para obtener los planos esquemáticos visuales de la arquitectura de la información (conocidos comúnmente como wireframes) así como para su validación.
+    \item Reunión final para validación de los wireframes de la primera iteración.
+    \item Obtención del modelo visual general de la aplicación.
+\end{itemize}
+
+\subsection{Semana 3: Lista de Funcionalidades y Especificaciones Generales}
+\begin{itemize}
+    \item Desarrollo de lista de requerimientos funcionales del producto a construir.
+    \item Depuración de los diseños iniciales de las interfaces visuales.
+    \item Generación del diagrama de despliegue.
+    \item Generación del diagrama del diseño de datos.
+\end{itemize}
+
+\subsection{Semana 4 y 5: Autenticación}
+
+\begin{itemize}
+    \item Investigación sobre las herramientas disponibles y estándares de seguridad en autenticaciones.
+    \item Diseño del diagrama de casos de uso para la autenticación.
+    \item Implementación funcional de la API de autenticación.
+    \item Implementación de las interfaces gráficas de usuario para el proceso de autenticación.
+    \item Pruebas unitarias sobre la autenticación.
+\end{itemize}
+
+\subsection{Semana 6 y 7:  Publicaciones}
+
+\begin{itemize}
+    \item Diseño de diagramas de uso de las distintas publicaciones del sitio.
+    \item Construcción de la vista principal de publicaciones.
+    \item Definición y adaptación de la vista principal de búsquedas.
+    \item Desarrollo de la interfaz gráfica para las publicaciones.
+    \item Implementación de la API de publicaciones.
+Pruebas unitarias y de integración sobre las publicaciones
+\end{itemize}
+
+\subsection{Semanas 8 y 9: Perfiles}
+
+\begin{itemize}
+    \item Construcción de diagramas de uso de los distintos perfiles del sitio.
+    \item Construcción de las interfaces gráficas para los distintos perfiles especificados en las reuniones.
+    \item Implementación de la API de perfiles.
+    \item Pruebas unitarias y de integración sobre cada uno de los perfiles.
+\end{itemize}
+
+\subsection{Semana 10 y 11: Trabajos}
+
+\begin{itemize}
+    \item Construcción de diagramas de uso de la sección de búsquedas y muestra de trabajos.
+    \item Construcción de las interfaces gráficas de la sección de trabajos.
+    \item Implementación de la API de trabajos.
+    \item Pruebas unitarias y de integración sobre la sección de trabajos.
+\end{itemize}
+
+\subsection{Semana 12 y 13: Productos}
+
+\begin{itemize}
+    \item Diseño de diagramas de uso de la sección de búsquedas y muestra de productos.
+    \item Construcción de las interfaces de usuario de la galería de productos y propuestas de valor.
+    \item Implementación de la API de productos.
+    \item Pruebas unitarias y de integración sobre la vista de productos.
+\end{itemize}
+
+\subsection{Semanas 14 y 15: Pruebas de sistema}
+
+\begin{itemize}
+    \item Despliegue completo de la primera versión de la aplicación.
+    \item Correcciones menores en reuniones constantes con los interesados del producto.
+    \item Pruebas de sistema completas sobre toda la plataforma.
+    \item Optimizaciones de pertinencia sobre la capa de interfaces y la capa de datos.
+\end{itemize}
+
+\subsection{Semana 16: Entrega del Producto}
+
+\begin{itemize}
+    \item Entrega final del producto.
+    \item Planificación para mantenimiento del producto.
+\end{itemize}

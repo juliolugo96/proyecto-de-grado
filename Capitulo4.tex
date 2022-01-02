@@ -1,6 +1,267 @@
-\chapter{ROS}
+\chapter{Extracción de Requerimientos}
 
-En este capítulo se desea profundizar en la definición de ROS (\textit{Robot Operating System}) como plataforma de software seleccionada para el desarrollo de este proyecto de grado. Asimismo, se describen sus características principales, la arquitectura de software que utiliza, la instalación del mismo en el entorno de desarrollo a utilizar, y los módulos en los cuales se apoya este proyecto para llevar a cabo la generación de mapas de entorno.
+En este capítulo se aglutinan los requerimientos para la construcción posterior de la plataforma, así como el formato utilizado para los mismos.
+
+\section{Formato de Requisitos}
+
+Los requerimientos funcionales y no funcionales de la aplicación fueron extraídos de la aplicación durante reuniones semanales continuas con el CEO de Ignis Gravitas, Inc. Los requerimientos funcionales fueron extraídos haciendo uso del siguiente formato, especificado por Holmes (2018), donde haciendo uso de las historias de usuario clásicas de las metodologías ágiles, construyó una estructura para las mismas donde se unificaban aspectos para la satisfacción de los clientes como elementos propios de la ingeniería \cite{edx}. En esta estructura, se enumeran pues, cinco elementos principales:
+
+
+\begin{description}
+    \item[Rol-Meta-Beneficio:] Es la exposición realizada por el cliente para definir quién va a beneficiarse de una funcionalidad en específico, para qué se desea construir y por qué motivación personal se quiere lograr su construcción.
+    \item[Limitaciones:] Describe las dependencias existentes entre el requerimiento que está siendo descrito y otros que deben ser encontrarse en estado funcional antes de él.
+    \item[Definición de realizado (condiciones de satisfacción):] Son las condiciones que pone a prueba el interesado para afirmar que la característica fue terminada exitosamente.
+    \item[Tareas de ingeniería:] Información que es de importancia para los desarrolladores al momento de construir la característica.
+    \item[Estimación de esfuerzo:] Representa en términos de unidades de trabajo, cuánto será necesario invertir en desarrollar la característica descrita.
+\end{description}
+
+A efectos de este proyecto, las limitaciones son expresadas en la matriz de requerimientos. A cada historia de usuario se le ha añadido la prioridad siguiendo el esquema descrito MoSCoW. Se buscó seguir principios INVEST para el desarrollo de las historias de usuario.
+
+\section{Formato de Priorización de Requisitos}
+
+\begin{description}
+    \item[M (Must have) Debe tener:] Requisito que tiene que estar implementado en la versión final del producto para que la misma pueda ser considerada un éxito.
+    \item[S (Should have) Debería tener:] Requisito de alta prioridad que en la medida de lo posible debería ser incluido en la solución final, pero que llegado el momento y si fuera necesario, podría ser prescindible si hubiera alguna causa que lo justificara.
+    \item[C (Could have) Podría tener:] Requisito deseable pero no necesario, se implementaría si hubiera posibilidades presupuestarias y temporales.
+    \item[W (Won’t have) No tendrá esta vez:] Hace referencia a requisitos que están descartados de momento pero que en un futuro podrían ser tenidos en cuenta y ser reclasificados en una de las categorías anteriores.
+\end{description}
+
+\section{Listado de Requerimientos}
+
+A continuación, se listan los requerimientos extraídos de las reuniones con el CEO de Ignis Gravitas, Inc.
+
+\subsection{Registro de Usuario Manual}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO no registrado de Gravitas necesito poder crear un usuario en el sistema para tener acceso a las funcionalidades de la plataforma.
+    \item[Limitaciones:] El usuario no debe poseer ninguna información de registro previo en la plataforma.
+    \item[Condiciones de Satisfacción:]
+        \begin{enumerate}
+            \item Solo se le solicitará al usuario introducir su nombre, apellido, correo, clave y aceptación de los términos y condiciones de uso para iniciar el proceso de registro.
+            \item Luego de ingresados los datos, el sistema debe enviar un correo a la dirección ingresada por el usuario.
+            \item Una vez verificada la cuenta de correo electrónico, se le solicitará al usuario introducir sus preferencias, esto se utilizará posteriormente para filtrar contenido personalizado.
+            \item Se solicitará el resto de la información requerida según el tipo de perfil elegido y los planes de pago para finalizar la creación del usuario.
+            \item Una vez finalizado el registro se enviará a la vista inicial.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]
+        \begin{enumerate}
+            \item Desarrollar la vista de Registro inicial para correo y clave.
+            \item Desarrollar email de validación de correo.
+            \item Desarrollar la vista de Continuación de Registro, donde se mostrarán todas las posibles preferencias, incluyendo el tipo de perfil a desarrollar.
+            \item Desarrolla las vistas de formulario para cada tipo de perfil.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 160h
+    \item[Dependencias:] Ninguna.
+\end{description}
+
+\newpage
+
+
+2) Verificación de Correo Electrónico
+
+	Prioridad M
+
+	1.-	Rol-Meta-Beneficio: Como USUARIO no registrado de Gravitas, necesito verificar mi correo electrónico para poder proseguir mi proceso de Registro.
+	2.- 	Limitaciones: Se debe introducir una dirección de correo automatizada.
+	3.-	Condiciones de Satisfacción:
+		3.1.- Al ingresar mis datos básicos en el sistema Gravitas, el sistema debe enviar un correo electrónico a la dirección suministrada.
+		3.2.- El correo electrónico debe contener un texto base explicando el proceso de registro y debe incluir un enlace a un formulario de preferencias de usuario.
+		3.3.- Al ingresar al enlace, la cuenta de correo debe ser automáticamente verificada automáticamente en el sistema.
+		3.4.- El enlace debe ser válido únicamente por 24 horas.
+		3.5.- Al ingresar a un enlace no validado, se debe redirigir a la vista de registro e incluir un mensaje de error.
+		3.6.- Al invalidarse un enlace, debe también eliminarse cualquier información persistida del registro inicial del usuario.
+
+	4.- 	Tareas de Ingeniería
+		4.1.- Implementar un remitente programado (mailer) para el envío de  correos a través del protocolo SMTP.
+		4.2.- Desarrollar la vista para introducción de datos de usuario.
+	5.-	Unidades de Trabajo: 16h
+	6.-	Dependencia: 1
+
+
+3) Registro de Usuario mediante Open Authorization (OAuth)
+
+	Prioridad M
+
+	1.-	Rol-Meta-Beneficio: Como USUARIO no registrado de Gravitas deseo crear mi usuario dentro de la plataforma utilizando mis credenciales ya verificadas de servicios conocidos, para así agilizar mi acceso a la plataforma como usuario verificado.
+	2.-	Limitaciones: El usuario no debe haber iniciado sesión previamente ni tener una cuenta previamente asociada al correo de Gmaiail.
+	3.-	Condiciones de Satisfacción:
+		3.1.- El sistema debe brindar las opciones de Google, Facebook, LinkedIn y Github para realizar el registro de un nuevo usuario.
+		3.2.-	El usuario debe elegir su proveedor preferido para realizar la autenticación.
+		3.3.-	El sistema debe desplegar la interfaz de autenticación correspondiente al proveedor elegido.
+		3.4.-	Al terminar el proceso de validación con el proveedor, el sistema debe almacenar los datos básicos del usuario (Nombre, apellido, correo electrónico) dentro de la información básica personal.
+		3.5.-	El sistema debe redirigir a la vista de preferencias al usuario.
+		3.6.-	Si el proveedor presenta o envía un error, informar al usuario con un “Fallo en la autenticación del servicio X” donde X es el servicio elegido.
+	4.- Tareas de Ingeniería
+		4.1.- Generar la clave de acceso a la API de O-Auth en la cónsola de desarrollo de Google.
+		4.2.- Entender cómo funciona el sistema de Autenticación mediante Oauth de FeathersJS-
+		4.3.- Configurar la creación de un nuevo usuario con los datos proveídos por Google.
+	5.- Unidades de Trabajo: 8h.
+	6.- Dependencias: 1
+
+
+4) Inicio de Sesión Manual
+
+	Prioridad M
+
+	1.-	Rol-Meta-Beneficio: Como USUARIO de Gravitas necesito poder iniciar sesión en el sistema para manejar las herramientas ofrecidas por la plataforma.
+	2.-	Limitaciones:   Se debe permitir heredar la sesión de Ignis en el sistema Gravitas; además, ya el usuario debió registrarse con el correo asociado al servicio de autenticación.
+	3.-	Condiciones de Satisfacción:
+		3.1.-	Solicitar usuario y contraseña para autenticar al usuario.
+		3.2.-	Validación de la información en servidores para poder continuar.
+		3.3.-	Si el usuario no ha finalizado el proceso de registro, debe ir a finalizarlo para continuar.
+		3.4.-	Si el usuario finalizó el proceso de registro y la información suministrada es correcta, debe dirigir a la vista inicial.
+		3.5.-	Si la información suministrada no coincide con la persistida en el sistema, el mismo debe emitir un error de “Correo o Contraseña inválido”.
+	4.-	Tareas de Ingeniería:
+		4.1.-	Desarrollar la vista de inicio de sesión, solicitando correo y clave para continuar, una vez autenticado, se debe evaluar si este usuario debe finalizar el proceso de registros o si puede acceder a la vista incial.
+	4.2.- Estudiar los patrones de desarrollo de Single Sign On (SSO) entre una pltaforma de NodeJS y Ruby On Rails.
+	4.3.- Implementar un Single Sign On (SSO) para persistir las sesiones entre ambas plataformas.
+	5.-	Unidades de Trabajo: 8h.
+	6.- 	Dependencia: 1. 2.
+5) Inicio de Sesión mediante Open Authorization (OAuth)
+	
+Prioridad M
+
+	1.-	Rol-Meta-Beneficio: Como USUARIO de Gravitas deseo acceder a mi usuario dentro de la plataforma utilizando mis credenciales ya verificadas de servicios conocidos, para así agilizar mi acceso a la plataforma como usuario verificado.
+	2.-	Limitaciones: Se debe permitir heredar la sesión de Ignis en el sistema Gravitas; además, ya el usuario debió registrarse con el correo asociado al servicio de autenticación.
+	3.-	Condiciones de Satisfacción:
+		3.1.- El sistema debe brindar la opción de Google para permitir el inicio de sesión de un usuario.
+		3.2.-	El sistema debe desplegar la interfaz de autenticación correspondiente al proveedor elegido.
+		3.3.-	Al terminar el proceso de validación con el proveedor, el sistema debe redirigir a la pantalla inicial.
+		3.4.-	Si el proveedor presenta o envía un error, informar al usuario con un “Fallo en la autenticación del servicio X” donde X es el servicio elegido.
+	4.-	Unidades de Trabajo: 8h.
+	5.-	Dependencias: 1, 2.
+
+6) Autenticación en dos pasos
+
+	Prioridad W
+
+	1.-	Rol-Meta-Beneficio: Como USUARIO de Gravitas necesito garantizar la seguridad de mis datos con una autenticación personal, rápido y confiable para las operaciones  para la plataforma.
+	2.-	Limitaciones: Se debe permitir heredar la sesión de Ignis en el sistema Gravitas.
+	3.-	Condiciones de Satisfacción:
+		3.1.- El modo de Autenticación en dos pasos solo estará activo si el usuario así lo seleccionó en sus preferencias.
+		3.2.- Al momento de realizar una operación de inicio de sesión y/o intercambio de valor, el sistema debe desplegar la interfaz de autenticación en dos pasos.
+		3.3.-	El sistema debe solicitar al usuario un código generado automáticamente.
+		3.4.-	El sistema de correos debe enviar un correo electrónico cuyo contenido sea el código generado.
+		3.5.-	Al introducirse el código correctamente, el sistema debe redirigir según corresponda a la vista de confirmación del intercambio de valor ó  a la vista de inicio de sesión.
+		3.6.-	De introducirse el código erróneamente, el sistema debe indicar un mensaje de error con el mensaje “Código Inválido”.
+
+	4.-	Tareas de Ingeniería:
+		4.1.- Integrar un sistema generador de códigos de confirmación.
+		4.2.-	Reciclar el JWT KEY de Ignis en Gravitas.
+		4.3.-	Desarrollar algún tipo de funcionalidad que permita encapsular el proceso de autentificación para ser usada en todas los endpoints que lo requieran.
+		4.4.-	Configurar el backend para permitir el envío de correos electrónicos.
+		4.5.-	Desarrollar funcionalidad que soporte el envío de todo tipo de correos electronicos.
+		4.6.-	Desarrollo del modulo de envío de correos para autenticación en dos pasos.
+	5.-	Unidades de Trabajo: 16h.
+	6.- 	Dependencia: 4, 5.
+
+
+7) Planes de pago por el servicio
+
+	Prioridad W
+
+	1.-	Rol-Meta-Beneficio:	Como INTERESADO de la plataforma Gravitas, quiero que los USUARIOS paguen por el uso del servicio ofrecido para MANTENER económicamente viable el proceso de crecimiento y desarrollo de la plataforma misma.
+	2.-	Limitaciones: El sistema debe manejar la posibilidad de que por razones de negocios, los planes sean temporalmente deshabilitados.
+	3.-	Condiciones de Satisfacción:
+		3.1.-	El sistema debe indicarle al usuario que no hay ciertas funcionalidades habilitadas hasta no realice el pago correspondiente a su plan.
+		3.2.- El sistema debe ofrecerle un enlace a un procesador de pagos.
+		3.3.-	El usuario debe tener una versión corta de los Términos y Condiciones del uso de la plataforma antes de iniciar el proceso de pago, así como un enlace al documento completo.
+		3.7.-	El usuario debe ser llevado a la vista de personalización de la experiencia de usuario luego del pago de los planes.
+	4.-	Tareas de Ingeniería:
+		4.1.-	Investigar la integración de Stripe con el framework a utilizar.
+		4.2.-	Mantener comunicación constante con los interesados. Se recomienda una metodología de Programación Extrema de fácil adaptación a los cambios en los requerimientos iniciales.
+		4.4.-	Al terminar el proceso de pagos, la información del pago debe ser registrada en la base de datos de la plataforma.
+		4.3.-	La información del pago debe estar disponible como un registro tanto para el usuario como para los administradores del sitio.
+	5.-	Unidades de Trabajo: 160h.
+	6.- 	Dependencia: 1, 2, 3.
+
+
+8) Interacción inicial y de configuración básica
+
+	Prioridad C
+
+	1.-	Rol-Meta-Beneficio: 	Como USUARIO de la plataforma Gravitas, me gustaría poder ajustar mis preferencias básicas para obtener mejores recomendaciones de publicaciones y una mejor experiencia de usuario general.
+	2.-	Limitaciones: El usuario debe estar registrado y/o haber realizado sus operaciones de pago.
+	3.-	Condiciones de Satisfacción:
+		3.1.-	El usuario debe elegir su rol en la plataforma según los que se encuentran disponibles: “trabajador”, “mentor”, “inversionista”, “emprendedor”.
+		3.2.-	El usuario debe elegir una serie de intereses personales (utilizados para configurar los posts recomendados de su inicio).
+		3.2.-	Si el usuario eligió la opción “emprendedor”, se debe brindar la opción de crear un emprendimiento.
+			3.2.1.-	El usuario debe llenar un formulario con información básica; nombre, logotipo, descripción y área de emprendimiento.
+			3.2.2.-	El usuario debe responder si es un emprendedor con experiencia o un novato en busca de aprender.
+				3.2.2.1.-	Si elige la primera opción, pasará inmediatamente a una vista donde enviará las invitaciones a los miembros de su equipo y sucesivamente será enviado a la vista inicial.
+				3.2.2.2.-	Si elige la segunda, debe mostrarse una interfaz de tutorial donde se muestren relatos gráficos, y vídeos del uso de las herramientas de la plataforma Gravitas, con la opción de saltarlos y proseguir con el flujo de la primera opción.
+		3.3.-	Si el usuario eligió la opción “trabajador” o “mentor”, debe pasar luego a llenar un formulario donde indique información laboral básica, como experiencia y educación.
+			3.3.1.- El usuario debe poder subir su CV en formato PDF.
+			3.3.2.-	Luego de introducida esta información, si dicho usuario ya posee una invitación a una startup, deberá aparecer la opción de aceptar o rechazar la invitación, de lo contrario, será redirigido a la página de inicio.
+		3.4.-	Si el usuario eligió la opción “inversionista”, el mismo debe introducir los nombres de los emprendimientos dentro de los cuáles ha invertido capital.
+			3.4.1.- El usuario debe indicar en un posterior campo un estimado total de lo invertido en ellos. Terminado ello, pasa a ser redirigido a la página de inicio.
+	4.-	Tareas de Ingeniería:
+		4.1.- Deben construirse las vistas para la entrada de datos, así como la información correspondiente.
+		4.2.- Se debe negociar con el interesado para definir si el manejo de roles y si se puede replantear dichos roles a únicamente “Administrador” y “Usuario Común”, con el objetivo de dejar los roles solo a las membresías de startups.
+	5.-	Unidades de Trabajo: 32h.
+	6.-	Dependencias: 4, 5.
+
+9) Vista tutorial e invitaciones automáticas
+
+	Prioridad W
+
+	1.-	Rol-Meta-Beneficio: Como USUARIO de la plataforma Gravitas, deseo recibir información instruccional del sitio para poder aprovechar de manera óptima todas sus herramientas.
+	2.-	Limitaciones: El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles.
+	3.-	Condiciones de Satisfacción:
+		3.1.- Al usuario seleccionar que desea aprender a emprender, deben desplegarse una interfaz gráfica que contenga un listado de los tópicos más importantes del emprendimiento.  Inicialmente, serán cuatro puntos que estarán cada uno de ellos relacionados con las casillas del modelo de negocios: la propuesta de valor (englobando idea y construcción del producto), infraestructura (englobando las actividades, aliados y recursos claves), clientes (relacionado con las relaciones, canales y segmentos) y finalmente los flujos monetarios (estructuras de costos y flujos de ingresos).
+		3.2.- Al hacer click sobre cada uno de ellos, este debe incluir un vídeo, una serie de gráficos y un texto explicativo con una fuente agradable para la lectura y un tiempo estimado de lectura.
+		3.3.-	Cuando el usuario finalice la lectura o el vídeo, debe indicarse que ese tutorial particular fue completado y ofrecer un enlace al tutorial siguiente.
+		3.4.-	Al completarse todos los tutoriales, el usuario pasará a invitar a todos los usuarios que crea competentes en su emprendimiento, con su rol correspondiente y su responsabilidad en el mismo. Las responsabilidades son: CEO (Chief Executive Officer), CTO (Chief Technology Officer), CMO (Chief Marketing Officer), CFO (Chief Financial Officer), CIO (Chief Information Officer), CCO (Chief Communications Officer). Finalizado esto, debe dirigirse a la vista inicial.
+	4.-	Tareas de Ingeniería:
+		4.1.- Mantener comunicación constante con el equipo de diseño gráfico para integrar mejoras y cambios a la experiencia de usuario (UX) y a los gráficos.
+		4.2.- Construir una interfaz de usuario para la disposición de iFrames  con contenido exclusivo de Ignis Gravitas.
+	5.-	Unidades de Trabajo:  160h.
+	6.-	Dependencias: 4, 5.
+
+10) Vista Inicial
+
+	Prioridad M
+
+	1.-	Rol-Meta-Beneficio: Como USUARIO de la plataforma Gravitas, deseo poder interactuar con las publicaciones más recientes y de mayor interés de mis contactos para tener información que pueda resultar de utilidad para mí y para el emprendimiento al que pertenezco.
+	2.-	Limitaciones: El usuario debe estar registrado, haber iniciado sesión y haber definido sus preferencias de usuario.
+	3.-	Condiciones de Satisfacción:
+		3.1.-	 Al culminar el proceso de configuración del emprendimiento, debe mostrarse una interfaz básica que muestre a los usuarios publicaciones basadas en sus preferencias y/o al emprendimiento al que pertenecen de manera inmediata, así como a los demás usuarios y emprendimientos que sigue dentro de la plataforma.
+		3.2.-	La vista inicial debe mostrar cuatro secciones visualmente separadas:
+			3.2.1.- La vista de publicaciones (con una información básica inicial la primera vez que se inicia sesión, en el centro)
+				3.2.1.1.-	Cada publicación debe contener el nombre del emprendimiento o el usuario que la publica, su foto, fecha y hora de publicación, imagen de la publicación (si la posee) y una descripción asociada.
+				3.2.1.2.-	La publicación debe indicar la fuente de su contenido si el mismo fue extraído desde un sitio externo.
+				3.2.1.3.-	Cada publicación se le debe poder dar “Me Gusta”,  agregar un comentario (donde se puedan hacer menciones) y compartirse como una publicación propia (de no serlo).
+				3.2.1.4.-	El usuario debe ser capaz de crear sus propias publicaciones.
+				3.2.1.5.-	El usuario debe poder anexar imágenes, enlaces a sitios externos, etiquetar a otras personas en una publicación.
+			3.2.2.-	Propaganda alusiva al producto Ignis, así como sugerencias de contactos o emprendimientos a seguir (derecha).
+				3.2.2.1.- Debe mostrar enlaces a secciones básicas como el “Perfil del Emprendimiento” y “Configuraciones”.
+			3.2.3.-	Accesos directos a las herramientas de Gravitas e información básica del perfil social (izquierda):
+				3.2.3.1.- Debe mostrar el “Número de seguidores” del usuario.
+			3.2.4.-	Aaccesos directos al perfil personal y a una barra de búsqueda (barra de navegación superior) e íconos para un chat (inferior).
+	4.-	Tareas de Ingeniería:
+		4.1.-	Definir el formato de publicaciones y definir quienes pueden realizarlas.
+		4.2.- Desarrollar un patrón reactivo mediante web sockets para que, al momento de crearse nuevas publicaciones en la capa de datos, la interfaz reciba en tiempo real esta nueva información y mande la información al usuario.
+		4.3.- Implementar un sistema de cargar perezosa (lazy loading) para poder cargar de manera asíncrona las distintas publicaciones que estén en la base de datos.
+	5.-	Unidades de Trabajo: 160h
+	6.-	Dependencias: 5.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Definición}
 
