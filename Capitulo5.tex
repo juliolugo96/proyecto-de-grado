@@ -91,14 +91,16 @@ Fuente: https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Ser
 \label{figure:AwsLogo}
 \end{figure}
 
-
 \subsection{Vercel}
 
 Vercel es una plataforma en la nube para sitios estáticos y funciones sin servidor que se adapta perfectamente a su flujo de trabajo. Permite a los desarrolladores alojar sitios web y servicios web que se implementan instantáneamente, escalan automáticamente y no requieren supervisión, todo sin configuración \cite{vercel}.
 
-
-
-
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{img/12.png}
+\caption{Logotipo de Vercel}
+\label{figure:VercelLogo}
+\end{figure}
 
 
 \section{Infraestructura Propuesta}
@@ -115,14 +117,14 @@ Fuente: Propia}
 
 Cada punto describe un elemento esencial dentro del sistema de funcionamiento de la aplicación.
 
-    \begin{enumerate}
-        \item El lado del cliente, pudiendo acceder desde una computadora de escritorio o un dispositivo móvil, se conecta a través del protocolo HTTP/S a \texttt{social.ignisgravitas.com}.
-        \item Route 53, poseedor de la zona alojada del dominio ignisgravitas.com, se encarga de redireccionar desde \texttt{social.ignisgravitas.com} hacia los DNS de Vercel.
-        \item Vercel es un sitio de alojamiento de aplicaciones que brinda soporte para Renderizado en la Lado del Servidor (SSR, por sus siglas en inglés), desde allí, se renderiza la petición haciendo uso de la versión de la aplicación web que se encuentra corriendo en el sitio.
-        \item El control y actualización de la versión de la aplicación en Vercel está delegada a Github, pues se encuentra asociado un hook para que, cada vez que un push sobre la rama principal sea ejecutado, realice un despliegue de la aplicación hacia Vercel.
-        \item Del lado de la capa de datos, el cliente hará peticiones mediante el protocolo HTTP/S a la Interfaz de Programación de la Aplicación (API por sus siglas en inglés) en la ruta \textt{api.ignisgravitas.com}, alojada en Amazon Web Services.
-        \item Route 53 redirige la petición hacia una instancia de Elastic Cloud Computing (EC2) del tipo t2.micro proveída en el sistema de gestión en la nube AWS Elastic Beanstalk.
-        \item Dentro de la instancia, EC2 va a conectarse a un servidor proxy interno de Apache que va a redireccionar todas las peticiones al puerto 443 y va a realizar reescrituras a las mismas en caso de que la capa de transporte sea sockets.
-        \item Para mantener actualizada la aplicación, se utiliza el sistema de gestión de versiones en la nube AWS CodeCommit conectado con Elastic Beanstalk, de manera que, a partir de la ejecución de un despliegue desde la Interfaz de Línea de Comandos (CLI, por sus siglas en inglés) de Elastic Beanstalk, este sistema tome la última versión en CodeCommit como la versión a desplegar de la aplicación.
-        \item La aplicación toma su data persistente de una base de datos no relacional manejada por MongoDB ubicada en el servicio de almacenamiento de datos en la nube MongoDB Atlas.
-    \end{enumerate}
+\begin{enumerate}
+    \item El lado del cliente, pudiendo acceder desde una computadora de escritorio o un dispositivo móvil, se conecta a través del protocolo HTTP/S a \texttt{social.ignisgravitas.com}.
+    \item Route 53, poseedor de la zona alojada del dominio ignisgravitas.com, se encarga de redireccionar desde \texttt{social.ignisgravitas.com} hacia los DNS de Vercel.
+    \item Vercel es un sitio de alojamiento de aplicaciones que brinda soporte para Renderizado en la Lado del Servidor (SSR, por sus siglas en inglés), desde allí, se renderiza la petición haciendo uso de la versión de la aplicación web que se encuentra corriendo en el sitio.
+    \item El control y actualización de la versión de la aplicación en Vercel está delegada a Github, pues se encuentra asociado un hook para que, cada vez que un push sobre la rama principal sea ejecutado, realice un despliegue de la aplicación hacia Vercel.
+    \item Del lado de la capa de datos, el cliente hará peticiones mediante el protocolo HTTP/S a la Interfaz de Programación de la Aplicación (API por sus siglas en inglés) en la ruta \textt{api.ignisgravitas.com}, alojada en Amazon Web Services.
+    \item Route 53 redirige la petición hacia una instancia de Elastic Cloud Computing (EC2) del tipo t2.micro proveída en el sistema de gestión en la nube AWS Elastic Beanstalk.
+    \item Dentro de la instancia, EC2 va a conectarse a un servidor proxy interno de Apache que va a redireccionar todas las peticiones al puerto 443 y va a realizar reescrituras a las mismas en caso de que la capa de transporte sea sockets.
+    \item Para mantener actualizada la aplicación, se utiliza el sistema de gestión de versiones en la nube AWS CodeCommit conectado con Elastic Beanstalk, de manera que, a partir de la ejecución de un despliegue desde la Interfaz de Línea de Comandos (CLI, por sus siglas en inglés) de Elastic Beanstalk, este sistema tome la última versión en CodeCommit como la versión a desplegar de la aplicación.
+    \item La aplicación toma su data persistente de una base de datos no relacional manejada por MongoDB ubicada en el servicio de almacenamiento de datos en la nube MongoDB Atlas.
+\end{enumerate}
