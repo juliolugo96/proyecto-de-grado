@@ -1,420 +1,128 @@
-\chapter{Generación de Mapas a través de RTAB-Map}
+\chapter{Propuesta de Solución}
 
-En este capítulo se describe el software RTAB-Map, sus características, su proceso de funcionamiento, su instalación y uso en el entorno de desarrollo en sus presentaciones como software independiente o como módulo integrado a ROS y por último, la generación de un mapa de entorno a través del mismo.
+En este capítulo se abordará la propuesta de solución ingenieril a los requerimientos expuestos en el capítulo anterior. En ese sentido, se explicará la arquitectura elegida para el acoplamiento de los distintos elementos del software, así como las herramientas de software a utilizar.
 
-\section{Definición}
+\section{Arquitectura Orientada a Servicios}
 
-RTAB-Map (\textit{Real-Time Appearance-Based Mapping} o Cartografía en Tiempo Real Basada en Apariencias) es una aproximación a SLAM mediante Grafo RGB-D basado en un detector de cierre de lazo Bayesiano global. El detector de cierre de lazo usa un modelo de bolsa de palabras para determinar la probabilidad de que una nueva imagen provenga de una ubicación anterior o nueva. Cuando una hipótesis de cierre de lazo es aceptada, una nueva restricción es agregada al grafo del mapa, y un optimizador de grafo minimiza los errores en el mapa. \cite{labbe14online}
+Para la implementación de la plataforma “Gravitas” (denominada así por el CEO de Ignis Gravitas, Inc.) se hizo uso de una Arquitectura Orientada a Servicios. Esto con el objetivo de brindar un alcance distribuido e independiente a cada uno de los elementos que fueron implementados dentro de Gravitas. Al separar la capa de datos utilizando esta arquitectura, se permite que nuevas aplicaciones utilicen de manera independiente la lógica de negocios acá definida, sin necesidad de rehacerla o adaptarla.
 
-Un enfoque de manejo de memoria es utilizado para limitar el número de ubicaciones utilizadas para la detección de cierre de lazos y la optimización del grafo \cite{labbe13appearance}, para que las restricciones de tiempo real en entornos de gran escala sean siempre respetadas. RTAB-Map puede ser utilizado por si solo con un Kinect o cámara estéreo operado a mano para obtener cartografía RGB-D de 6 grados de libertad, o en un robot equipado con un medidor de distancias láser para cartografía de 3 grados de libertad. \cite{rtabmaphome}
+Endrei et al. (2004) definen la Arquitectura Orientada a Servicios (SOA, por sus siglas en inglés) como “un enfoque para la construcción de sistemas distribuidos que entregan las funcionalidades de la aplicación como servicios para bien sea el usuario final de la aplicación u otros servicios.” \cite{endrei2004}
+Dentro de la SOA, existen una serie de conceptos de vital importancia para poder entender su composición interna, estos son, como se muestran en las Figura \ref{figure:SOAworkflow}:
 
-La aplicación soporta distintos sensores, tales como el Kinect, el ASUS Xtion Pro / Pro Live \cite{xtionpro} \cite{xtionprolive}, cámaras soportadas por la biblioteca libdc1394 \cite{libdc1394} y cámaras soportadas por la biblioteca FlyCapture2. \cite{libflycapture2}
-
-Como detalle adicional, RTAB-Map permite su uso directamente desde código C++, tanto para detección de cierre de lazos únicamente, como para generar mapas RGB-D.
-
-\section{Instalación}
-
-RTAB-Map soporta instalaciones en Linux, OS X y Windows y puede funcionar de dos maneras: como software independiente (no necesita otros paquetes de software aparte de él mismo y de los controladores de las cámaras a usar) o como un módulo de ROS, en cuyo caso lógicamente requiere que ROS esté instalado de antemano (y la compatibilidad con los distintos sistemas operativos se reduce a la misma de ROS).
-
-\subsection{Como software independiente}
-
-Para instalar el software de forma independiente, tomaremos las instrucciones correspondientes a la instalación en Ubuntu debido a que es el entorno de desarrollo utilizado. Estas instrucciones son tomadas del repositorio del proyecto en Github, a través de la dirección \url{https://github.com/introlab/rtabmap/wiki/Installation}:
-
-\begin{itemize}
-	\item Con ROS ya instalado en el sistema:
-
-	Si ya está instalado ROS en el sistema (como es el caso en el desarrollo del proyecto), ya algunas dependencias estarán instaladas:
-
-	Dependencias según versión de ROS:
-	Indigo:
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo apt-get install libsqlite3-dev libpcl-1.7-all libfreenect-dev libopencv-dev
-	\end{lstlisting}
-	\end{blackcodebox}
-	Hydro:
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo apt-get install libsqlite3-dev libpcl-1.7-all ros-hydro-libfreenect ros-hydro-opencv2
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	Descargue el código fuente de RTAB-Map desde Github:
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-git clone https://github.com/introlab/rtabmap.git rtabmap
-cd rtabmap/build
-cmake ..
-make -j4
-make install
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	Ya puede ejecutar la aplicación (llamada ``rtabmap'').
-
-	\item Si ROS no está instalado:
-
-	Dependencias del sistema:
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo apt-get install libsqlite3-dev libpcl-1.7-all libopencv-dev
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	Para instalar libpcl-1.7-all, es posible que deba agregar los repositorios de ROS (en este caso particular, de la distribución de ROS compatible con la distribución de Ubuntu) realizando los siguientes pasos:
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
-sudo apt-get update
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	Si desea habilitar las características SURF/SIFT (SURF: \textit{Speeded-Up Robust Features} -- Características Robustas Aceleradas; SIFT: \textit{Scale-Invariant Feature Transform} -- Transformación de Características Invariantes en Escala) en RTAB-Map, deberá descargar y generar OpenCV desde el código fuente para tener acceso al módulo no-libre/privativo:
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-cd opencv
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-make -j4
-sudo make install
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	Descargue el código fuente de RTAB-Map desde Github: obtenga la última versión o el código fuente actual
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-git clone https://github.com/introlab/rtabmap.git rtabmap
-cd rtabmap/build
-cmake ..
-make -j4
-sudo make install
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	Ya puede ejecutar la aplicación (llamada ``rtabmap'').
-
-	\item Actualizar el código fuente de RTAB-Map
-
-	Si desea incorporar los últimos cambios después de realizar el ``git clone'' puede actualizarlo de la siguiente forma:
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-cd rtabmap
-git pull origin master
-cd build
-cmake ..
-make -j4
-sudo make install
-	\end{lstlisting}
-	\end{blackcodebox}
-\end{itemize}
-
-\subsection{Como módulo de ROS}
-
-Ubuntu cuenta con binarios para las versiones Hydro e Indigo; basta con ejecutar el siguiente comando, según sea la distribución de ROS:
-
-\noindent ROS Hydro:
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-sudo apt-get install ros-hydro-rtabmap-ros
-\end{lstlisting}
-\end{blackcodebox}
-
-\noindent ROS Indigo:
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-sudo apt-get install ros-indigo-rtabmap-ros
-\end{lstlisting}
-\end{blackcodebox}
-
-Si se desea instalar desde fuente, el proceso (detallado en la página \url{https://github.com/introlab/rtabmap_ros#rtabmap_ros}) conlleva tener conocimiento del espacio de trabajo (\textit{workspace}) de ROS, y la instalación desde fuente de la biblioteca OpenCV. También se asume que se ha configurado el espacio de trabajo en el directorio \url{~/catkin_ws} y que el archivo \url{~/.bashrc} contiene lo siguiente:
-
-\noindent ROS Hydro:
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-source /opt/ros/hydro/setup.bash
-source ~/catkin_ws/devel/setup.bash
-\end{lstlisting}
-\end{blackcodebox}
-
-\noindent ROS Indigo:
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-source /opt/ros/indigo/setup.bash
-source ~/catkin_ws/devel/setup.bash
-\end{lstlisting}
-\end{blackcodebox}
-
-Luego, se procede a descargar el código fuente de RTAB-Map desde Github (\textbf{NOTA:} No descargar dentro del espacio de trabajo) e instalarlo dentro del directorio \url{devel} en el espacio de trabajo, ejecutando lo siguiente:
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-cd ~
-git clone https://github.com/introlab/rtabmap.git rtabmap
-cd rtabmap/build
-cmake -DCMAKE_INSTALL_PREFIX=~/catkin_ws/devel ..
-make -j4
-sudo make install
-\end{lstlisting}
-\end{blackcodebox}
-
-Ahora puede instalar el ros-pkg de RTAB-Map dentro del directorio \url{src} del espacio de trabajo Catkin:
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-cd ~/catkin_ws
-git clone https://github.com/introlab/rtabmap_ros.git src/rtabmap_ros
-catkin_make
-\end{lstlisting}
-\end{blackcodebox}
-
-\section{Generación de Mapas de Entorno}
-\label{sec:genenvironmentmaps}
-
-Una vez instalado y ejecutado el software, podremos seleccionar un dispositivo entre la lista previamente mencionada, generar una base de datos y comenzar a reconocer el entorno.
-
-RTAB-Map comenzará a capturar una nube de puntos en 3D mientras detecta cierres de lazo -- es decir, se lleva a cabo la detección en las ``imágenes'' (ya que no se captura una imagen en sí, sino puntos con datos de profundidad y color) de lugares ya visitados previamente, tras lo cual se realizan correcciones en las estimaciones pasadas. Una vez terminado, se puede exportar la nube de puntos capturada a distintos formatos (PCD, que es un formato que contiene datos de nube de puntos \cite{pcdformat} y PLY, que es un formato de polígonos, que guardan datos tridimensionales), para ser procesada posteriormente de ser necesario.
-
-\subsection{Requerimientos}
-
-Para funcionar de forma adecuada, RTAB-Map requiere el uso de las bibliotecas PCL y OpenCV, así como también de los controladores correspondientes al dispositivo que desee usarse, ya sea el Kinect, el Xtion o las múltiples opciones de cámaras estéreo. Asimismo, dependiendo de la configuración del robot y de los sensores disponibles, tendremos múltiples opciones para realizar la cartografía del entorno, todas estas detalladas en la documentación disponible de RTAB-Map, accesible desde el sitio web \url{http://wiki.ros.org/rtabmap_ros/Tutorials/SetupOnYourRobot} (en inglés).
-
-\subsection{Procedimiento y Pruebas}
-
-Con el fin de probar el funcionamiento de RTAB-Map como aplicación independiente e integrada a ROS, seguiremos los tutoriales disponibles en la documentación, primero generando una nube de puntos desde la aplicación independiente, y luego generándola y visualizándola desde ROS.
-
-Cabe destacar nuevamente que, al no contar con un robot propiamente dicho, estaremos utilizando la opción de realizar el mapa únicamente con el Kinect.
-
-\begin{figure}[b]
-\centering
-\includegraphics[width=0.75\textwidth]{freenecttest}
-\caption{Comprobación de las cámaras del Kinect}
-\label{figure:freenecttest}
-\end{figure}
-
-Para ello se ha cumplido tanto con la instalación independiente como con la instalación integrada a ROS y se ha comprobado el reconocimiento del Kinect a través del comando:
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-freenect-glview
-\end{lstlisting}
-\end{blackcodebox}
-
-\noindent el cual muestra las imágenes provenientes de ambas cámaras, como se muestra en la figura \ref{figure:freenecttest}
-
-Una vez realizada esta comprobación, podemos continuar con la generación de un mapa de entorno 3D.
-
-\subsubsection{Generación de mapas 3D}
-
-Para esto, realizamos el reconocimiento del entorno a través de la aplicación independiente. Para ello, se inició un terminal y se escribió el comando:
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-rtabmap
-\end{lstlisting}
-\end{blackcodebox}
-
-\noindent cuyo binario está instalado en \url{/usr/local/bin/rtabmap}. Este procedimiento ejecuta el programa, el cual nos pregunta en la primera inicialización, dónde deseamos guardar los datos de configuración, así como los de la captura de datos (por defecto, esto se realiza en las carpetas \url{/home/<usuario>/.rtabmap/} y \url{/home/<usuario>/Documents/RTAB-Map}, respectivamente).
-
-\begin{figure}[hb]
-\centering
-\raisebox{-0.5\height}{\includegraphics[width=0.40\textwidth]{rtabmapinit}}\hspace{1em}%
-\raisebox{-0.5\height}{\includegraphics[width=0.40\textwidth]{rtabmapinitdb}}
-\caption{Inicialización de RTAB-Map}
-\label{figure:rtabmapinit}
-\end{figure}
-
-Tras iniciar, se nos presenta la siguiente pantalla:
+\begin{description}
+    \item[Servicios:] Entidades lógicas, los contactos definidos por una o más interfaces publicadas.
+    \item[Proveedor de servicio:] La entidad de software que implementa un servicio específico.
+    \item[Consumidor de Servicio:]  La entidad de software que llama a un proveedor de servicio. Tradicionalmente, se le conoce como “cliente”. Un consumidor de servicio puede ser el usuario final de una aplicación u otro servicio.
+    \item[Localizador del Servicio:] Una clase específica de Proveedor de Servicio que actúa como registrador y permite la búsqueda de interfaces de proveedores de servicio y localizaciones de servicios.
+    \item[Corredor de Servicio:] Una clase específica de Proveedor de Servicio que puede pasar una petición de servicio a uno o más proveedores de servicios.
+\end{description}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.70\textwidth,height=4.4cm]{rtabmapmain}
-\caption{Ventana principal de RTAB-Map}
-\label{figure:rtabmapmain}
+\includegraphics[width=0.80\textwidth]{img/7.png}
+\caption{Plan de trabajo estándar del Conceptos esenciales de la Arquitectura Orientada a Servicios y la relación entre ellos
+Fuente: Endrei et al. (2004)}
+\label{figure:SOAworkflow}
 \end{figure}
 
-Para comenzar la captura de datos de entorno, inicializamos una nueva base de datos haciendo clic en el botón ``New database'':
+\section{Herramientas de software a utilizar}
+
+Para la implementación del sistema se hizo uso de las siguientes herramientas de desarrollo web. Para la capa de interfaces de la aplicación, se utilizó Vue,js, un marco de trabajo desarrollado en JavaScript, que integra el etiquetado estándar de la web, así como soporte para estilos personalizados y lógica funcional. Por otra parte, del lado de la capa de datos, se desarrolló sobre Feathers.js, un marco de trabajo desarrollado enteramente en JavaScript que corre sobre el entorno de ejecución Node.js, que se comunica con una base de datos no relacional orientada a documentos MongoDB, mediante un mapeo objeto-documento a través de Mongoose. Finalmente, el lado del servidor fue desplegado en un entorno en la nube de Amazon Web Services, así como su entorno de desarrollo se encuentra alojado en MongoDB Atlas. A continuación, se mostrará a detalle cada herramienta utilizada para el desarrollo del producto final.
+
+\subsection{Vue.js}
+
+Vue (pronunciado /vjuː/, como view) \ref{figure:VueLogo} es un entorno de trabajo progresivo para desarrollar interfaces de usuario. Extraído de la página oficial del producto, ellos se describen a sí mismos de esta manera: “A diferencia de otros frameworks monolíticos, Vue está diseñado desde cero para ser utilizado incrementalmente. La librería central está enfocada solo en la capa de visualización, y es fácil de utilizar e integrar con otras librerías o proyectos existentes. Por otro lado, Vue también es perfectamente capaz de impulsar sofisticadas Single-Page Applications cuando se utiliza en combinación con herramientas modernas y librerías de apoyo”\cite{vuejs}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.40\textwidth]{rtabmapstartdb}
-\caption{Barra de menú principal de RTAB-Map}
-\label{figure:rtabmapstartdb}
+\includegraphics[width=0.80\textwidth]{img/8.png}
+\caption{Logotipo de Vue.js
+Fuente: https://vuejs.org/images/logo.png
+Feathers}
+\label{figure:VueLogo}
 \end{figure}
 
-\noindent el cual genera las estructuras de datos necesarias y tras su culminación, estamos listos para realizar la captura: hacemos clic en el botón Iniciar (botón ``Reproducir'' en la figura \ref{figure:rtabmapstartdb}) y ya podemos comenzar a explorar el entorno. Simplemente basta con dirigir el Kinect haciendo un recorrido del área a obtener, mientras se supervisa la interfaz gráfica de RTAB-Map.
+\subsection{FeathersJS}
+
+FeathersJS es un entorno de trabajo ligero utilizado para generar aplicaciones web de timepo real y APIs REST haciendo uso de JavaScript y TypeScript. Feathers en su núcleo es un conjunto de herramientas  que siguen una Arquitectura Orientada a Servicios, que permite construir prototipos y aplicaciones listas para ser desplegadas de manera rápida.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.70\textwidth]{rtabmapstandalonebedroommap}
-\caption{Generación de un mapa de una habitación}
-\label{figure:rtabmapstandalonebedroommap}
+\includegraphics[width=0.80\textwidth]{img/9.png}
+\caption{Logotipo de Feathers.js
+Fuente: https://feathersjs.com/img/feathers-logo-wide.png}
+\label{figure:FeathersLogo}
 \end{figure}
 
-Si en algún momento de la exploración, la pantalla de ``\textit{odometry}'' (odometría) muestra un fondo rojo junto con una imagen estática del entorno, quiere decir que no se tienen suficientes características distintivas en la zona capturada para poder realizar una medición adecuada. Para arreglarlo, tal como se nos indica en el tutorial correspondiente, debemos colocar la cámara (el Kinect) de nuevo en la zona que se muestra en la imagen y esperar a que la aplicación retome la generación del mapa desde ese punto.
+De manera general, una aplicación construida en Feathers se puede dividir en tres secciones: el lado del cliente (NodeJS) que representa el espacio de conexión de Feathers como una API, el lado del servidor que maneja los datos y la lógica de negocios, y el núcleo funcional, que es utilizado tanto en el cliente como en el servidor.
 
-Una vez explorado el área, hacemos clic en el botón ``Stop'', tras lo cual podemos examinar los resultados, presentados en la figura \ref{figure:bedroommap}.
+\subsection{MongoDB}
+
+MongoDB \cite{mongodb} es un sistema de base de datos multiplataforma de esquema libre orientado a documentos que ofrece una gran escalabilidad y flexibilidad, así como un modelo de consultas e indexación avanzado. Dentro de sus conceptos elementales, están los siguientes:
+
+\begin{description}
+    \item[Base de datos:] Una base de datos es un contenedor físico para colecciones.
+    \item[Colección:] Una colección es un grupo de documentos de MongoDB. Es el equivalente a una tabla en una base de datos relacional. Una colección existe en una base de datos individual. Las colecciones no fuerzan la existencia de un esquema.
+    \item[Documento:] Un documento es un conjunto de pares de clave-valor. Los documentos tienen esquemas dinámicos. Un esquema dinámico implica que los documentos en la misma colección no necesariamente deben tener el mismo conjunto de campos o estructura.
+\end{description}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.80\textwidth]{bedroommap}
-\caption{Generación de nube de puntos de una habitación con RTAB-Map}
-\label{figure:bedroommap}
+\includegraphics[width=0.80\textwidth]{img/10.png}
+\caption{Logotipo de MongoDB
+Fuente: https://www.agiliacenter.com/wp-content/uploads/2017/04/mongo-db-logo.png}
+\label{figure:MongoDBLogo}
 \end{figure}
 
-En el mapa 3D generado, se puede observar una serie de puntos en cian conectados entre sí, que representan la trayectoria de la cámara (en este caso, del Kinect), al generar el mapa.
 
-\subsubsection{Generación de mapas 2D}
+\subsection{MongoDB Atlas}
 
-La generación de un mapa 2D no es sino la proyección en el plano de la nube de puntos capturada en el paso anterior. Para esto, utilizaremos la versión de RTAB-Map integrada a ROS, ya que por inconvenientes al momento de instalar la versión independiente, no se reconoce de forma adecuada la biblioteca PCL, necesaria para generar la ``rejilla de ocupación'' (en inglés, ``\textit{occupancy grid}'') que sería el mapa en 2D de los obstáculos detectados durante la generación del mapa.
+MongoDB Atlas es un servicio de almacenamiento de datos en la nube proveído por MongoDB que permite alojar bases de datos no relacionales orientadas a documentos gestionados por MongoDB que pueden ser utilizadas por distintas aplicaciones web. Es reconocido por su flexibilidad y escalabilidad, así como por su tracción entre grandes compañías (7-Eleven, SEGA, Telefónica),  sus protocolos integrados de seguridad y el diseño particular orientado a aumentar la productividad de los desarrolladores \cite{mongodbAtlas}.
 
-Procedemos de la siguiente forma:
+\subsection{AWS}
 
-En primer lugar, requeriremos el uso del software de control para el Turtlebot \cite{turtlebot}, que es un kit robótico de bajo costo. Este software permite simular un robot y provee de archivos de lanzamiento adecuados para nuestro caso de uso. Se instala mediante el siguiente comando:
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-sudo apt-get install ros-indigo-turtlebot ros-indigo-turtlebot-apps ros-indigo-turtlebot-interactions ros-indigo-turtlebot-simulator ros-indigo-kobuki-ftdi ros-indigo-rocon-remocon ros-indigo-rocon-qt-library ros-indigo-ar-track-alvar-msgs
-\end{lstlisting}
-\end{blackcodebox}
-
-Una vez instalado, debemos agregar dos archivos de lanzamiento particulares al directorio de instalación de Turtlebot en ROS, disponibles en el repositorio en Github del proyecto de RTAB-Map en la dirección \url{https://github.com/introlab/rtabmap_ros/}, ejecutando los siguientes comandos en una terminal:
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-sudo wget -P /opt/ros/indigo/share/rtabmap_ros/launch/demo/ https://raw.githubusercontent.com/introlab/rtabmap_ros/master/launch/demo/demo_turtlebot_mapping.launch
-sudo wget -P /opt/ros/indigo/share/rtabmap_ros/launch/demo/ https://raw.githubusercontent.com/introlab/rtabmap_ros/master/launch/demo/demo_turtlebot_rviz.launch
-\end{lstlisting}
-\end{blackcodebox}
-
-Una vez terminadas las descargas, debemos ejecutar cada uno de estos comandos en una terminal independiente:
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-roslaunch turtlebot_bringup minimal.launch
-\end{lstlisting}
-\end{blackcodebox}
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-roslaunch rtabmap_ros demo_turtlebot_mapping.launch rgbd_odometry:=true args:="--delete_db_on_start"
-\end{lstlisting}
-\end{blackcodebox}
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-rosrun rviz rviz -d turtlebot_navigation.rviz
-\end{lstlisting}
-\end{blackcodebox}
-
-Este último comando inicia la herramienta rviz, o Visualizador (en 3D) de ROS, el cual permite obtener datos de distintos nodos y tópicos disponibles.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=1.00\textwidth]{rvizmain}
-\caption{Ventana principal de rviz}
-\label{figure:rvizmain}
-\end{figure}
-
-Al iniciar rviz, por defecto se tendrá una base de datos nueva para comenzar a generar el mapa. En el panel izquierdo (en adelante el panel de visualizaciones), en la parte inferior, se hace clic en ``Add'' (Agregar Visualización), desplegando la ventana visible en la figura \ref{figure:rvizaddvisualization}. Desplazándose en los tipos de visualizaciones disponibles, se debe agregar \url{Map}, disponible bajo la categoría ``rviz''. Puede dejarse el nombre por defecto.
+Amazon Web Services, también conocida como AWS, es un conjunto de herramientas y servicios de computación en la nube de Amazon. Este servicio se lanzó oficialmente en 2006 y para junio de 2007 AWS ya contaba con una base de usuarios de aproximadamente 180 mil personas. Entre las empresas que la utilizan se encuentran algunas como Reddit, Foursquare, Pinterest, Netflix, la NASA o la CIA.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.50\textwidth]{rvizaddvisualization}
-\caption{Ventana de visualizaciones}
-\label{figure:rvizaddvisualization}
+\includegraphics[width=0.80\textwidth]{img/11.png}
+\caption{Logotipo de Amazon Web Services
+Fuente: https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1200px-Amazon_Web_Services_Logo.svg.png}
+\label{figure:AwsLogo}
 \end{figure}
 
-Una vez hecho esto, se debe desplegar el menú de opciones (con la flecha ubicada en el extremo derecho del título ``Map'') y luego seleccionar el \textit{topic} (tópico) ``\url{/rtabmap/proj_map}''.
+
+\subsection{Vercel}
+
+Vercel es una plataforma en la nube para sitios estáticos y funciones sin servidor que se adapta perfectamente a su flujo de trabajo. Permite a los desarrolladores alojar sitios web y servicios web que se implementan instantáneamente, escalan automáticamente y no requieren supervisión, todo sin configuración \cite{vercel}.
+
+
+
+
+
+
+\section{Infraestructura Propuesta}
+
+La infraestructura a nivel de las herramientas propuestas en el esquema previo fue la explicada en la Figura \ref{figure:infraDiagram}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.40\textwidth]{rviztopic}
-\caption{Selección de tópico}
-\label{figure:rviztopic}
+\includegraphics[width=0.80\textwidth]{img/13.jpg}
+\caption{Infraestructura de capas del Proyecto “Gravedad”.
+Fuente: Propia}
+\label{figure:infraDiagram}
 \end{figure}
 
-La visualización mostrará la proyección horizontal del mapa, generado a medida que se recorre el entorno. Esto es visible en la figura \ref{figure:rvizmappingprojection}.
+Cada punto describe un elemento esencial dentro del sistema de funcionamiento de la aplicación.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.80\textwidth]{rvizmappingprojection}
-\caption{Mapa generado (proyección horizontal)}
-\label{figure:rvizmappingprojection}
-\end{figure}
-
-Adicionalmente, se puede visualizar la nube de puntos capturada, con el fin de corroborar que se esté realizando adecuadamente la generación del mapa. Para ello, se agrega una nueva visualización de la misma forma como se agregó la del mapa (Figura \ref{figure:rvizaddvisualization}), seleccionando esta vez el tipo ``MapCloud'' bajo la categoría ``rtabmap\_ros''.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.40\textwidth]{rvizmapping}
-\caption{Visualización de mapa de puntos agregada}
-\label{figure:rvizmapping}
-\end{figure}
-
-Una vez agregada, se selecciona (o se corrobora que esté seleccionado) el tópico ``\url{/rtabmap/mapData}'' y se hace clic en la casilla de selección bajo el título ``Download map''.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.40\textwidth]{rvizmappingpremap}
-\caption{Obtener nube de puntos optimizada}
-\label{figure:rvizmappingpremap}
-\end{figure}
-
-Rviz nos indica que reconstruirá la nube de puntos y que podría tomar un momento, tras lo cual se mostrará en la ventana principal la nube de puntos optimizada correspondiente al recorrido realizado.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.80\textwidth]{rvizmappingmapcloud}
-\caption{Nube de puntos capturada}
-\label{figure:rvizmappingmapcloud}
-\end{figure}
-
-A diferencia de la versión individual de RTAB-Map, la integración con ROS guarda automáticamente los datos obtenidos (los mapas 3D y 2D) en la ruta \url{~/.ros/rtabmap.db}, por lo cual no es necesario levantar otro nodo para realizar la exportación del mapa.
-
-Esto da por terminado el proceso y hace disponible el mapa para localización y navegación (lo cual se efectua borrando del todo el parámetro ``args'' -o eliminando el valor ``--delete\_db\_on\_start''- y pasando como nuevo parámetro ``localization:=true'' al momento de ejecutar ``demo\_turtlebot\_mapping.launch''), o si se quiere, para generar mapas de otros entornos adyacentes al ya recorrido y generado (borrando del todo el parámetro ``args'' en el paso anterior).
-
-\paragraph{Selección de altura máxima para generación del mapa 2D}
-
-Por defecto, el archivo de lanzamiento establece una altura de 2,0 metros como altura máxima para realizar la proyección del mapa 2D. Para cambiarlo, debe editarse el atributo ``value'' del parámetro ``proj\_max\_height'' bajo el nodo ``rtabmap'' del archivo de lanzamiento \url{/opt/ros/indigo/share/rtabmap_ros/launch/demo/demo_turtlebot_mapping.launch} como se muestra a continuación:
-
-\begin{blackcodebox}
-\begin{lstlisting}[escapechar=@, language=xml]
-<node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
-    ...
-    <param name="proj_max_height" type="double" @\colorbox{electricyellow}{value=``2.0''}@ />
-</node>
-\end{lstlisting}
-\end{blackcodebox}
-
-Cabe destacar que el nodo no permite la selección de una altura mínima para obstáculos; lo que sí está disponible es el parámetro ``proj\_max\_ground\_angle'' (tipo de dato: doble, por defecto: 45) que es el máximo ángulo en grados entre la normal del punto a la normal del suelo, para ser etiquetado como suelo. Los puntos que tengan una mayor diferencia angular son considerados como obstáculos.
-
-\subsection{Características técnicas del mapa generado}
-
-Una vez que se ha realizado el recorrido parcial o completo del entorno, independientemente de si se ha obtenido el mapa 3D o la proyección 2D del mismo, obtenemos un archivo de base de datos a partir del cual pueden exportarse mapas en forma de nube de puntos, como ya vimos en la sección~\ref{sec:genenvironmentmaps}. Sin embargo, con el fin de realizar simulaciones en plataformas tales como \textit{Player/Stage}, puede ser necesario utilizar directamente la proyección 2D en forma de imagen.
-
-En el caso particular para esta plataforma, es necesario generar un archivo \url{.world} haciendo referencia a una imagen donde los píxeles negros representan obstáculos y los blancos espacios libres (recordando la naturaleza binaria de los mapas de ocupación). El mapa que se genera tras realizar esta operación es una imagen en escala de grises en formato PGM \cite{pgmformat} (derivado del ácronimo en inglés ``\textit{Portable Grayscale Map}'' o ``Mapa Portatil en Escala de Grises'') que puede convertirse luego a formato BMP y opcionalmente transformar todos los píxeles grises de la imagen convertida a blanco.
-
-El procedimiento exacto requiere una base de datos ya generada. Asumiendo la base de datos por defecto \url{~/.ros/rtabmap.db}:
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-roscore
-rosrun rtabmap_ros rtabmap _database_path:=~/.ros/rtabmap.db
-rosrun map_server map_saver map:=proj_map
-rosservice call /publish_map 1 1 0
-\end{lstlisting}
-\end{blackcodebox}
-
-El proceso toma un tiempo en generar la proyección del mapa, pero una vez terminado, se debe obtener en la consola correspondiente a ``map\_saver'' una salida similar a la siguiente:
-
-\begin{blackcodebox}
-\begin{lstlisting}[language=bash]
-[ INFO] [1441403556.668234515]: Waiting for the map
-[ INFO] [1441403565.477020944]: Received a 508 X 420 map @ 0.050 m/pix
-[ INFO] [1441403565.477108000]: Writing map occupancy data to map.pgm
-[ INFO] [1441403565.482476945]: Writing map occupancy data to map.yaml
-[ INFO] [1441403565.482683795]: Done
-\end{lstlisting}
-\end{blackcodebox}
-
-Nuestro mapa ya generado se puede visualizar en el archivo ``map.pgm''.
+    \begin{enumerate}
+        \item El lado del cliente, pudiendo acceder desde una computadora de escritorio o un dispositivo móvil, se conecta a través del protocolo HTTP/S a \texttt{social.ignisgravitas.com}.
+        \item Route 53, poseedor de la zona alojada del dominio ignisgravitas.com, se encarga de redireccionar desde \texttt{social.ignisgravitas.com} hacia los DNS de Vercel.
+        \item Vercel es un sitio de alojamiento de aplicaciones que brinda soporte para Renderizado en la Lado del Servidor (SSR, por sus siglas en inglés), desde allí, se renderiza la petición haciendo uso de la versión de la aplicación web que se encuentra corriendo en el sitio.
+        \item El control y actualización de la versión de la aplicación en Vercel está delegada a Github, pues se encuentra asociado un hook para que, cada vez que un push sobre la rama principal sea ejecutado, realice un despliegue de la aplicación hacia Vercel.
+        \item Del lado de la capa de datos, el cliente hará peticiones mediante el protocolo HTTP/S a la Interfaz de Programación de la Aplicación (API por sus siglas en inglés) en la ruta \textt{api.ignisgravitas.com}, alojada en Amazon Web Services.
+        \item Route 53 redirige la petición hacia una instancia de Elastic Cloud Computing (EC2) del tipo t2.micro proveída en el sistema de gestión en la nube AWS Elastic Beanstalk.
+        \item Dentro de la instancia, EC2 va a conectarse a un servidor proxy interno de Apache que va a redireccionar todas las peticiones al puerto 443 y va a realizar reescrituras a las mismas en caso de que la capa de transporte sea sockets.
+        \item Para mantener actualizada la aplicación, se utiliza el sistema de gestión de versiones en la nube AWS CodeCommit conectado con Elastic Beanstalk, de manera que, a partir de la ejecución de un despliegue desde la Interfaz de Línea de Comandos (CLI, por sus siglas en inglés) de Elastic Beanstalk, este sistema tome la última versión en CodeCommit como la versión a desplegar de la aplicación.
+        \item La aplicación toma su data persistente de una base de datos no relacional manejada por MongoDB ubicada en el servicio de almacenamiento de datos en la nube MongoDB Atlas.
+    \end{enumerate}
