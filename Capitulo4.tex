@@ -36,7 +36,7 @@ A continuación, se listan los requerimientos extraídos de las reuniones con el
     \item[Prioridad:] M
     \item[Rol-Meta-Beneficio:] Como USUARIO no registrado de Gravitas necesito poder crear un usuario en el sistema para tener acceso a las funcionalidades de la plataforma.
     \item[Limitaciones:] El usuario no debe poseer ninguna información de registro previo en la plataforma.
-    \item[Condiciones de Satisfacción:]
+    \item[Condiciones de Satisfacción:] \hfill
         \begin{enumerate}
             \item Solo se le solicitará al usuario introducir su nombre, apellido, correo, clave y aceptación de los términos y condiciones de uso para iniciar el proceso de registro.
             \item Luego de ingresados los datos, el sistema debe enviar un correo a la dirección ingresada por el usuario.
@@ -44,10 +44,10 @@ A continuación, se listan los requerimientos extraídos de las reuniones con el
             \item Se solicitará el resto de la información requerida según el tipo de perfil elegido y los planes de pago para finalizar la creación del usuario.
             \item Una vez finalizado el registro se enviará a la vista inicial.
         \end{enumerate}
-    \item[Tareas de Ingeniería:]
+    \item[Tareas de Ingeniería:] \hfill
         \begin{enumerate}
             \item Desarrollar la vista de Registro inicial para correo y clave.
-            \item Desarrollar email de validación de correo.
+            \item Desarrollar sistema de validación de correo.
             \item Desarrollar la vista de Continuación de Registro, donde se mostrarán todas las posibles preferencias, incluyendo el tipo de perfil a desarrollar.
             \item Desarrolla las vistas de formulario para cada tipo de perfil.
         \end{enumerate}
@@ -57,458 +57,973 @@ A continuación, se listan los requerimientos extraídos de las reuniones con el
 
 \newpage
 
-
-2) Verificación de Correo Electrónico
-
-	Prioridad M
-
-	1.-	Rol-Meta-Beneficio: Como USUARIO no registrado de Gravitas, necesito verificar mi correo electrónico para poder proseguir mi proceso de Registro.
-	2.- 	Limitaciones: Se debe introducir una dirección de correo automatizada.
-	3.-	Condiciones de Satisfacción:
-		3.1.- Al ingresar mis datos básicos en el sistema Gravitas, el sistema debe enviar un correo electrónico a la dirección suministrada.
-		3.2.- El correo electrónico debe contener un texto base explicando el proceso de registro y debe incluir un enlace a un formulario de preferencias de usuario.
-		3.3.- Al ingresar al enlace, la cuenta de correo debe ser automáticamente verificada automáticamente en el sistema.
-		3.4.- El enlace debe ser válido únicamente por 24 horas.
-		3.5.- Al ingresar a un enlace no validado, se debe redirigir a la vista de registro e incluir un mensaje de error.
-		3.6.- Al invalidarse un enlace, debe también eliminarse cualquier información persistida del registro inicial del usuario.
-
-	4.- 	Tareas de Ingeniería
-		4.1.- Implementar un remitente programado (mailer) para el envío de  correos a través del protocolo SMTP.
-		4.2.- Desarrollar la vista para introducción de datos de usuario.
-	5.-	Unidades de Trabajo: 16h
-	6.-	Dependencia: 1
-
-
-3) Registro de Usuario mediante Open Authorization (OAuth)
-
-	Prioridad M
-
-	1.-	Rol-Meta-Beneficio: Como USUARIO no registrado de Gravitas deseo crear mi usuario dentro de la plataforma utilizando mis credenciales ya verificadas de servicios conocidos, para así agilizar mi acceso a la plataforma como usuario verificado.
-	2.-	Limitaciones: El usuario no debe haber iniciado sesión previamente ni tener una cuenta previamente asociada al correo de Gmaiail.
-	3.-	Condiciones de Satisfacción:
-		3.1.- El sistema debe brindar las opciones de Google, Facebook, LinkedIn y Github para realizar el registro de un nuevo usuario.
-		3.2.-	El usuario debe elegir su proveedor preferido para realizar la autenticación.
-		3.3.-	El sistema debe desplegar la interfaz de autenticación correspondiente al proveedor elegido.
-		3.4.-	Al terminar el proceso de validación con el proveedor, el sistema debe almacenar los datos básicos del usuario (Nombre, apellido, correo electrónico) dentro de la información básica personal.
-		3.5.-	El sistema debe redirigir a la vista de preferencias al usuario.
-		3.6.-	Si el proveedor presenta o envía un error, informar al usuario con un “Fallo en la autenticación del servicio X” donde X es el servicio elegido.
-	4.- Tareas de Ingeniería
-		4.1.- Generar la clave de acceso a la API de O-Auth en la cónsola de desarrollo de Google.
-		4.2.- Entender cómo funciona el sistema de Autenticación mediante Oauth de FeathersJS-
-		4.3.- Configurar la creación de un nuevo usuario con los datos proveídos por Google.
-	5.- Unidades de Trabajo: 8h.
-	6.- Dependencias: 1
-
-
-4) Inicio de Sesión Manual
-
-	Prioridad M
-
-	1.-	Rol-Meta-Beneficio: Como USUARIO de Gravitas necesito poder iniciar sesión en el sistema para manejar las herramientas ofrecidas por la plataforma.
-	2.-	Limitaciones:   Se debe permitir heredar la sesión de Ignis en el sistema Gravitas; además, ya el usuario debió registrarse con el correo asociado al servicio de autenticación.
-	3.-	Condiciones de Satisfacción:
-		3.1.-	Solicitar usuario y contraseña para autenticar al usuario.
-		3.2.-	Validación de la información en servidores para poder continuar.
-		3.3.-	Si el usuario no ha finalizado el proceso de registro, debe ir a finalizarlo para continuar.
-		3.4.-	Si el usuario finalizó el proceso de registro y la información suministrada es correcta, debe dirigir a la vista inicial.
-		3.5.-	Si la información suministrada no coincide con la persistida en el sistema, el mismo debe emitir un error de “Correo o Contraseña inválido”.
-	4.-	Tareas de Ingeniería:
-		4.1.-	Desarrollar la vista de inicio de sesión, solicitando correo y clave para continuar, una vez autenticado, se debe evaluar si este usuario debe finalizar el proceso de registros o si puede acceder a la vista incial.
-	4.2.- Estudiar los patrones de desarrollo de Single Sign On (SSO) entre una pltaforma de NodeJS y Ruby On Rails.
-	4.3.- Implementar un Single Sign On (SSO) para persistir las sesiones entre ambas plataformas.
-	5.-	Unidades de Trabajo: 8h.
-	6.- 	Dependencia: 1. 2.
-5) Inicio de Sesión mediante Open Authorization (OAuth)
-	
-Prioridad M
-
-	1.-	Rol-Meta-Beneficio: Como USUARIO de Gravitas deseo acceder a mi usuario dentro de la plataforma utilizando mis credenciales ya verificadas de servicios conocidos, para así agilizar mi acceso a la plataforma como usuario verificado.
-	2.-	Limitaciones: Se debe permitir heredar la sesión de Ignis en el sistema Gravitas; además, ya el usuario debió registrarse con el correo asociado al servicio de autenticación.
-	3.-	Condiciones de Satisfacción:
-		3.1.- El sistema debe brindar la opción de Google para permitir el inicio de sesión de un usuario.
-		3.2.-	El sistema debe desplegar la interfaz de autenticación correspondiente al proveedor elegido.
-		3.3.-	Al terminar el proceso de validación con el proveedor, el sistema debe redirigir a la pantalla inicial.
-		3.4.-	Si el proveedor presenta o envía un error, informar al usuario con un “Fallo en la autenticación del servicio X” donde X es el servicio elegido.
-	4.-	Unidades de Trabajo: 8h.
-	5.-	Dependencias: 1, 2.
-
-6) Autenticación en dos pasos
-
-	Prioridad W
-
-	1.-	Rol-Meta-Beneficio: Como USUARIO de Gravitas necesito garantizar la seguridad de mis datos con una autenticación personal, rápido y confiable para las operaciones  para la plataforma.
-	2.-	Limitaciones: Se debe permitir heredar la sesión de Ignis en el sistema Gravitas.
-	3.-	Condiciones de Satisfacción:
-		3.1.- El modo de Autenticación en dos pasos solo estará activo si el usuario así lo seleccionó en sus preferencias.
-		3.2.- Al momento de realizar una operación de inicio de sesión y/o intercambio de valor, el sistema debe desplegar la interfaz de autenticación en dos pasos.
-		3.3.-	El sistema debe solicitar al usuario un código generado automáticamente.
-		3.4.-	El sistema de correos debe enviar un correo electrónico cuyo contenido sea el código generado.
-		3.5.-	Al introducirse el código correctamente, el sistema debe redirigir según corresponda a la vista de confirmación del intercambio de valor ó  a la vista de inicio de sesión.
-		3.6.-	De introducirse el código erróneamente, el sistema debe indicar un mensaje de error con el mensaje “Código Inválido”.
-
-	4.-	Tareas de Ingeniería:
-		4.1.- Integrar un sistema generador de códigos de confirmación.
-		4.2.-	Reciclar el JWT KEY de Ignis en Gravitas.
-		4.3.-	Desarrollar algún tipo de funcionalidad que permita encapsular el proceso de autentificación para ser usada en todas los endpoints que lo requieran.
-		4.4.-	Configurar el backend para permitir el envío de correos electrónicos.
-		4.5.-	Desarrollar funcionalidad que soporte el envío de todo tipo de correos electronicos.
-		4.6.-	Desarrollo del modulo de envío de correos para autenticación en dos pasos.
-	5.-	Unidades de Trabajo: 16h.
-	6.- 	Dependencia: 4, 5.
-
-
-7) Planes de pago por el servicio
-
-	Prioridad W
-
-	1.-	Rol-Meta-Beneficio:	Como INTERESADO de la plataforma Gravitas, quiero que los USUARIOS paguen por el uso del servicio ofrecido para MANTENER económicamente viable el proceso de crecimiento y desarrollo de la plataforma misma.
-	2.-	Limitaciones: El sistema debe manejar la posibilidad de que por razones de negocios, los planes sean temporalmente deshabilitados.
-	3.-	Condiciones de Satisfacción:
-		3.1.-	El sistema debe indicarle al usuario que no hay ciertas funcionalidades habilitadas hasta no realice el pago correspondiente a su plan.
-		3.2.- El sistema debe ofrecerle un enlace a un procesador de pagos.
-		3.3.-	El usuario debe tener una versión corta de los Términos y Condiciones del uso de la plataforma antes de iniciar el proceso de pago, así como un enlace al documento completo.
-		3.7.-	El usuario debe ser llevado a la vista de personalización de la experiencia de usuario luego del pago de los planes.
-	4.-	Tareas de Ingeniería:
-		4.1.-	Investigar la integración de Stripe con el framework a utilizar.
-		4.2.-	Mantener comunicación constante con los interesados. Se recomienda una metodología de Programación Extrema de fácil adaptación a los cambios en los requerimientos iniciales.
-		4.4.-	Al terminar el proceso de pagos, la información del pago debe ser registrada en la base de datos de la plataforma.
-		4.3.-	La información del pago debe estar disponible como un registro tanto para el usuario como para los administradores del sitio.
-	5.-	Unidades de Trabajo: 160h.
-	6.- 	Dependencia: 1, 2, 3.
-
-
-8) Interacción inicial y de configuración básica
-
-	Prioridad C
-
-	1.-	Rol-Meta-Beneficio: 	Como USUARIO de la plataforma Gravitas, me gustaría poder ajustar mis preferencias básicas para obtener mejores recomendaciones de publicaciones y una mejor experiencia de usuario general.
-	2.-	Limitaciones: El usuario debe estar registrado y/o haber realizado sus operaciones de pago.
-	3.-	Condiciones de Satisfacción:
-		3.1.-	El usuario debe elegir su rol en la plataforma según los que se encuentran disponibles: “trabajador”, “mentor”, “inversionista”, “emprendedor”.
-		3.2.-	El usuario debe elegir una serie de intereses personales (utilizados para configurar los posts recomendados de su inicio).
-		3.2.-	Si el usuario eligió la opción “emprendedor”, se debe brindar la opción de crear un emprendimiento.
-			3.2.1.-	El usuario debe llenar un formulario con información básica; nombre, logotipo, descripción y área de emprendimiento.
-			3.2.2.-	El usuario debe responder si es un emprendedor con experiencia o un novato en busca de aprender.
-				3.2.2.1.-	Si elige la primera opción, pasará inmediatamente a una vista donde enviará las invitaciones a los miembros de su equipo y sucesivamente será enviado a la vista inicial.
-				3.2.2.2.-	Si elige la segunda, debe mostrarse una interfaz de tutorial donde se muestren relatos gráficos, y vídeos del uso de las herramientas de la plataforma Gravitas, con la opción de saltarlos y proseguir con el flujo de la primera opción.
-		3.3.-	Si el usuario eligió la opción “trabajador” o “mentor”, debe pasar luego a llenar un formulario donde indique información laboral básica, como experiencia y educación.
-			3.3.1.- El usuario debe poder subir su CV en formato PDF.
-			3.3.2.-	Luego de introducida esta información, si dicho usuario ya posee una invitación a una startup, deberá aparecer la opción de aceptar o rechazar la invitación, de lo contrario, será redirigido a la página de inicio.
-		3.4.-	Si el usuario eligió la opción “inversionista”, el mismo debe introducir los nombres de los emprendimientos dentro de los cuáles ha invertido capital.
-			3.4.1.- El usuario debe indicar en un posterior campo un estimado total de lo invertido en ellos. Terminado ello, pasa a ser redirigido a la página de inicio.
-	4.-	Tareas de Ingeniería:
-		4.1.- Deben construirse las vistas para la entrada de datos, así como la información correspondiente.
-		4.2.- Se debe negociar con el interesado para definir si el manejo de roles y si se puede replantear dichos roles a únicamente “Administrador” y “Usuario Común”, con el objetivo de dejar los roles solo a las membresías de startups.
-	5.-	Unidades de Trabajo: 32h.
-	6.-	Dependencias: 4, 5.
-
-9) Vista tutorial e invitaciones automáticas
-
-	Prioridad W
-
-	1.-	Rol-Meta-Beneficio: Como USUARIO de la plataforma Gravitas, deseo recibir información instruccional del sitio para poder aprovechar de manera óptima todas sus herramientas.
-	2.-	Limitaciones: El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles.
-	3.-	Condiciones de Satisfacción:
-		3.1.- Al usuario seleccionar que desea aprender a emprender, deben desplegarse una interfaz gráfica que contenga un listado de los tópicos más importantes del emprendimiento.  Inicialmente, serán cuatro puntos que estarán cada uno de ellos relacionados con las casillas del modelo de negocios: la propuesta de valor (englobando idea y construcción del producto), infraestructura (englobando las actividades, aliados y recursos claves), clientes (relacionado con las relaciones, canales y segmentos) y finalmente los flujos monetarios (estructuras de costos y flujos de ingresos).
-		3.2.- Al hacer click sobre cada uno de ellos, este debe incluir un vídeo, una serie de gráficos y un texto explicativo con una fuente agradable para la lectura y un tiempo estimado de lectura.
-		3.3.-	Cuando el usuario finalice la lectura o el vídeo, debe indicarse que ese tutorial particular fue completado y ofrecer un enlace al tutorial siguiente.
-		3.4.-	Al completarse todos los tutoriales, el usuario pasará a invitar a todos los usuarios que crea competentes en su emprendimiento, con su rol correspondiente y su responsabilidad en el mismo. Las responsabilidades son: CEO (Chief Executive Officer), CTO (Chief Technology Officer), CMO (Chief Marketing Officer), CFO (Chief Financial Officer), CIO (Chief Information Officer), CCO (Chief Communications Officer). Finalizado esto, debe dirigirse a la vista inicial.
-	4.-	Tareas de Ingeniería:
-		4.1.- Mantener comunicación constante con el equipo de diseño gráfico para integrar mejoras y cambios a la experiencia de usuario (UX) y a los gráficos.
-		4.2.- Construir una interfaz de usuario para la disposición de iFrames  con contenido exclusivo de Ignis Gravitas.
-	5.-	Unidades de Trabajo:  160h.
-	6.-	Dependencias: 4, 5.
-
-10) Vista Inicial
-
-	Prioridad M
-
-	1.-	Rol-Meta-Beneficio: Como USUARIO de la plataforma Gravitas, deseo poder interactuar con las publicaciones más recientes y de mayor interés de mis contactos para tener información que pueda resultar de utilidad para mí y para el emprendimiento al que pertenezco.
-	2.-	Limitaciones: El usuario debe estar registrado, haber iniciado sesión y haber definido sus preferencias de usuario.
-	3.-	Condiciones de Satisfacción:
-		3.1.-	 Al culminar el proceso de configuración del emprendimiento, debe mostrarse una interfaz básica que muestre a los usuarios publicaciones basadas en sus preferencias y/o al emprendimiento al que pertenecen de manera inmediata, así como a los demás usuarios y emprendimientos que sigue dentro de la plataforma.
-		3.2.-	La vista inicial debe mostrar cuatro secciones visualmente separadas:
-			3.2.1.- La vista de publicaciones (con una información básica inicial la primera vez que se inicia sesión, en el centro)
-				3.2.1.1.-	Cada publicación debe contener el nombre del emprendimiento o el usuario que la publica, su foto, fecha y hora de publicación, imagen de la publicación (si la posee) y una descripción asociada.
-				3.2.1.2.-	La publicación debe indicar la fuente de su contenido si el mismo fue extraído desde un sitio externo.
-				3.2.1.3.-	Cada publicación se le debe poder dar “Me Gusta”,  agregar un comentario (donde se puedan hacer menciones) y compartirse como una publicación propia (de no serlo).
-				3.2.1.4.-	El usuario debe ser capaz de crear sus propias publicaciones.
-				3.2.1.5.-	El usuario debe poder anexar imágenes, enlaces a sitios externos, etiquetar a otras personas en una publicación.
-			3.2.2.-	Propaganda alusiva al producto Ignis, así como sugerencias de contactos o emprendimientos a seguir (derecha).
-				3.2.2.1.- Debe mostrar enlaces a secciones básicas como el “Perfil del Emprendimiento” y “Configuraciones”.
-			3.2.3.-	Accesos directos a las herramientas de Gravitas e información básica del perfil social (izquierda):
-				3.2.3.1.- Debe mostrar el “Número de seguidores” del usuario.
-			3.2.4.-	Aaccesos directos al perfil personal y a una barra de búsqueda (barra de navegación superior) e íconos para un chat (inferior).
-	4.-	Tareas de Ingeniería:
-		4.1.-	Definir el formato de publicaciones y definir quienes pueden realizarlas.
-		4.2.- Desarrollar un patrón reactivo mediante web sockets para que, al momento de crearse nuevas publicaciones en la capa de datos, la interfaz reciba en tiempo real esta nueva información y mande la información al usuario.
-		4.3.- Implementar un sistema de cargar perezosa (lazy loading) para poder cargar de manera asíncrona las distintas publicaciones que estén en la base de datos.
-	5.-	Unidades de Trabajo: 160h
-	6.-	Dependencias: 5.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\section{Definición}
-
-\textit{Robot Operating System} (Sistema Operativo de/para Robot) o sencillamente ROS es, tal como su nombre implica, un sistema operativo para robots, de forma similar a los sistemas operativos para computadores de escritorio o servidores. Desarrollado y mantenido por la empresa Willow Garage desde 2008 hasta 2013, siendo tomada su dirección en ese año por la Fundación de Robótica de Código Abierto, es una colección de herramientas, bibliotecas y convenciones que buscan simplificar la tarea de crear comportamientos de robot robustos y complejos a lo largo de una amplia variedad de plataformas robóticas.
-
-La justificación de porqué hacer esto es porque decididamente, crear software robótico de propósito general y verdaderamente robusto es difícil, ya que si bien para un ser humano algunos problemas son triviales, no lo son en lo absoluto al momento de tomar en cuenta las grandes variaciones entre instancias de tareas y entornos. Lidiar con estas variaciones es tan complicado que ningún individuo, laboratorio o institución pudiera esperar llevarlo a cabo por su propia cuenta.
-
-Por ello, ROS fue construido desde cero con el fin de alentar el desarrollo de software robótico de forma colaborativa. Un ejemplo de esto es que, un laboratorio podría tener expertos en cartografía o mapeado de interiores y podría contribuir un sistema de excelente calidad para la producción de mapas. Otro grupo podría tener expertos en el uso de mapas para navegar, y otro grupo podría haber descubierto un enfoque de visión por computador que funciona bien para el reconocimiento de objetos pequeños entre el desorden. ROS fue diseñado específicamente para grupos como éstos para colaborar y construir sobre el trabajo del otro. \cite{aboutros}
-
-Además, ROS es Software Libre y está distribuido bajo la licencia BSD, permitiendo el desarrollo de proyectos comerciales y no-comerciales. Una característica importante en cuanto a la arquitectura (que se detallará más adelante) es que ROS funciona a través de comunicación entre procesos, sin requerir que los módulos sean enlazados dentro del mismo ejecutable, por lo que cualquier sistema construido usando ROS como base puede tener control detallado sobre las licencias de software que utilicen sus módulos, ya sean GPL, BSD o cualquier otra hasta propietaria. \cite{quigley2009ros}
-
-\section{Características Principales}
-
-Se pueden comentar las siguientes:
+\subsection{Verificación de Correo Electrónico}
 
 \begin{description}
-	\item[Comunicación entre pares:] los sistemas robóticos complejos con múltiples enlaces podrían tener varios computadores de a bordo (para realizar tareas paralelas) conectados a través de una red. La ejecución de un maestro central podría dar lugar a la congestión severa en un enlace determinado. Usando una comunicación peer-to-peer o entre pares evitaría este problema. En ROS, una arquitectura peer-to-peer acoplado a un sistema de memoria intermedia o \textit{buffer} y un sistema de búsqueda (un servicio de nombres llamado ``maestro'' en ROS), le permite a cada componente dialogar directamente con cualquier otro, de forma sincrónica o asincrónica como sea necesario.
-
-	\item[Gratuito y de código abierto:] Ser una plataforma de código abierto ofrece la reutilización de funciones ya existentes proporcionadas por muchos otros usuarios de ROS. Su código se suministra en repositorios como \textit{stacks}, o ``pilas''. Otras personas han desarrollado capacidades sorprendentes para los robots que han sido ``de código abierto'' y son relativamente fáciles de añadir de forma incremental utilizando el entorno de desarrollo de ROS.
-
-	\item[Delgado:] Para combatir el desarrollo de algoritmos que se ``enredan'' o vinculan en un grado mayor o menor con el sistema operativo del robot y, por tanto, son difíciles de reutilizar posteriormente, los desarrolladores de ROS han planificado que los controladores y otros algoritmos sean contenidos en ejecutables independientes. Esto garantiza la máxima reutilización y, sobre todo, mantiene reducido su tamaño. Este método hace que ROS sea fácil de usar y ubica la complejidad en las bibliotecas. Esta disposición también facilita las pruebas unitarias y los sistemas desarrollados puede ser completamente independientes de otro sistema.
-
-	\item[Multi-lenguaje:] ROS es independiente del lenguaje, y se puede programar en varios lenguajes. La especificación ROS trabaja en la capa de mensajería. Las conexiones \textit{peer-to-peer} se negocian en XML-RPC, que existe en un gran número de lenguajes. Para soportar un nuevo lenguaje, se pueden reenvolver clases C ++ (lo cual se hizo para el cliente Octave, por ejemplo) o se escriben clases permitiendo que se generen mensajes. Estos mensajes se describen en IDL (\textit{Interface Definition Language}). \cite{quigley2009ros}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO no registrado de Gravitas, necesito verificar mi correo electrónico para poder proseguir mi proceso de Registro.
+    \item[Limitaciones:]  Se debe introducir una dirección de correo automatizada.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item Al ingresar mis datos básicos en el sistema Gravitas, el sistema debe enviar un correo electrónico a la dirección suministrada.
+            \item El correo electrónico debe contener un texto base explicando el proceso de registro y debe incluir un enlace a un formulario de preferencias de usuario.
+            \item Al ingresar al enlace, la cuenta de correo debe ser automáticamente verificada automáticamente en el sistema.
+            \item El enlace debe ser válido únicamente por 24 horas.
+            \item Al ingresar a un enlace no validado, se debe redirigir a la vista de registro e incluir un mensaje de error.
+            \item Al invalidarse un enlace, debe también eliminarse cualquier información persistida del registro inicial del usuario.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Implementar un remitente programado (mailer) para el envío de  correos a través del protocolo SMTP.
+            \item Desarrollar la vista para introducción de datos de usuario.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 16h
+    \item[Dependencias:] 1
 \end{description}
 
-\section{Arquitectura}
+\newpage
 
-ROS está implementado bajo los siguientes conceptos fundamentales:
+\subsection{Registro de Usuario mediante Open Authorization (OAuth)}
 
-\begin{itemize}
-	\itemsep1pt \parskip1pt \parsep1pt
-	\item Nodos: Son procesos que realizan cálculos; en el contexto de ROS, este término es intercambiable con ``módulo de software'' ya que está diseñado para ser altamente modular: un sistema está compuesto típicamente de muchos nodos.
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO no registrado de Gravitas deseo crear mi usuario dentro de la plataforma utilizando mis credenciales ya verificadas de servicios conocidos, para así agilizar mi acceso a la plataforma como usuario verificado.
+    \item[Limitaciones:] El usuario no debe haber iniciado sesión previamente ni tener una cuenta previamente asociada al correo de Gmail.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item El sistema debe brindar las opciones de Google, Facebook, LinkedIn y Github para realizar el registro de un nuevo usuario.
+            \item El usuario debe elegir su proveedor preferido para realizar la autenticación.
+            \item El sistema debe desplegar la interfaz de autenticación correspondiente al proveedor elegido.
+            \item Al terminar el proceso de validación con el proveedor, el sistema debe almacenar los datos básicos del usuario (Nombre, apellido, correo electrónico) dentro de la información básica personal.
+            \item El sistema debe redirigir a la vista de preferencias al usuario.
+            \item Si el proveedor presenta o envía un error, informar al usuario con un “Fallo en la autenticación del servicio X” donde X es el servicio elegido.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Generar la clave de acceso a la API de O-Auth en la cónsola de desarrollo de Google.
+            \item Entender cómo funciona el sistema de Autenticación mediante Oauth de FeathersJS.
+            \item Configurar la creación de un nuevo usuario con los datos proveídos por Google.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 1.
+\end{description}
 
-	\item Mensajes:	Los nodos se comunican entre si al pasar mensajes, que no es más que una estructura de datos de tipo estricto. Los tipos de datos soportados pueden ser estándar (entero, flotante, booleano, etc.), así como también arreglos de estos o constantes. Un mensaje puede estar compuesto por varios mensajes y el nivel de anidamiento al que pueden llegar es arbitrario.
+\newpage
 
-	\item Tópicos: Un nodo publica un mensaje a través de un tópico, que es sencillamente una cadena de caracteres tal como ``odometría'' o ``mapa''. Un nodo que esté interesado en un tipo de dato específico se suscribirá al tópico apropiado. En cualquier momento dado, pueden existir múltiples publicadores o suscriptores de forma concurrente para un tópico particular y un nodo puede publicar o suscribirse a múltiples tópicos. Por lo general, los publicadores y suscriptores no están al tanto de la existencia del otro.
+\subsection{Inicio de Sesión Manual}
 
-	\item Servicios: Si bien el modelo publicar-suscribir basado en tópicos es un paradigma de comunicaciones flexible, el esquema de enrutamiento de ``emisión'' no es apropiado para las transacciones síncronas, lo cual puede simplificar el diseño de algunos nodos. A esto se le llama ``servicio'' en ROS, definidos por un nombre y un par de mensajes tipados, uno para la petición y otro para la respuesta. Es de notar que, a diferencia de los tópicos, solo un nodo puede anunciar un servicio con un nombre particular; por ejemplo, solamente puede haber un servicio llamado ``clasificar\_imagen''. \cite{quigley2009ros}
-\end{itemize}
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de Gravitas necesito poder iniciar sesión en el sistema para manejar las herramientas ofrecidas por la plataforma.
+    \item[Limitaciones:] Se debe permitir heredar la sesión de Ignis en el sistema Gravitas; además, ya el usuario debió registrarse con el correo asociado al servicio de autenticación.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item Solicitar usuario y contraseña para autenticar al usuario.
+            \item Validación de la información en servidores para poder continuar.
+            \item Si el usuario no ha finalizado el proceso de registro, debe ir a finalizarlo para continuar.
+            \item Si el usuario finalizó el proceso de registro y la información suministrada es correcta, debe dirigir a la vista inicial.
+            \item Si la información suministrada no coincide con la persistida en el sistema, el mismo debe emitir un error de “Correo o Contraseña inválido”.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Desarrollar la vista de inicio de sesión, solicitando correo y clave para continuar, una vez autenticado, se debe evaluar si este usuario debe finalizar el proceso de registros o si puede acceder a la vista inicial.
+            \item Estudiar los patrones de desarrollo de Single Sign On (SSO) entre una plataforma de NodeJS y Ruby On Rails.
+            \item Implementar un Single Sign On (SSO) para persistir las sesiones entre ambas plataformas.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 1, 2.
+\end{description}
 
-\section{Requisitos de Instalación}
-
-ROS está organizado en distribuciones, que cuentan cada una con sus respectivos requisitos de instalación. Por consenso, cada mes de mayo se lanza una nueva distribución de ROS, y las distribuciones de años pares son de soporte extendido, con 5 años de soporte. Las distribuciones de años impares son distribuciones regulares, con soporte por 2 años. Igualmente, la plataforma soportada por defecto es Ubuntu Linux, mientras que otros sistemas operativos, tales como OS X, Android, Arch Linux, Debian y Windows están bajo soporte experimental, por parte de la comunidad.
-
-Al momento de la elaboración de este proyecto, la versión instalada es ``\textit{Indigo Igloo}'' (con soporte LTS o \textit{Long Term Support} -- Soporte de Larga Duración), con los siguientes requisitos:
-
-\begin{itemize}
-	\itemsep1pt \parskip1pt \parsep1pt
-	\item Ubuntu Saucy (13.10) o Ubuntu Trusty (14.04 LTS)
-	\item C++03
-	\item Boost 1.53
-	\item Lisp SBCL 1.0.x
-	\item Python 2.7
-	\item CMake 2.8.11 \cite{rosrequirements}
-\end{itemize}
-
-Durante el proceso de instalación, se lleva a cabo la satisfacción de dependencias.
-
-\section{Procedimiento de Instalación}
-
-\subsection{Descripción de Entornos de Desarrollo}
-
-Los entornos y dispositivos utilizados para llevar a cabo el proyecto, para pruebas de instalación y/o funcionamiento, son los siguientes:
-
-\begin{itemize}
-	\item Máquina Virtual: Oracle \textregistered{} VirtualBox VM\textsuperscript{TM}, 2 GB RAM, 30 GB disco duro, con Ubuntu Trusty Tahr 14.04.2 de 64 bits.
-	\item Computador Portatil: Lenovo \textregistered{} Z50-70, procesador Intel \textregistered{}  Core\textsuperscript{TM} i7-4510U, 6 GB RAM, 500 GB disco duro, con Ubuntu Trusty Tahr 14.04.2 de 64 bits.
-	\item Microsoft \textregistered{}  XBOX 360 \textregistered{}  Kinect\textsuperscript{TM}
-\end{itemize}
-
-En la máquina virtual se llevó a cabo la comprobación del procedimiento de instalación, ya que es un entorno que permite restaurar a un punto anterior con facilidad, en caso de inconvenientes tales como paquetes mal instalados, etc.
-
-\subsection{Instalación}
-
-El proceso de instalación de ROS está excelentemente documentado en su \textit{wiki} oficial accesible desde \url{http://wiki.ros.org/ROS/Installation}, por lo cual seguimos los pasos tomando nota de cualquier dependencia faltante o error.
-
-Para comenzar, en el enlace previamente mencionado, hacemos clic en ``Indigo installation instructions'', puesto que es la versión de soporte extendido y es la compatible con la versión instalada de Ubuntu.
-
-Una vez allí, bajo el apartado ``Supported'', hacemos clic en ``Ubuntu''.
-
-En adelante, solamente seguimos los siguientes pasos haciendo énfasis en la versión instalada de Ubuntu, tomados directamente del sitio:
-
-\begin{enumerate}
-\renewcommand{\labelenumii}{\theenumii}
-\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
-	\item Configure sus repositorios de Ubuntu
-
-	Configure sus repositorios de Ubuntu para activar los repositorios ``restricted'', ``universe'' y ``multiverse''. La guía de configuración de repositorios de Ubuntu, disponible en el siguiente enlace \url{https://help.ubuntu.com/community/Repositories/Ubuntu} (en inglés) detalla adecuadamente los pasos necesarios.
-	\item Configure el archivo sources.list
-
-	Configure su computador para aceptar software desde packages.ros.org. Esta distribución de ROS \textbf{sólo} soporta Saucy (Ubuntu 13.10) y Trusty (Ubuntu 14.04) para paquetes Debian.
-
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	\item Configure sus llaves
-
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-key\\ 0xB01FA116
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	\item Instalación
-	Primero debe asegurarse que su índice de paquetes Debian esté actualizado:
-
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo apt-get update
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	Si está utilizando Ubuntu Trusty 14.04.2 y experimenta problemas con las dependencias durante la instalación de ROS, quizás deba instalar dependencias adicionales del sistema.
-
-	\begin{redwarningbox}
-	No instale estos paquetes si está utilizando 14.04, ya que destruirá su servidor X (gráfico):
-	\end{redwarningbox}
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo apt-get install xserver-xorg-dev-lts-utopic mesa-common-dev-lts-utopic libxatracker-dev-lts-utopic libopenvg1-mesa-dev-lts-utopic libgles2-mesa-dev-lts-utopic libgles1-mesa-dev-lts-utopic libgl1-mesa-dev-lts-utopic libgbm-dev-lts-utopic libegl1-mesa-dev-lts-utopic
-	\end{lstlisting}
-	\end{blackcodebox}
-	\begin{redwarningbox}
-	No instale los paquetes anteriores si está utilizando 14.04, ya que destruirá su servidor X (gráfico). Alternativamente, intente instalar sólo lo siguiente para corregir problemas de dependencias:
-	\end{redwarningbox}
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo apt-get install libgl1-mesa-dev-lts-utopic
-	\end{lstlisting}
-	\end{blackcodebox}
-
-	Existen muchas bibliotecas y herramientas en ROS. Se han provisto cuatro configuraciones por defecto para iniciar. También se pueden instalar paquetes de ROS de forma individual.
-
-	\begin{itemize}
-		\item Instalación de Escritorio Completa: (Recomendada): ROS, rqt, rviz, bibliotecas genéricas para robots, simuladores 2D/3D, navegación y percepción 2D/3D
-
-		Indigo usa Gazebo 2, la cual es la versión por defecto en Trusty y es la recomendada. Si desea actualizar a Gazebo 3 vea las instrucciones en \url{http://wiki.gazebosim.org/wiki/Install/Gazebo_and_ROS#Gazebo_3.x_series} acerca de cómo actualizar el simulador.
+\newpage
 
 
-		\begin{blackcodebox}
-		\begin{lstlisting}[language=bash]
-sudo apt-get install ros-indigo-desktop-full
-		\end{lstlisting}
-		\end{blackcodebox}
+\subsection{Inicio de Sesión mediante Open Authorization (OAuth)}
 
-		\item Instalación de Escritorio: ROS, rqt, rviz, y bibliotecas genéricas para robots.
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de Gravitas deseo acceder a mi usuario dentro de la plataforma utilizando mis credenciales ya verificadas de servicios conocidos, para así agilizar mi acceso a la plataforma como usuario verificado.
+    \item[Limitaciones:] Se debe permitir heredar la sesión de Ignis en el sistema Gravitas; además, ya el usuario debió registrarse con el correo asociado al servicio de autenticación.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item El sistema debe brindar la opción de Google para permitir el inicio de sesión de un usuario.
+            \item El sistema debe desplegar la interfaz de autenticación correspondiente al proveedor elegido.
+            \item Al terminar el proceso de validación con el proveedor, el sistema debe redirigir a la pantalla inicial.
+            \item Si el proveedor presenta o envía un error, informar al usuario con un “Fallo en la autenticación del servicio X” donde X es el servicio elegido.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Obtener credenciales de OAuth 2.0 de la Google API Console
+            \item Integrar credenciales con FeathersJS
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 1, 2.
+\end{description}
 
-		\begin{blackcodebox}
-		\begin{lstlisting}[language=bash]
-sudo apt-get install ros-indigo-desktop
-		\end{lstlisting}
-		\end{blackcodebox}
+\newpage
 
-		\item ROS-Base: (Esencial) Las bibliotecas de paquete, generación y comunicación. No incluye herramientas de entorno gráfico.
+\subsection{Autenticación en dos pasos}
 
-		\begin{blackcodebox}
-		\begin{lstlisting}[language=bash]
-sudo apt-get install ros-indigo-ros-base
-		\end{lstlisting}
-		\end{blackcodebox}
+\begin{description}
+    \item[Prioridad:] W
+    \item[Rol-Meta-Beneficio:] Como USUARIO de Gravitas necesito garantizar la seguridad de mis datos con una autenticación personal, rápido y confiable para las operaciones  para la plataforma.
+    \item[Limitaciones:] Se debe permitir heredar la sesión de Ignis en el sistema Gravitas.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item El modo de Autenticación en dos pasos solo estará activo si el usuario así lo seleccionó en sus preferencias.
+            \item Al momento de realizar una operación de inicio de sesión y/o intercambio de valor, el sistema debe desplegar la interfaz de autenticación en dos pasos.
+            \item El sistema debe solicitar al usuario un código generado automáticamente.
+            \item El sistema de correos debe enviar un correo electrónico cuyo contenido sea el código generado.
+            \item Al introducirse el código correctamente, el sistema debe redirigir según corresponda a la vista de confirmación del intercambio de valor ó  a la vista de inicio de sesión.
+            \item De introducirse el código erróneamente, el sistema debe indicar un mensaje de error con el mensaje “Código Inválido”.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Integrar un sistema generador de códigos de confirmación.
+            \item Reciclar el JWT KEY de Ignis en Gravitas.
+            \item Desarrollar algún tipo de funcionalidad que permita encapsular el proceso de autenticación para ser usada en todas las rutas que lo requieran.
+            \item Configurar la capa de datos para permitir el envío de correos electrónicos.
+            \item Desarrollar funcionalidad que soporte el envío de todo tipo de correos electrónicos.
+            \item Desarrollo del modulo de envío de correos para autenticación en dos pasos.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 16h.
+    \item[Dependencias:] 4, 5.
+\end{description}
 
-		\item Paquete Individual: También puede instalar un paquete específico de ROS package (reemplace subguiones con guiones del nombre del paquete):
+\newpage
+    
+    
+\subsection{Planes de pago por el servicio}
 
-		\begin{blackcodebox}
-		\begin{lstlisting}[language=bash]
-sudo apt-get install ros-indigo-PAQUETE
-		\end{lstlisting}
-		\end{blackcodebox}
-		por ejemplo:
+\begin{description}
+    \item[Prioridad:] W
+    \item[Rol-Meta-Beneficio:] Como INTERESADO de la plataforma Gravitas, quiero que los USUARIOS paguen por el uso del servicio ofrecido para MANTENER económicamente viable el proceso de crecimiento y desarrollo de la plataforma misma.
+    \item[Limitaciones:] El sistema debe manejar la posibilidad de que por razones de negocios, los planes sean temporalmente deshabilitados.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item El sistema debe indicarle al usuario que no hay ciertas funcionalidades habilitadas hasta no realice el pago correspondiente a su plan.
+            \item El sistema debe ofrecerle un enlace a un procesador de pagos.
+            \item El usuario debe tener una versión corta de los Términos y Condiciones del uso de la plataforma antes de iniciar el proceso de pago, así como un enlace al documento completo.
+            \item El usuario debe ser llevado a la vista de personalización de la experiencia de usuario luego del pago de los planes.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Investigar la integración de Stripe con el marco de trabajo a utilizar.
+            \item Mantener comunicación constante con los interesados. Se recomienda una metodología de Programación Extrema de fácil adaptación a los cambios en los requerimientos iniciales.
+            \item Al terminar el proceso de pagos, la información del pago debe ser registrada en la base de datos de la plataforma.
+            \item La información del pago debe estar disponible como un registro tanto para el usuario como para los administradores del sitio.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 160h.
+    \item[Dependencias:] 1, 2, 3.
+\end{description}
 
-		\begin{blackcodebox}
-		\begin{lstlisting}[language=bash]
-sudo apt-get install ros-indigo-slam-gmapping
-		\end{lstlisting}
-		\end{blackcodebox}
+\newpage    
+    
+\subsection{Interacción inicial y de configuración básica}
 
-		Para listar paquetes disponibles, use:
+\begin{description}
+    \item[Prioridad:] C
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravitas, me gustaría poder ajustar mis preferencias básicas para obtener mejores recomendaciones de publicaciones y una mejor experiencia de usuario general.
+    \item[Limitaciones:]  El usuario debe estar registrado y/o haber realizado sus operaciones de pago.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item El usuario debe elegir su rol en la plataforma según los que se encuentran disponibles: “trabajador”, “mentor”, “inversionista”, “emprendedor”.
+            \item El usuario debe elegir una serie de intereses personales (utilizados para configurar los posts recomendados de su inicio).
+            \item Si el usuario eligió la opción “emprendedor”, se debe brindar la opción de crear un emprendimiento.
+            \begin{enumerate}
+                \item El usuario debe llenar un formulario con información básica; nombre, logotipo, descripción y área de emprendimiento.
+                \item El usuario debe responder si es un emprendedor con experiencia o un novato en busca de aprender.
+                \begin{enumerate}
+                    \item Si elige la primera opción, pasará inmediatamente a una vista donde enviará las invitaciones a los miembros de su equipo y sucesivamente será enviado a la vista inicial.
+                    \item Si elige la segunda, debe mostrarse una interfaz de tutorial donde se muestren relatos gráficos, y vídeos del uso de las herramientas de la plataforma Gravitas, con la opción de saltarlos y proseguir con el flujo de la primera opción.
+                \end{enumerate}
+            \end{enumerate}
+            \item Si el usuario eligió la opción “trabajador” o “mentor”, debe pasar luego a llenar un formulario donde indique información laboral básica, como experiencia y educación.
+                \begin{enumerate}
+                    \item El usuario debe poder subir su CV en formato PDF.
+                    \item Luego de introducida esta información, si dicho usuario ya posee una invitación a una startup, deberá aparecer la opción de aceptar o rechazar la invitación, de lo contrario, será redirigido a la página de inicio.
+                \end{enumerate}
+            \item Si el usuario eligió la opción “inversionista”, el mismo debe introducir los nombres de los emprendimientos dentro de los cuáles ha invertido capital.
+                \begin{enumerate}
+                    \item El usuario debe indicar en un posterior campo un estimado total de lo invertido en ellos. Terminado ello, pasa a ser redirigido a la página de inicio.
+                \end{enumerate}
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Deben construirse las vistas para la entrada de datos, así como la información correspondiente.
+            \item Se debe negociar con el interesado para definir si el manejo de roles y si se puede replantear dichos roles a únicamente “Administrador” y “Usuario Común”, con el objetivo de dejar los roles solo a las membresías de startups.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 32h.
+    \item[Dependencias:] 4, 5.
+\end{description}
 
-		\begin{blackcodebox}
-		\begin{lstlisting}[language=bash]
-apt-cache search ros-indigo
-		\end{lstlisting}
-		\end{blackcodebox}
-	\end{itemize}
-	\item Inicialice rosdep
+\newpage    
 
-	Antes de poder utilizar ROS, se debe inicializar rosdep. rosdep permite instalar dependencias del sistema con facilidad para código fuente que desee compilar y es requerido para poder ejecutar algunos componentes centrales en ROS.
+\subsection{Vista tutorial e invitaciones automáticas}
 
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo rosdep init
-rosdep update
-	\end{lstlisting}
-	\end{blackcodebox}
+\begin{description}
+    \item[Prioridad:] W
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravitas, deseo recibir información instruccional del sitio para poder aprovechar de manera óptima todas sus herramientas.
+    \item[Limitaciones:]  El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item Al usuario seleccionar que desea aprender a emprender, deben desplegarse una interfaz gráfica que contenga un listado de los tópicos más importantes del emprendimiento.  Inicialmente, serán cuatro puntos que estarán cada uno de ellos relacionados con las casillas del modelo de negocios: la propuesta de valor (englobando idea y construcción del producto), infraestructura (englobando las actividades, aliados y recursos claves), clientes (relacionado con las relaciones, canales y segmentos) y finalmente los flujos monetarios (estructuras de costos y flujos de ingresos).
+            \item Al hacer click sobre cada uno de ellos, este debe incluir un vídeo, una serie de gráficos y un texto explicativo con una fuente agradable para la lectura y un tiempo estimado de lectura.
+            \item Cuando el usuario finalice la lectura o el vídeo, debe indicarse que ese tutorial particular fue completado y ofrecer un enlace al tutorial siguiente.
+            \item Al completarse todos los tutoriales, el usuario pasará a invitar a todos los usuarios que crea competentes en su emprendimiento, con su rol correspondiente y su responsabilidad en el mismo. Las responsabilidades son: CEO (Chief Executive Officer), CTO (Chief Technology Officer), CMO (Chief Marketing Officer), CFO (Chief Financial Officer), CIO (Chief Information Officer), CCO (Chief Communications Officer). Finalizado esto, debe dirigirse a la vista inicial.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Mantener comunicación constante con el equipo de diseño gráfico para integrar mejoras y cambios a la experiencia de usuario (UX) y a los gráficos.
+            \item Construir una interfaz de usuario para la disposición de iFrames  con contenido exclusivo de Ignis Gravitas.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 160h.
+    \item[Dependencias:] 4, 5.
+\end{description}
 
-	\item Configuración de entorno
+\newpage
 
-	Es conveniente si las variables de entorno de ROS son agregadas automáticamente a su sesión Bash cada vez que se invoca un nuevo terminal:
+\subsection{Vista Inicial}
 
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
-source ~/.bashrc
-	\end{lstlisting}
-	\end{blackcodebox}
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravitas, deseo poder interactuar con las publicaciones más recientes y de mayor interés de mis contactos para tener información que pueda resultar de utilidad para mí y para el emprendimiento al que pertenezco.
+    \item[Limitaciones:] El usuario debe estar registrado, haber iniciado sesión y haber definido sus preferencias de usuario.
+    \item[Condiciones de Satisfacción:] \hfill
+        \begin{enumerate}
+            \item Al culminar el proceso de configuración del emprendimiento, debe mostrarse una interfaz básica que muestre a los usuarios publicaciones basadas en sus preferencias y/o al emprendimiento al que pertenecen de manera inmediata, así como a los demás usuarios y emprendimientos que sigue dentro de la plataforma.
+            \item La vista inicial debe mostrar cuatro secciones visualmente separadas:
+                \begin{enumerate}
+                    \item La vista de publicaciones (con una información básica inicial la primera vez que se inicia sesión, en el centro).
+                    \begin{enumerate}
+                        \item Cada publicación debe contener el nombre del emprendimiento o el usuario que la publica, su foto, fecha y hora de publicación, imagen de la publicación (si la posee) y una descripción asociada.
+                        \item La publicación debe indicar la fuente de su contenido si el mismo fue extraído desde un sitio externo.
+                        \item Cada publicación se le debe poder dar “Me Gusta”,  agregar un comentario (donde se puedan hacer menciones) y compartirse como una publicación propia (de no serlo).
+                        \item El usuario debe ser capaz de crear sus propias publicaciones.
+                        \item El usuario debe poder anexar imágenes, enlaces a sitios externos, etiquetar a otras personas en una publicación.
+                    \end{enumerate}
+                \item Propaganda alusiva al producto Ignis, así como sugerencias de contactos o emprendimientos a seguir (derecha).
+                    \begin{enumerate}
+                        \item Debe mostrar enlaces a secciones básicas como el “Perfil del Emprendimiento” y “Configuraciones”.
+                    \end{enumerate}
+                \item Accesos directos a las herramientas de Gravitas e información básica del perfil social (izquierda):
+                    \begin{enumerate}
+                        \item Debe mostrar el “Número de seguidores” del usuario.
+                    \end{enumerate}
+                \item Accesos directos al perfil personal y a una barra de búsqueda (barra de navegación superior) e íconos para un chat (inferior).
+                \end{enumerate}
+            \item 
+        \end{enumerate}
+    \item[Tareas de Ingeniería:] \hfill
+        \begin{enumerate}
+            \item Definir el formato de publicaciones y definir quienes pueden realizarlas.
+            \item Desarrollar un patrón reactivo mediante web sockets para que, al momento de crearse nuevas publicaciones en la capa de datos, la interfaz reciba en tiempo real esta nueva información y mande la información al usuario.
+            \item Implementar un sistema de cargar perezosa (lazy loading) para poder cargar de manera asíncrona las distintas publicaciones que estén en la base de datos.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 160h.
+    \item[Dependencias:] 5.
+\end{description}
 
-	Si tiene más de una distribución de ROS instalada, \url{~/.bashrc} sólo debe tomar como fuente el \url{setup.bash} para la versión que esté en uso actualmente.
+\newpage
 
-	Si simplemente desea cambiar el entorno del terminal actual, puede escribir:
 
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-source /opt/ros/indigo/setup.bash
-	\end{lstlisting}
-	\end{blackcodebox}
+\subsection{Crear Publicaciones}
 
-	\item Obtener rosinstall
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravitas, deseo  crear nuevas publicaciones para poder compartir mis intereses laborales así como los de mi emprendimiento, si lo tuviese. 
+    \item[Limitaciones:] El usuario debe estar registrado, haber iniciado sesión y haber definido sus preferencias de usuario.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Dentro de la vista inicial, debe estar una entrada de texto que, al clickearse, debe lanzar un modal .
+		    \item El modal tiene que incluir una entrada de texto y una entrada de imágenes.
+		    \item Si el usuario cierra el modal y no ha terminado de crear su publicación, el sistema debe guardar la información en forma de borrador.
+		    \item El usuario debe ser capaz de elegir si desea crear la publicación con su nombre o con alguno de los perfiles que administra.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item	Se debe realizar una interfaz gráfica para la entrada y la disposición de datos.
+		    \item La interfaz gráfica debe conectarse a un manejador de estados general.
+		    \item La interfaz gráfica debe conectarse a un servicio en backend que se encargue del procesamiento de la data.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 24h
+    \item[Dependencias:] 10
+\end{description}
 
-rosinstall es una herramienta de línea de comandos frecuentemente utilizada en ROS que es distribuida por separado. Le permite descargar con facilidad muchos árboles fuentes para paquetes ROS con un solo comando.
+\newpage
 
-Para instalar esta herramienta en Ubuntu, ejecute:
+\subsection{Vista dedicada de Publicación}
 
-	\begin{blackcodebox}
-	\begin{lstlisting}[language=bash]
-sudo apt-get install python-rosinstall
-	\end{lstlisting}
-	\end{blackcodebox}
-\end{enumerate}
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravitas, deseo  acceder de manera individual a una publicación para detallar su contenido.
+    \item[Limitaciones:] El usuario debe haber creado la publicación o tener permiso para accederla.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Al hacer click sobre la fecha y hora de publicación, el sistema debe desplegar una vista dedicada donde únicamente se perciba la publicación seleccionada.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Haciendo uso del sistema de rutas de Nuxt, crear una vista dedicada dinámica basada en el ID de la publicación.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 1h.
+    \item[Dependencias:] 10, 11.
+\end{description}
 
-\section{Módulos Disponibles para SLAM en ROS}
+\newpage
 
-Debido a la naturaleza propia del software, es improbable, para no decir imposible, poder realizar un listado exhaustivo de todos los módulos disponibles. Sin embargo, se listan acá los más populares, con el fin de brindar alternativas para elaborar mapas de entorno con distintos tipos de sensores.
+\subsection{Editar Publicaciones}
 
-Es de notar que algunos paquetes requieren obtener datos de un sensor láser, por lo cual el Kinect no cumpliría con ese requerimiento; sin embargo, hay un paquete o nodo de ROS que permite convertir las imágenes con datos de profundidad capturadas por un sensor RGB-D (tal como el Kinect) y emular un sensor láser. Este puede encontrarse acá: \url{http://wiki.ros.org/depthimage_to_laserscan}
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravitas, deseo  editar mis publicaciones para poder corregir las publicaciones que necesitas.
+    \item[Limitaciones:]   El usuario debe haber creado la publicación o tener permiso para editarla.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Dentro de cada publicación, debe haber un botón para abrir el proceso de edición.
+		    \item El modal de creación debe desplegarse luego de clickear sobre el botón.
+		    \item El modal debe estar lleno con la información del post a editar.
+		    \item Al presionar el botón “Guardar”, la información de la Publicación debe actualizarse en tiempo real. 
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Se debe realizar una precarga de los datos antes de renderizar el componente.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 24h.
+    \item[Dependencias:] 10, 11.
+\end{description}
 
-\begin{itemize}
-	\itemsep1pt \parskip1pt \parsep1pt
-	\item gmapping (\url{http://wiki.ros.org/gmapping})
-	\item hector\_slam (\url{http://wiki.ros.org/hector_slam})
-	\item RTAB-Map (\url{http://wiki.ros.org/rtabmap})
-	\item rgbdslam (\url{http://wiki.ros.org/rgbdslam})
-	\item rgbdslam V2 (versión actualizada) (\url{http://felixendres.github.io/rgbdslam_v2/})
-\end{itemize}
+\newpage
 
-Tras evaluar documentación disponible, ejemplos de código y funcionamiento y versiones soportadas de cada módulo en ROS, se decidió utilizar RTAB-Map (descrito en el siguiente capítulo).
+\subsection{Eliminar Publicaciones}
 
-Es de destacar, que RTAB-Map cuenta con soporte directo por parte del desarrollador del mismo, por lo cual será utilizado en este proyecto para la generación de mapas.
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravitas, deseo  eliminar mis publicaciones para poder eliminar las que ya no me son de interés y utilidad.
+    \item[Limitaciones:]  El usuario debe haber creado la publicación o tener permiso para eliminarla.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Dentro de cada publicación, debe haber un botón para abrir el proceso de eliminación.
+    		\item Debe desplegarse una confirmación antes de eliminar el post.
+	        \item El post, al confirmar la eliminación, debe ser retirado del listado de publicaciones de la Vista Inicial en tiempo real.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Conectar el punto final (endpoint) con el servicio en backend.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 16h.
+    \item[Dependencias:] 10, 11.
+\end{description}
+
+\newpage
+
+
+\subsection{Creación de Publicación para Propuestas de Trabajo}
+
+\begin{description}
+    \item[Prioridad:] W
+    \item[Rol-Meta-Beneficio:] Como ENCARGADO de una startup, deseo crear propuestas de trabajo con el objetivo de iniciar un ecosistema de empleos dentro del a plataforma.
+    \item[Limitaciones:]   El usuario debe tener permisos de creación de publicaciones en el Emprendimiento dado.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item La opción de creación de contenido debe estar dispuesta en la zona superior del listado de Publicaciones en la Vista Inicial.
+            \item Dentro del modal de Crear Publicación, debe haber una interacción que permita mostrar un formulario para oferta de trabajo.
+            \item Las ofertas de trabajo deben contener: el cargo que se ofrece, el rango salarial a dar, una descripción del trabajo a ofrecer, los requisitos obligatorios a cumplir por los aspirantes y los requisitos opcionales que también son valorados.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Crear un formulario para las propuestas de trabajo y realizar las validaciones correspondientes a cada campo.
+    		\item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma. 
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 40h.
+    \item[Dependencias:] 10, 11.
+\end{description}
+
+\newpage
+
+\subsection{Creación de Startups}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravedad, deseo CREAR startups para poder CREAR publicaciones y CONTRATAR nuevo personal dentro de la startup.
+    \item[Limitaciones:]  El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item La opción de creación de startups debe estar incluida en un menú desplegable en la vista principal.
+    		\item Al presionar el botón, la pantalla de navegación debe redirigir a la vista de edición de startups con un formulario en limpio.
+    		\item Al llenar el formulario, debe guardarse la startup de manera persisitida.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 16h.
+    \item[Dependencias:] 10.
+\end{description}
+
+\newpage
+
+\subsection{Perfil de Startup}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo ACCEDER al perfil de una startup para poder ver la información general que posee la misma.
+    \item[Limitaciones:]  El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y accedido al perfil de una startup.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Al acceder al perfil de una startup, se debe mostrar su nombre, el número de posts y seguidores que psoee, así como una foto referencial de la misma.
+    		\item Debe incluir la posibilidad para el usuario actual de seguir a dicha startup.
+    		\item Debe incluir cinco pestañas donde cada una contenga información descriptiva de la startup:
+    		    \begin{enumerate}
+    		        \item Una pestaña Descripción General donde se muestre un resumen básico de la startup, así como una lista de trabajos y comentarios dados por clientes de la startup, inversores, inversión conseguida, un comentario básico sobre la cultura de la startup y finalmente, una lista completa de todos los posts de la startup.
+        			\item Una pestaña Gente donde se describa a los miembros del equipo por su rol: fundadores, miembros antiguos, etc.
+        			\item Una sección Cultura donde se listen los beneficios de la startup, así como una descripción extensa de la cultura de la misma.
+        			\item Una sección Financiamento donde se listen y describan los financistas de la startup.
+        			\item Una sección donde se listen todos los trabajos ofrecidos por la startup, así como una breve descripción de lo que significa trabajar para la misma.
+    		    \end{enumerate}
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 16h.
+    \item[Dependencias:] 10, 16.
+\end{description}
+
+\newpage
+
+
+\subsection{Formulario de una startup}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como CREADOR de una startup, deseo especificar la información relevante de mi emprendimiento, de tal manera que cumpla con los requerimientos deseados.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber accedido a la creación/edición de startups.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Se deben mostrar una serie de pestañas con los siguientes títulos: “Resumen”, “Personas”, “Cultura”, “Financiamiento”, “Trabajos”
+		    \item En la sección de Resumen:
+			    \begin{enumerate}
+			        \item La interfaz debe proveer una entrada de imagen.
+			        \item La interfaz debe proveer entrada y validación para los siguientes campos:
+        				\begin{enumerate}
+        				    \item Nombre de la startup. No debe estar en blanco.
+            				\item Dirección de correo de la startup. Debe seguir un estándar de correo electrónico.
+            				\item Dirección de la página web de la startup. La misma debe  estar alojada mediante protocolo seguro (HTTPS).
+            				\item Menú desplegable para la introducción de los enlaces para las distintas redes sociales.
+            				\item Listado de los mercados laborales a los que se desea apuntar.
+            				\item Enlace a un vídeo relacionado con la startup.
+            				\item Testimonios de los distintos clientes de la startup.
+        				\end{enumerate}
+        				
+        				
+        			\item La sección de Personas debe incluir:
+        				\begin{enumerate}
+        				    \item Una entrada de texto para la descripción general sobre las personas que trabajan en la empresa.
+        				    \item Un formulario para agregar nuevos miembros a la startup.
+        				\end{enumerate}
+        			\item La sección de Cultura debe incluir:
+        			    \begin{enumerate}
+        			        \item Una entrada de texto para la descripción general de la cultura de la startup.
+            				\item Imágenes de las instalaciones de la startup.
+            				\item Un formulario para describir los beneficios que tienen los empleados de dicha startup.
+        			    \end{enumerate}
+        				
+        			\item La sección de Financiamiento debe incluir:
+        			   \begin{enumerate}
+        			       \item Una entrada de texto para indicar el total de dinero recaudado en rondas de financiamiento.
+        			       \item Un formulario para indicar los datos de los inversores (si se desea) y el monto con el que contribuyeron.
+        			   \end{enumerate}
+        			\item La sección de Trabajos debe incluir:	    \begin{enumerate}
+        			        \item Una entrada de texto para la descripción general de lo que es ser un empleado de la startup.
+        				    \item Un formulario para especificar oportunidades de trabajo dentro de la startup.
+        			\end{enumerate} 
+			    \end{enumerate}
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 40h.
+    \item[Dependencias:] 16.
+\end{description}
+
+\newpage
+
+
+\subsection{Edición de Startups}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo MODIFICAR startups para poder ACTUALIZAR su información general y específica.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles, creado una startup y tener capacidad de modificación sobre las mismas.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Al clickear sobre el nombre dentro del listado de Startups, debe mostrarse la pantalla de edición de startups.
+    		\item Al ingresar a la vista de edición, deben mostrarse el mismo formulario de creación de startups, pero con los datos ya llenados de la startup seleccionada.
+    		\item Al llenar el formulario, debe guardarse la startup de manera persisitida.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 16, 17.
+\end{description}
+
+\newpage
+
+
+
+\subsection{Listado de Startups}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravedad, deseo LISTAR las startups que tengo disponibles para poder COTEJAR su información general.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Al clickear sobre el ítem de “Startups” en el menú lateral de navegación, se debe desplegar una vista cuadriculada donde se muestren las startups registradas en la Plataforma.
+    		\item Al ingresar a la vista de “Startups” y hacer click sobre una startup, debe redirigir al perfil de la misma.
+    		\item Al llegar al final de la vista, deben cargarse más elementos. De no haber más, se debe indicar que se llegó al final de la lista.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 16, 17.
+\end{description}
+
+\newpage
+
+
+\subsection{Creación de membresías}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo invitar a los nuevos miembros de mi startup, para que los mismos TENGAN ACCESO y visibilidad dentro de la plataforma.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber seleccionado la opción de creación o edición de startups.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe acceder a la pestaña de Persona .
+    		\item Al ingresar a la vista de “Startups” y hacer click sobre una startup, debe redirigir al perfil de la misma.
+    		\item Al llegar al final de la vista, deben cargarse más elementos. De no haber más, se debe indicar que se llegó al final de la lista.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 17.
+\end{description}
+
+\newpage
+
+\subsection{Edición de Membresías}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravedad, deseo editar a los nuevos miembros de mi startup, para que los mismos TENGAN LOS DATOS ACTUALIZADOS en cada momento que sea necesario.
+    \item[Limitaciones:]  El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber seleccionado la opción de creación o edición de startups.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe acceder a la pestaña de Personas.
+    		\item Al clickear sobre el botón de Añadir Miembro, se debe desplegar un modal donde se muestren los usuarios miembros de la startup dentro de una tabla.
+    		\item El usuario podrá editar al miembro elegido en la tabla.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item La tabla puede contener celdas editables. De no ser esto posible, que se permita eliminar al usuario y crearlo de nuevo.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 17.
+\end{description}
+
+\newpage
+
+
+\subsection{Eliminación de Membresías}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravedad, deseo poder eliminar a uno o más miembros de mi startup, para que los mismos TENGAN LOS DATOS ACTUALIZADOS en cada momento que sea necesario.
+    \item[Limitaciones:]  El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber seleccionado la opción de creación o edición de startups.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe acceder a la pestaña de Personas.
+    		\item Al clickear sobre el botón de Añadir Miembro, se debe desplegar un modal donde se muestren los usuarios miembros de la startup dentro de una tabla.
+    		\item El usuario podrá eliminar al miembro elegido en la tabla al clickear sobre la casilla de selección y luego sobre el botón de eliminación.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item La tabla debe contener la posibilidad de hacer selección múltiple sobre distintas filas.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 17.
+\end{description}
+
+\newpage
+
+
+\subsection{Creación de Productos}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo exponer mis productos dentro de la plataforma para poder exponer mi producto al mundo a través de la plataforma.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe hacer click sobre el botón de Añadir en la parte superior de la interfaz y luego sobre Crear Producto,
+    		\item Al clickear el enlace de Crear Producto, se debe desplegar una vista subdividida en tres pestañas donde se pida introducir datos del producto en términos de su información general, de su presentación como perfil público y de los individuos allí trabajando.
+    	    \begin{enumerate}
+    	        \item La pestaña de información general debe permitir agregar una foto de perfil, un nombre, una descripción corta del producto, etiquetas sobre el producto, un enlace de descargas y una casilla de selección para determinar si el producto está disponible aún o no.
+    			\item La pestaña de presentación debe permitir agregar una serie de imágenes referenciales al producto, un enlace a un vídeo alojado en la plataforma YouTube, una descripción completa del producto y la capacidad de agregar los enlaces a las redes sociales del mismo.
+    			\item La vista de personas debería permitir ingresar el nombre del inventor del producto.
+    	    \end{enumerate}
+    			
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Investigar y analizar la Interfaz de Uusario de Product Hunt.
+	    	\item Implementar un formulario particular para el uso de productos inspirado en la investigación resultante.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h
+    \item[Dependencias:] 10.
+\end{description}
+
+\newpage
+
+
+\subsection{Perfil de Producto}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravedad, deseo acceder al perfil de algún producto listado para detallar el contenido de su propuesta de valor.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber clickeado sobre alguno de los productos listados.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Se debe mostrar una imagen del producto, así como su nombre, una descripción corta de una línea y una serie de etiquetas para identificarlo.
+    		\item Debe facilitarse la opción de votar a dicho producto como favorito.
+    		\item Se debe mostrar un vídeo representativo del producto.
+    		\item Se debe permitir generar enlaces compartibles en redes sociales, preferiblemente Facebook, Twitter y LinkedIn.
+    		\item Se debe mostrar una sección de comentarios donde los usuarios expresen sus opiniones sobre el producto.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Investigar sobre el perfil dedicado a cada producto en Product Hunt.
+    		\item Implementar un perfil basado en el resultado de la investigación anterior.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h
+    \item[Dependencias:] 10.
+\end{description}
+
+\newpage
+
+
+\subsection{Edición de Productos}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo editar mis productos existentes para mostrar la información más actualizada de los mismos.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber creado un producto. Además, debe haber clickeado sobre el nombre del producto en el espacio de Perfiles Administrados de la vista principal.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe tener acceso a las tres pestañas y formas asociadas a la creación de productos.
+		    \item Cada entrada de datos correspondiente a cada forma debe contener la misma información suministrada previamente.
+		    \item Cada forma debe contener un botón de Guardar, de manera que puedan persistirse los cambios realizados.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 24.
+\end{description}
+
+\newpage
+
+
+\subsection{Eliminación de Productos}
+
+\begin{description}
+    \item[Prioridad:] S
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo eliminar los productos que haya creado para solo exponer los productos que yo decida mostrar.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber creado un producto y debe acceder al listado de productos que puede gestionar.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item 	El usuario al hacer click sobre un elemento de interacción en una lista de productos, debe ser capaz de eliminarlo de la lista de productos.
+    		\item El producto eliminado debe ser removido de la base de datos.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 24.
+\end{description}
+
+\newpage
+
+
+\subsection{Listado de Productos}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo listar los productos que estén dentro de la plataforma para asegurar.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber hecho click sobre la opción de productos en el menú lateral.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe ser capaz de acceder al listado de productos.
+        	\item Al hacer click sobre alguno de los elementos de la lista, se debe desplegar el perfil de dicho productos.
+        	\item Cada producto listado debe brindar la opción de ser votado.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+    		\item Se debe implementar un ordenamiento a nivel de backend que realice las operaciones correspondientes a los votos.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 25.
+\end{description}
+
+\newpage
+
+
+\subsection{Edición de usuarios}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo poder editar mis datos personales para poder mantener mi perfil al día.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber accedido a la opción de edición de usuario en su perfil personal.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe ser capaz de cambiar información personal básica relacionada a su perfil, tales como la foto de perfil, género, país y una biografía breve.
+    			\begin{enumerate}
+    			    \item Debe incluir la posibilidad de editar lo relacionado a los años de experiencia, rol primario de trabajo y roles preferidos, así como información básica de su sitio web y redes sociales.
+    			\end{enumerate}
+    		\item El usuario debe ser capaz de agregar detalles de su educación, trabajos previos, habilidades, preferencias de trabajo y cultura personal.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+		    \item Las secciones de Preferencias y Cultura, al no estar claramente definidas, se discutirán durante el desarrollo. 
+		    \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 10.
+\end{description}
+
+\newpage
+
+
+\subsection{Edición de Usuario: Experiencia Académica}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo poder agregar cada una de mis experiencias académicas a mi perfil de usuario para brindar sustancia a mi perfil expuesto.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber accedido a la opción de edición de usuario en su perfil personal, entrar a la pestaña Experiencia Académica, y activar la entrada de datos.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe ser capaz de agregar el nombre de la universidad a la que fue, la fecha de graduación, el título obtenido y el nivel de educación al que corresponde dicho título.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Debe reusarse la tabla de formularios.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 29.
+\end{description}
+
+\newpage
+
+
+\subsection{Edición de Usuario: Experiencia laboral}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo poder agregar cada una de mis experiencias laborales a mi perfil de usuario para brindar sustancia a mi perfil expuesto.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber accedido a la opción de edición de usuario en su perfil personal, entrar a la pestaña Experiencia Académica, y activar la entrada de datos.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe ser capaz de agregar el nombre de la compañía, el título del trabajo, la fecha de inicio, la fecha de finalización, indicar si se encuentra actualmente trabajando allí y una descripción de las responsabilidades allí tomadas.
+    		\item Al tipear en la búsqueda de una compañía, deben listarse startups de la plataforma. Si no existe, se  crea automáticamente.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 29.
+\end{description}
+
+\newpage
+
+
+\subsection{Edición de Usuario: Habilidades}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravedad, deseo poder agregar cada una de mis habilidades laborales a mi perfil de usuario para brindar sustancia a mi perfil expuesto.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles y haber accedido a la opción de edición de usuario en su perfil personal, entrar a la pestaña Habilidades, y activar la entrada de datos.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe ser capaz de introducir un conjunto de máximo diez (10) habilidades en una entrada de texto.
+    		\item El usuario podrá agregar una descripción somera de sus logros como profesional.
+    		\item El usuario podrá agregar su CV como un archivo adjunto.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item El formulario de propuestas debe hacerse como un componente modular de manera que pueda ser reutilizado en otros sitios de la plataforma.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 29.
+\end{description}
+
+\newpage
+
+
+\subsection{Configuraciones de usuario}
+
+\begin{description}
+    \item[Prioridad:] S
+    \item[Rol-Meta-Beneficio:]  Como USUARIO de la plataforma Gravedad, deseo poder realizar cambios en mis configuraciones dentro de la plataforma para personalizar mi experiencia como usuario.
+    \item[Limitaciones:] El usuario debe haber iniciado sesión mediante alguno de los métodos disponibles haber al menú de configuraciones desde el menú de la barra superior.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe tener disponibles cuatro pestañas:
+                \begin{enumerate}
+                    \item Una pestaña de Información Básica donde pueda editar cosas como su nombre, apellido, correo electrónico, nombre de usuario y contraseña.
+    			    \item Una pestaña de privacidad donde pueda definir qué cosas pueden ver los demás usuarios con respecto a su información personal.
+    			    \item Una pestaña de preferencias donde se puedan demarcar elementos relacionados con la experiencia visual del usuario.
+    			    \item Una pestaña de integraciones, donde se pueda conectar la plataforma Gravedad con otras plataformas.
+                \end{enumerate}
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Discutir lo esperado en Privacidad, Preferencias e Integraciones.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 29.
+\end{description}
+
+\newpage
+
+
+\subsection{Solicitud de Verificación para Inversores}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como ADMINISTRADOR de la plataforma GRAVEDAD, me gustaría poder filtrar quienes pueden o quienes no pueden ser inversores para conservar la confiabilidad en nuestra plataforma.
+    \item[Limitaciones:]  El usuario debe ya haber iniciado sesión en la plataforma y haber accedido a la opción Crear Perfil de Inversor en el menú de la barra superior.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe introducir un correo electrónico a través del cual se realizará la posterior comunicación.
+    		\item El usuario debe agregar su nombre completo y su razón de contacto.
+    		\item El usuario debe hacer una carta de presentación, para posteriormente establecer conversaciones.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Se debe conectar el sistema de correos al formulario.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 10.
+\end{description}
+
+\newpage
+
+
+\subsection{Solicitud de Verificación para Asociados}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como ADMINISTRADOR de la plataforma GRAVEDAD, me gustaría poder filtrar quienes pueden o quienes no pueden ser Asociados para conservar la confiabilidad en nuestra plataforma.
+    \item[Limitaciones:]  El usuario debe ya haber iniciado sesión en la plataforma y haber accedido a la opción Crear Perfil de Asociado en el menú de la barra superior.
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item El usuario debe introducir un correo electrónico a través del cual se realizará la posterior comunicación.
+    		\item El usuario debe agregar su nombre completo y su razón de contacto.
+    		\item El usuario debe hacer una carta de presentación, para posteriormente establecer conversaciones.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Se debe conectar el sistema de correos al formulario.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 10.
+\end{description}
+
+\newpage
+
+
+\subsection{Búsqueda dinámica}
+
+\begin{description}
+    \item[Prioridad:] W
+    \item[Rol-Meta-Beneficio:] Como USUARIO de la plataforma Gravitas, me gustaría poder ENCONTRAR de manera rápida y sencilla, la información de mi interés particular para INVERTIR DE MANERA ÓPTIMA mi tiempo en la plataforma.
+    \item[Limitaciones:] 
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Al hacer click sobre la barra de búsqueda, la misma debe mostrar opciones de filtrado de manera inmediata, siendo estas: “Startups”, “Inversores”, “Perfiles”, “Organizaciones”, “Productos”, “Trabajos”.
+    		\item Las vistas de resultados tanto de “Startups”, “Inversores”, “Organizaciones” y “Perfiles” deben constar de una lista de tarjetas que, en su interior, se muestre el nombre de la entidad asociada con un enlace a su perfil, junto con su fotografía pricipal, así como acciones asociadas a ella.
+	    	\item Para todos los casos, las acciones asociadas son “Contactar”, sobre la cual al realizar click se desplegará un espacio de texto donde se le podrá enviar un mensaje interno, o bien solo se desplegará un correo de contacto (en función de las políticas de privacidad). y “Seguir”, con una funcionalidad similar a la de LinkedIn.
+		    \item Al clickear sobre algún resultado de producto, debe     desplegarse una vista individual donde se muestre la información particular del producto y sus imágenes (Perfil del Producto).
+		    \item Se mostrará un listado donde cada elemento contendrá información de la Startup, el cargo a ocupar y el sueldo a pagar. Al clickear sobre alguno de estos elementos, debe aparecer una vista más detallada de la oferta de trabajo, donde se indique también una descripción y los requisitos para aplicar, así como un botón para aplicar.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Para el caso particular de la vista de “Productos”, la disposición de los resultados debe constar de una grilla que muestre la imagen principal de cada producto indexado.  
+    		\item	Para el caso particular de la vista de “Trabajos”, se seguirá la disposición estándar de la red para sitios de ofertas laborales.
+        \end{enumerate}
+    \item[Unidades de Trabajo:] 8h.
+    \item[Dependencias:] 10.
+\end{description}
+
+\newpage
+
+
+\subsection{Listado de Trabajos}
+
+\begin{description}
+    \item[Prioridad:] S
+    \item[Rol-Meta-Beneficio:] Como TRABAJADOR, me gustaría poder ENCONTRAR ofertas de trabajo para poder BRINDAR mis conocimientos y fuerza laboral al emprendimiento que lo requiera.
+    \item[Limitaciones:] 
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Se mostrará un listado donde cada elemento contendrá información del emprendimiento, el cargo a ocupar y el sueldo a pagar.
+    		\item Al clickear sobre alguno de estos elementos, debe aparecer una vista más detallada de la oferta de trabajo, donde se indique también una descripción y los requisitos para aplicar, así como un botón para aplicar.
+    		\item Cuando un usuario aplique a un empleo, el emprendimiento que ofrece el empleo debe recibir una notificación con un enlace al perfil del usuario que decidió aplicar.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item Se seguirá la disposición estándar de la red para sitios de ofertas laborales.
+        \end{enumerate}
+    \item[Unidades de Trabajo:]
+    \item[Dependencias:]
+\end{description}
+
+\newpage
+
+
+\subsection{Listado de Perfiles Administrados}
+
+\begin{description}
+    \item[Prioridad:] M
+    \item[Rol-Meta-Beneficio:] Como USUARIO, me gustaría poder MOSTRAR  la información personal de mi emprendimiento y la mía propia para así GENERAR interés en la comunidad dentro de la plataforma.
+    \item[Limitaciones:] 
+    \item[Condiciones de Satisfacción:]  \hfill
+        \begin{enumerate}
+            \item Al hacer click sobre el nombre de usuario en la barra de navegación, debe desplegarse el perfil del usuario actual. Así mismo, al presionar sobre cualquier enlace relacionado a un emprendimiento, inversionista o trabajador/mentor, deberá desplegarse el perfil propio de cada entidad.
+		    \item Al abrirse el perfil de un emprendimiento, debe mostrarse un resumen del emprendimiento. El resumen debe estar compuesto por una descripción de la misión y visión, así como una imagen referencial, seguido de imágenes de los miembros del equipo. Este perfil también contará con las opciones de “Contactar” y “Seguir” desplegadas de manera visible. \item Además del resumen, el perfil debe contar con las vistas internas de “Personal” donde se muestra información sobre los miembros del equipo, “Cultura” donde el emprendimiento habla sobre su cultura de innovación, “Financiamiento” donde muestra de dónde obtuvo sus ingresos iniciales (o si necesita inversión inicial), “Publicaciones” donde se tiene un registro de las publicaciones que ha realizado y finalmente las ofertas de trabajo que posea activas.
+		    \item Al abrirse un perfil de un inversionista, debe mostrar un resumen de su información personal, y debe mostrarse los emprendimientos en los cuales haya invertido, todo esto según las configuraciones de privacidad del usuario.
+		    \item Al abrirse un perfil de un trabajador/mentor, debe mostrarse información básica del usuario, la experiencia laboral que posee y la educación que ha tenido, así como la posibilidad de descargar su CV. Todo esto según las configuraciones de privacidad que tenga el usuario.
+        \end{enumerate}
+    \item[Tareas de Ingeniería:]  \hfill
+        \begin{enumerate}
+            \item 
+            \item 
+            \item 
+        \end{enumerate}
+    \item[Unidades de Trabajo:]
+    \item[Dependencias:]
+\end{description}
+
+\newpage
